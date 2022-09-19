@@ -4,7 +4,6 @@
 	9/19/2022
 */
 #include <iostream>
-
 using namespace std;
 
 int main(){
@@ -15,7 +14,7 @@ int main(){
 
 	
 	cout << "Palindrome tester" << endl;
-	cin >> inputString;
+	cin.get(inputString, 81);
 	cout << "your string: " << inputString << endl;
   
 	// Remove all non whitelisted characters
