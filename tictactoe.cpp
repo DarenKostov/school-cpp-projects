@@ -39,7 +39,7 @@ int main(){
 		cout << "It's " << turn << "' turn!\n";
 	
 		//get our input from the user
-		char input[2];
+		char input[3];
 		cin >> input;
 	
 		//translate the text based coordinates into array indexes
@@ -48,7 +48,6 @@ int main(){
 	  
 		//uncomment for debugging
 		//cout << "row: " << row << ", col: " << col << endl;
-		
 		
 		
 		//if the location picked by the user is not free, including if its non-existant, reloop the loop
