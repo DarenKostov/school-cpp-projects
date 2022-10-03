@@ -3,6 +3,14 @@
    Daren Kostov
    Student List
    9/23/2022
+
+	resources used:
+
+	https://stackoverflow.com/questions/42724722/how-to-iterate-through-vector-passed-as-pointer
+	https://stackoverflow.com/questions/13467241/struct-initialization-arguments
+	https://www.geeksforgeeks.org/vector-in-cpp-stl/i
+
+
 */
 #include <iostream>
 //#include <cstring>
@@ -10,12 +18,9 @@
 //#include <fstream>
 
 using namespace std;
-//https://stackoverflow.com/questions/42724722/how-to-iterate-through-vector-passed-as-pointer
-//https://stackoverflow.com/questions/13467241/struct-initialization-arguments
-//https://www.geeksforgeeks.org/vector-in-cpp-stl/i
 
 
-
+//student struct
 struct Student{
 	char name[20];
 	char lastName[20];
@@ -38,7 +43,7 @@ struct Student{
 }; 
 
 
-
+//function initialization
 void ADD(vector<Student>* student);
 
 void PRINT(vector<Student> student);
@@ -50,20 +55,23 @@ int main(){
 	
 	
 		
-	cout << "ADD to add, EDIT to edit, PRINT to print, REMOVE to delete\n";	
+	cout << "ADD to add, PRINT to print, REMOVE to delete\n";	
 	
+	//student vector + pointers
 	vector<Student> student;
 	vector<Student> *studentP=&student;	
+	
+	
 	while(true){
 		char input[20];
 		cin >> input;
-		
+		//if ADD
 		if(input[0]=='A')
 			if(input[1]=='D')
 				if(input[2]=='D')	
   				ADD(studentP);
 		
-		
+		//if PRINT
 		if(input[0]=='P')
 			if(input[1]=='R')
 				if(input[2]=='I')
@@ -71,7 +79,7 @@ int main(){
 						if(input[4]=='T')
 							PRINT(student);			
 						
-						
+		//if REMOVE				
 		if(input[0]=='R')
 			if(input[1]=='E')
 				if(input[2]=='M')
@@ -80,7 +88,7 @@ int main(){
 							if(input[5]=='E')
 								REMOVE(studentP);
 
-		
+		//if QUIT
 		if(input[0]=='Q')
 			if(input[1]=='U')
 				if(input[2]=='I')
@@ -89,7 +97,7 @@ int main(){
 		
 			}
 }
-
+//adds a student
 void ADD(vector<Student>* student){
 
 		char first[20];
@@ -107,7 +115,7 @@ void ADD(vector<Student>* student){
 		student->push_back(Student(first,last,id,gpa));
 		cout << "Student added!\n";
 }
-
+//shows all students
 void PRINT(vector<Student> student){
 
 	for(std::vector<Student>::iterator i=student.begin(); i!=student.end(); i++){
@@ -122,7 +130,7 @@ void PRINT(vector<Student> student){
 	
 	
 }
-
+//iterates through the students and delets the one with matching ID
 void REMOVE(vector<Student>* student){
 
 	cout << "Student ID: ";
