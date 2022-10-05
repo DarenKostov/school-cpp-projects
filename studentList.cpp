@@ -16,7 +16,7 @@
 //#include <cstring>
 #include <vector>
 //#include <fstream>
-
+#include <cmath>
 using namespace std;
 
 
@@ -123,7 +123,7 @@ void PRINT(vector<Student> student){
 		cout << i->name << endl;
 		cout << i->lastName << endl;
 		cout << i->id << endl;
-		cout << i->gpa << endl;
+		cout << floor(i->gpa*100)/100 << endl;
 	}
 	
 	cout << "Printing done!\n";
