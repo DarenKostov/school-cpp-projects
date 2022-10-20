@@ -12,9 +12,18 @@
 
 using namespace std;
 
+void addMedia(vector<Media>* media);
+void printMedia(vector<Media> media);
+
 
 int main (){
-   //vector
+   
+   vector<Media> DataBase;
+   vector<Media> *DataBasePtr=&DataBase;
+   
+   
+   
+   
    
    
  while(true){
@@ -23,9 +32,21 @@ int main (){
          
       if(input[0]=='A')
          if(input[1]=='D')
-             if(input[2]=='D')
-               return 0;
+             if(input[2]=='D'){
+            addMedia(DataBasePtr);
+               cout << "adding\n";
+      }
       
+      
+      
+   if(input[0]=='P')
+      if(input[1]=='R')
+         if(input[2]=='I')
+            if(input[3]=='N')
+               if(input[4]=='T')
+                  printMedia(DataBase);
+                  
+                  
       if(input[0]=='S')
          if(input[1]=='E')
             if(input[2]=='A')
@@ -57,3 +78,27 @@ int main (){
 return 0;
 
 }
+
+
+void addMedia(vector<Media>* media){
+
+   char title[80];
+   int date;
+   cout << "Title: ";
+   cin >> title;
+   cout << "\nDate: ";
+   cin >> date;
+   
+   media->push_back(Media(title, date));
+   cout << "added\n";
+   
+
+}
+
+void printMedia(vector<Media> media){
+   for(std::vector<Media>::iterator i=media.begin(); i!=media.end(); i++){
+      cout << "=============================\n";
+      cout << "Date: " << i->getDate() << endl;
+   }
+}
+
