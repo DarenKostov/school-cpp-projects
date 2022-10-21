@@ -3,6 +3,12 @@
    Daren Kostov
    Classes
    10/13/2022
+
+resources used:
+
+https://stackoverflow.com/questions/5660527/how-do-i-return-a-char-array-from-a-function
+https://stackoverflow.com/questions/3473438/return-array-in-a-function
+https://stackoverflow.com/questions/18728754/checking-cin-input-stream-produces-an-integer
 */
 #include <iostream>
 #include <vector>
@@ -14,7 +20,7 @@ using namespace std;
 
 void addMedia(vector<Media>* media);
 void printMedia(vector<Media> media);
-
+void cignorre();
 
 int main (){
    
@@ -34,7 +40,6 @@ int main (){
          if(input[1]=='D')
              if(input[2]=='D'){
             addMedia(DataBasePtr);
-               cout << "adding\n";
       }
       
       
@@ -81,15 +86,58 @@ return 0;
 
 
 void addMedia(vector<Media>* media){
+   cignorre();
 
    char title[80];
    int date;
+   char type[80];
    cout << "Title: ";
-   cin >> title;
+   cin.get(title, 80);
+   cignorre();
+   
    cout << "\nDate: ";
    cin >> date;
    
-   media->push_back(Media(title, date));
+   while(!cin){
+      cignorre();
+      cout << date << "\nType the year. (ex 2012)\nDate: ";
+      cin >> date;
+   }
+   
+   
+     
+   while(true){
+      cout << "\nMedia: ";
+      cin >> type;
+      cignorre();
+      if(type[0]=='v'){
+//          media->push_back(Video(title, date, title, title, title));
+         break;
+      }else if(type[0]=='m'){
+         if(type[1]=='u'){       
+         
+            break;
+         }else if(type[1]=='o'){
+            char director[80];
+            char duration[80];
+            char rating[80];
+            cout << "\nDirector: ";
+            cin.get(director, 80);
+            cignorre();
+            cout << "\nDuration: ";
+            cin.get(duration, 80);
+            cignorre();
+            cout << "\nrating: ";
+            cin.get(rating, 80);
+            media->push_back(Movie(title, date, director, duration, rating));
+            break;
+         }
+      }
+
+      cout << "\nType a media type, there are 'video games', 'music', and 'movies'";
+   }
+   cignorre();
+   
    cout << "added\n";
    
 
@@ -97,8 +145,19 @@ void addMedia(vector<Media>* media){
 
 void printMedia(vector<Media> media){
    for(std::vector<Media>::iterator i=media.begin(); i!=media.end(); i++){
-      cout << "=============================\n";
-      cout << "Date: " << i->getDate() << endl;
+      
+      char Title[80];
+      //not ideal
+      for(int j=0; j<80; j++)
+         Title[j]=i->getTitleChar(j); 
+         
+         
+      
+      i->printAll();
+   
    }
 }
-
+void cignorre(){
+   cin.clear();
+   cin.ignore(99999,'\n');
+}

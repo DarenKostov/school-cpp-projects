@@ -5,16 +5,22 @@
 using namespace std;
 
 Media::Media(char Title[80], int Date){
-  strcpy(title,Title);
+  strcpy(title, Title);  
   date=Date;
   
+  
 };
-
+//returns the date
 int Media::getDate(){
 return date;
 }
 
-
-
-
+//not ideal, returns the index of a char array
+char Media::getTitleChar(int i){
+  return title[i];
+}
+//prints all info about the media
+void Media::printAll(){
+  cout <<  "Unknown: [Title: " << title << "; Year: " << date << "]\n";
+}
 
