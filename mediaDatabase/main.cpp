@@ -151,7 +151,6 @@ void printMedia(vector<Media> media){
       for(int j=0; j<80; j++)
          Title[j]=i->getTitleChar(j); 
          
-         
       
       i->printAll();
    
