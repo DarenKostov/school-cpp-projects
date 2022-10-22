@@ -16,11 +16,9 @@ return date;
 }
 
 //not ideal, returns the index of a char array
-char Media::getTitleChar(int i){
-  return title[i];
+char* Media::getTitle(){
+  return title;
 }
 //prints all info about the media
-void Media::printAll(){
-  cout <<  "Unknown: [Title: " << title << "; Year: " << date << "]\n";
-}
+void Media::printAll(){}
 

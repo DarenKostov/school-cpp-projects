@@ -13,6 +13,7 @@ Movie::Movie(char Title[80], int Date, char Director[80], char Duration[80], cha
   
 };
 void Movie::printAll(){
+  Media::printAll();
   cout << "Movie: [Title: " << title << "; Year: " << date << "; Director: "
        << director << "; Duration: " << duration << "; Rating: " << rating << "]\n";
 }

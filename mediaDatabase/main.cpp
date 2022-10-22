@@ -9,6 +9,7 @@ resources used:
 https://stackoverflow.com/questions/5660527/how-do-i-return-a-char-array-from-a-function
 https://stackoverflow.com/questions/3473438/return-array-in-a-function
 https://stackoverflow.com/questions/18728754/checking-cin-input-stream-produces-an-integer
+https://stackoverflow.com/questions/19342155/how-to-store-characters-into-a-char-pointer-using-the-strcpy-function
 */
 #include <iostream>
 #include <vector>
@@ -18,14 +19,14 @@ https://stackoverflow.com/questions/18728754/checking-cin-input-stream-produces-
 
 using namespace std;
 
-void addMedia(vector<Media>* media);
-void printMedia(vector<Media> media);
+void addMedia(vector<Media*> &media);
+void printMedia(vector<Media*> media);
 void cignorre();
 
 int main (){
    
-   vector<Media> DataBase;
-   vector<Media> *DataBasePtr=&DataBase;
+   vector<Media*> DataBase;
+   //vector<Media> *DataBasePtr=&DataBase;
    
    
    
@@ -39,7 +40,7 @@ int main (){
       if(input[0]=='A')
          if(input[1]=='D')
              if(input[2]=='D'){
-            addMedia(DataBasePtr);
+            addMedia(DataBase);
       }
       
       
@@ -85,7 +86,7 @@ return 0;
 }
 
 
-void addMedia(vector<Media>* media){
+void addMedia(vector<Media*> &media){
    cignorre();
 
    char title[80];
@@ -93,6 +94,7 @@ void addMedia(vector<Media>* media){
    char type[80];
    cout << "Title: ";
    cin.get(title, 80);
+   cout << title << endl;
    cignorre();
    
    cout << "\nDate: ";
@@ -105,7 +107,7 @@ void addMedia(vector<Media>* media){
    }
    
    
-     
+    
    while(true){
       cout << "\nMedia: ";
       cin >> type;
@@ -129,7 +131,7 @@ void addMedia(vector<Media>* media){
             cignorre();
             cout << "\nrating: ";
             cin.get(rating, 80);
-            media->push_back(Movie(title, date, director, duration, rating));
+            media.push_back(new Movie(title, date, director, duration, rating));
             break;
          }
       }
@@ -143,15 +145,10 @@ void addMedia(vector<Media>* media){
 
 }
 
-void printMedia(vector<Media> media){
-   for(std::vector<Media>::iterator i=media.begin(); i!=media.end(); i++){
+void printMedia(vector<Media*> media){
+   for(std::vector<Media*>::iterator i=media.begin(); i!=media.end(); i++){
       
-      char Title[80];
-      //not ideal
-      for(int j=0; j<80; j++)
-         Title[j]=i->getTitleChar(j); 
-         
-      i->printAll();
+      (*i)->printAll();
    
    }
 }

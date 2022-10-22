@@ -1,9 +1,9 @@
 class Media{
    public:
-      Media(char title[80], int date);
+      Media(char title[80], int);
       int getDate();
-      char getTitleChar(int i);
-      void printAll();
+      char* getTitle();
+      virtual void printAll();
       
    protected:
       char title[80];
