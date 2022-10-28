@@ -2,7 +2,7 @@
 
    Daren Kostov
    Classes
-   10/13/2022
+   10/26/2022
 
 resources used:
 
@@ -27,10 +27,9 @@ using namespace std;
 void addMedia(vector<Media*> &media);
 void printMedia(vector<Media*> media);
 
-void delMedia(vector<Media*> media);
+void delMedia(vector<Media*> media, vector<Media*> &orig);
 vector <Media*> searchMedia(vector<Media*> media);
 
-void fixMediaVector(vector<Media*> &media);
 
 void cignorre();
 
@@ -38,7 +37,7 @@ int main (){
    
    vector<Media*> DataBase;
    
-   
+   cout << " PRINT- prints everything in the database\n ADD- adds a media\n SEARCH- searches for media\n REMOVE- removes a media\n";
    
    
    
@@ -76,10 +75,9 @@ int main (){
             if(input[2]=='M')
                if(input[3]=='O')
                   if(input[4]=='V')
-                     if(input[5]=='E'){
-                        delMedia(searchMedia(DataBase));
-                        fixMediaVector(DataBase);
-                     }
+                     if(input[5]=='E')
+                        delMedia(searchMedia(DataBase), DataBase);
+                     
                               
       if(input[0]=='Q')
          if(input[1]=='U')
@@ -116,7 +114,7 @@ void addMedia(vector<Media*> &media){
    }
    
    
-    
+   //select and add media
    while(true){
       cout << "\nMedia: ";
       cin >> type;
@@ -191,29 +189,35 @@ vector <Media*> searchMedia(vector<Media*> media){
    
    vector <Media*> output;
    
+   while(true){
    char type[10];
    cout << "\ndate/title: ";
    cin >> type;
+
    if(type[0]=='D' || type[0]=='d'){
-      int date;
-      cout << "\nDate: ";
-      cin >> date;      
-      for(std::vector<Media*>::iterator i=media.begin(); i!=media.end(); i++){
-         if((*i)->getDate()==date){
-            output.push_back(*i);
+         int date;
+         cout << "\nDate: ";
+         cin >> date;      
+         for(std::vector<Media*>::iterator i=media.begin(); i!=media.end(); i++){
+            if((*i)->getDate()==date){
+               output.push_back(*i);
+            }   
          }   
-      }   
-   }else if(type[0]=='T' || type[0]=='t'){
-      char title[80];
-      cout << "\nTitle: ";
-      cin >> title;
+         break;
+      }else if(type[0]=='T' || type[0]=='t'){
+         char title[80];
+         cout << "\nTitle: ";
+         cin >> title;
       
-      for(std::vector<Media*>::iterator i=media.begin(); i!=media.end(); i++){
-         char* compr= strstr(title, (*i)->getTitle());      
-         if(compr!=NULL){
-            output.push_back(*i);
-         }   
-      } 
+         for(std::vector<Media*>::iterator i=media.begin(); i!=media.end(); i++){
+            char* compr= strstr((*i)->getTitle(), title);      
+            if(compr!=NULL){
+               output.push_back(*i);
+            }   
+         }
+         break;
+      }
+      cout << "Type 'date' or 'title'\n";
    }
    return output;
    
@@ -221,38 +225,34 @@ vector <Media*> searchMedia(vector<Media*> media){
 
 
 //deletes medias in the given media vector
-void delMedia(vector<Media*> media){
+void delMedia(vector<Media*> media, vector<Media*> &orig){
    cout << "Medias for deletion:\n";
    printMedia(media);
    
    char confirm;
-   cout << "Are you sure you want to delete these medias? [Y/n]";
+   cout << "Are you sure you want to delete these medias? [y/n]";
    cin >> confirm;
    switch (confirm){
-      case '\0':
       case 'y':
       case 'Y':
-         for(std::vector<Media*>::iterator i=media.begin(); i!=media.end(); i++){
-            delete *i;
+         while(media.size()>0){
+            for(std::vector<Media*>::iterator i=orig.begin(); i!=orig.end(); i++){
+               if((*media.begin())->getID()==(*i)->getID()){
+                  delete *i;
+                  orig.erase(i);
+                  media.erase(media.begin());
+                  break;            
+               }
+            }
          }
       cout << "Deleted!\n";
       return;
    }   
-   
    cout << "Canceled\n";   
    
 }
 
-//fixes the vector, removes pointers pointing to nothing
-void fixMediaVector(vector<Media*> &media){
-   for(std::vector<Media*>::iterator i=media.begin(); i!=media.end(); i++){
-      if(*i==NULL){
-         media.erase(i);   
-         i=media.begin();
-      }
-   }
-}
-
+//clears and ignorres the cin
 void cignorre(){
    cin.clear();
    cin.ignore(99999,'\n');

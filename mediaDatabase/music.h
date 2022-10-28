@@ -1,3 +1,12 @@
+/*
+Stores data about a music media
+
+printAll prints all of the info about the media type
+*/
+
+
+
+
 #include <iostream>
 
 #ifndef MEDIA

@@ -1,5 +1,20 @@
+/*
+Stores info about a movie media
+
+
+printAll prints all of the info about the media type
+*/
+
+
+
+
+
 #include <iostream>
+
+#ifndef MEDIA
+#define MEDIA
 #include "./media.h"
+#endif
 
 using namespace std;
 

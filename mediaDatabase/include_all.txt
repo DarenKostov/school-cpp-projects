@@ -1,7 +1,0 @@
-
-#include "./*.h"
-#include "./mediaDatabase.cpp"
-#include "./movies.cpp"
-#include "./music.cpp"
-#include "./parent.cpp"
-#include "./videoGames.cpp"
