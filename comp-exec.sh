@@ -5,4 +5,4 @@ g++ -o $1 $1.cpp
 ./$1.exe
 
 #for linux
-./$1
+"$PWD"/$1
