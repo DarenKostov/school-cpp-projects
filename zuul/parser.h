@@ -22,7 +22,8 @@ class Parser{
     char allCommandsArgs[10][20];
     char input[99];
     char command[10][10];
-    void fixCommand();
+    bool fixCommand();
+    bool fixArgs();
     
 
 

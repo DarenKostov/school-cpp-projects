@@ -22,20 +22,30 @@ int main (){
    char ALLCOMMANDS[10][10][10]={
       {"help", "h"},
       {"features", "feature", "f"},
-      {"tips", "ti"}
+      {"tips", "ti"},
+      {"go", "goto", "g"},
    };
    
    char ALLCOMMANDSDESCRIPTION[10][50]={
       "this help",
       "gives a list of all the features",
       "gives you tips"
+      "go in a direction"
    };
    
+   //str, int, float, bool, 
+   char ALLCOMMANDSARGSDEF[10][10][10]={
+      {},
+      {},
+      {},
+      {"str"}
+   };
    
    char ALLCOMMANDSARGS[10][20]={
       "none",
       "none",
-      "none"
+      "none",
+      "direction"
    };
    
    

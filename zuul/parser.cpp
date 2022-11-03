@@ -46,36 +46,47 @@ void Parser::readLn(){
   
   
   for(int i=word+1; i<10; i++)
-    strcpy(command[i],"000000000\0");
+    strcpy(command[i],"=MISSING=\0");
   
-  fixCommand();
-  
+  fixCommand() && fixArgs();
 }
 
 char* Parser::returnCommand(int i){
   return command[i];
 }
 
-void Parser::fixCommand(){
+bool Parser::fixCommand(){
   
-  for(int i=0; i<10; i++){//command args loop
-    bool skipErasing=false;
-    for(int j=0; j<10; j++){//proper command loop
-      for(int k=0; k<10; k++){//aliases loop
-    
-        if(0==strcmp(returnCommand(i), allCommands[j][k])){
-          cout << "$ " << allCommands[j][k] << endl;
-          strcpy(command[i], allCommands[j][0]);
-          skipErasing=true;
-          break;
-        }
-        if(skipErasing)
-          break;
+  bool skipErasing=false;
+  for(int j=0; j<10; j++){//proper command loop
+    for(int k=0; k<10; k++){//aliases loop
+  
+      if(0==strcmp(returnCommand(0), allCommands[j][k])){
+        cout << "$ " << allCommands[j][k] << endl;
+        strcpy(command[0], allCommands[j][0]);
+        skipErasing=true;
+        break;
       }
+      if(skipErasing)
+        break;
     }
-    if(!skipErasing)
-      strcpy(command[i], "000000000\0");
-  }    
+  }
+  if(!skipErasing){
+    strcpy(command[0], "=MISSING=\0");
+    return false;
+  }
+  return true;
 }
 
+bool Parser::fixArgs(){
+  for(int i=1; i<10; i++){//loop through all the args
+    for(int j=0; j<10; j++){//loop through `
+      
+      }
+  
+  }
+  
+  
+  return true;
+}
 
