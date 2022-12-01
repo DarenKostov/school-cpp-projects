@@ -19,29 +19,36 @@ using namespace std;
 
 
 int main (){
-   char ALLCOMMANDS[10][10][10]={
+   
+   char ALLCOMMANDS[20][10][15]={
       {"help", "h"},
       {"features", "feature", "f"},
       {"tips", "ti"},
       {"go", "goto", "g"},
+      {"take", "t",},
+      {"use", "u", "utilize"},
+      {"drop", "d", "letgoof"},
+      {"inventory", "i", "inv"},
+      {"quit", "q", "exit", "e", "leave", ":q"},
+      {"look", "l", "lookaround", "la", "list", "ls"},
    };
    
-   char ALLCOMMANDSDESCRIPTION[10][50]={
+   char ALLCOMMANDSDESCRIPTION[20][50]={
       "this help",
       "gives a list of all the features",
       "gives you tips"
       "go in a direction"
    };
    
-   //str, int, float, bool, 
-   char ALLCOMMANDSARGSDEF[10][10][10]={
+   //str, int, bool 
+   char ALLCOMMANDSARGSDEF[20][10][5]={
       {},
       {},
       {},
       {"str"}
    };
    
-   char ALLCOMMANDSARGS[10][20]={
+   char ALLCOMMANDSARGS[20][50]={
       "none",
       "none",
       "none",
@@ -49,7 +56,7 @@ int main (){
    };
    
    
-   Parser parser= Parser(ALLCOMMANDS, ALLCOMMANDSDESCRIPTION, ALLCOMMANDSARGS);
+   Parser parser= Parser(ALLCOMMANDS, ALLCOMMANDSDESCRIPTION, ALLCOMMANDSARGSDEF, ALLCOMMANDSARGS);
    
    parser.readLn();
    

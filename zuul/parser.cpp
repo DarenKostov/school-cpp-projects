@@ -5,7 +5,7 @@
 using namespace std;
 
 
-Parser::Parser(char AllCommands[10][10][10], char AllCommandsDescription[10][50], char AllCommandsArgs[10][20]){
+Parser::Parser(char AllCommands[20][10][15], char AllCommandsDescription[20][50], char allCommandArgsDef[20][10][5], char AllCommandsArgs[20][50]){
   for(int i=0; i<10; i++){
     strcpy(allCommandsDescription[i], AllCommandsDescription[i]);
     strcpy(allCommandsArgs[i], AllCommandsArgs[i]);
@@ -64,6 +64,7 @@ bool Parser::fixCommand(){
       if(0==strcmp(returnCommand(0), allCommands[j][k])){
         cout << "$ " << allCommands[j][k] << endl;
         strcpy(command[0], allCommands[j][0]);
+        commandIndex=j;
         skipErasing=true;
         break;
       }
@@ -79,11 +80,15 @@ bool Parser::fixCommand(){
 }
 
 bool Parser::fixArgs(){
-  for(int i=1; i<10; i++){//loop through all the args
-    for(int j=0; j<10; j++){//loop through `
+ 
+  for(int i=1; i<10; i++){//loop through all the inputed args
+    for(int j=0; j<10; j++){//loop through all the valid args
       
+        if(allCommandArgsDef[commandIndex][]){
+                
+      
+        }
       }
-  
   }
   
   
