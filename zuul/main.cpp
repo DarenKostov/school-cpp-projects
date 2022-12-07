@@ -30,7 +30,7 @@ int main (){
       {"drop", "d", "letgoof"},
       {"inventory", "i", "inv"},
       {"quit", "q", "exit", "e", "leave", ":q"},
-      {"look", "l", "lookaround", "la", "list", "ls"},
+      {"look", "l", "lookaround", "la", "list", "ls", "description", "desc"},
    };
    
    char ALLCOMMANDSDESCRIPTION[20][50]={
@@ -45,7 +45,13 @@ int main (){
       {},
       {},
       {},
-      {"str"}
+      {"str"},        //go
+      {"str", "int"}, //take
+      {"str"},        //use
+      {"str", "int"}, //drop
+      {},
+      {},
+      {},
    };
    
    char ALLCOMMANDSARGS[20][50]={

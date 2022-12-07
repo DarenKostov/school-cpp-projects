@@ -6,7 +6,7 @@ using namespace std;
 
 
 Parser::Parser(char AllCommands[20][10][15], char AllCommandsDescription[20][50], char allCommandArgsDef[20][10][5], char AllCommandsArgs[20][50]){
-  for(int i=0; i<10; i++){
+  for(int i=0; i<commandsAmount; i++){
     strcpy(allCommandsDescription[i], AllCommandsDescription[i]);
     strcpy(allCommandsArgs[i], AllCommandsArgs[i]);
     for(int j=0; j<10; j++){
@@ -51,7 +51,7 @@ void Parser::readLn(){
   fixCommand() && fixArgs();
 }
 
-char* Parser::returnCommand(int i){
+void* Parser::returnCommand(int i){
   return command[i];
 }
 
@@ -61,7 +61,7 @@ bool Parser::fixCommand(){
   for(int j=0; j<10; j++){//proper command loop
     for(int k=0; k<10; k++){//aliases loop
   
-      if(0==strcmp(returnCommand(0), allCommands[j][k])){
+      if(0==strcmp((char*)returnCommand(0), allCommands[j][k])){
         cout << "$ " << allCommands[j][k] << endl;
         strcpy(command[0], allCommands[j][0]);
         commandIndex=j;

@@ -17,17 +17,20 @@ class Parser{
   public:
     Parser(char AllCommands[20][10][15], char AllCommandsDescription[20][50], char allCommandArgsDef[20][10][5], char AllCommandsArgs[20][50]);
     void readLn();
-    char* returnCommand(int i);
+    void* returnCommand(int i);
   private:
-    int commandsAmount;
-    int commandsSize;
-    int aliasesAmount;
+    int commandsAmount=20;
+    int commandsWordLength=15;
+    int aliasesAmount=10;
+    int argumentsAmount=10;
+    int descriptionLength=50;
+
     char allCommands[20][10][15];
     char allCommandsDescription[20][50];
     char allCommandArgsDef[20][10][5];
     char allCommandsArgs[20][50];
     char input[99];
-    char command[10][10];
+    char command[10][15];
     bool fixCommand();
     bool fixArgs();
     int commandIndex;
