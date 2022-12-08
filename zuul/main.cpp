@@ -14,6 +14,7 @@ https://www.geeksforgeeks.org/getline-string-c/
 
 
 #include "./parser.h"
+#include "./command.h"
 
 using namespace std;
 
@@ -40,18 +41,19 @@ int main (){
       "go in a direction"
    };
    
-   //str, int, bool 
+   //cmd is the command, first argument
+   //cmd, str, int, bool 
    char ALLCOMMANDSARGSDEF[20][10][5]={
-      {},
-      {},
-      {},
-      {"str"},        //go
-      {"str", "int"}, //take
-      {"str"},        //use
-      {"str", "int"}, //drop
-      {},
-      {},
-      {},
+      {"cmd"},
+      {"cmd"},
+      {"cmd"},
+      {"cmd", "str"},        //go
+      {"cmd", "str", "int"}, //take
+      {"cmd", "str"},        //use
+      {"cmd", "str", "int"}, //drop
+      {"cmd"},
+      {"cmd"},
+      {"cmd"},
    };
    
    char ALLCOMMANDSARGS[20][50]={
@@ -62,13 +64,35 @@ int main (){
    };
    
    
-   Parser parser= Parser(ALLCOMMANDS, ALLCOMMANDSDESCRIPTION, ALLCOMMANDSARGSDEF, ALLCOMMANDSARGS);
+   // Parser parser= Parser(ALLCOMMANDS, ALLCOMMANDSDESCRIPTION, ALLCOMMANDSARGSDEF, ALLCOMMANDSARGS);
    
-   parser.readLn();
+   // cout << "reading line:" << endl;
+   // parser.readLn();
    
+   // cout << "printing line" << endl;
+
+   // for (int i=0; i<10; i++)
+   //    cout << parser.returnCommand(i) << endl;
    
-   for (int i=0; i<10; i++)
-      cout << parser.returnCommand(i) << endl;
+   // cout << "done printing" << endl;
+   
+   // Command go= Command(2, {"go", "g"}, "go somewhere", 1, {"cmd"}, "none");   
+   
+   char** helpAls= new char*[2];
+   helpAls[0]= new char[5];
+   helpAls[1]= new char[2];
+   strcpy(helpAls[0], "help");
+   strcpy(helpAls[1], "h");
+   
+   char** helpArg= new char*[0];
+   helpArg[0]= new char[4];
+   strcpy(helpArg[0], "cmd");
+   
+   Command help= Command(2, ALLCOMMANDS[0], ALLCOMMANDSDESCRIPTION[0], 1, helpArg, ALLCOMMANDSARGS[0]);   
+   
+   cout << help.aliases[0] << endl;
+   cout << help.aliases[1] << endl;
+   cout << help.description << endl;
    
    
 return 0;

@@ -17,7 +17,7 @@ class Parser{
   public:
     Parser(char AllCommands[20][10][15], char AllCommandsDescription[20][50], char allCommandArgsDef[20][10][5], char AllCommandsArgs[20][50]);
     void readLn();
-    void* returnCommand(int i);
+    char* returnCommand(int i);
   private:
     int commandsAmount=20;
     int commandsWordLength=15;
@@ -30,10 +30,12 @@ class Parser{
     char allCommandArgsDef[20][10][5];
     char allCommandsArgs[20][50];
     char input[99];
+    //the void pointer
     char command[10][15];
     bool fixCommand();
     bool fixArgs();
     int commandIndex;
+    
 
 
 };
