@@ -151,14 +151,58 @@ void addAllCommands(vector<Command*> &commandBank){
    }
    cout << "============\n";
    {
-   char alias[100][100]={"cd", "chgdir"};
-   char description[100]="changes a to a directory";
+   char alias[100][100]={"cd", "chgdir", "cngdir", "chngdir"};
+   char description[100]="Changes the current directory.";
    char args[100][100]={"cmd", "str"};
-   char argsDescription[100]="<destination>";
+   char argsDescription[100]="<directory path>";
+   commandBank.push_back(new Command(4, alias, description, 2, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
+   cout << "============\n";
+   {
+   char alias[100][100]={"copy", "c"};
+   char description[100]="Copies a file into the ram.";
+   char args[100][100]={"cmd", "str"};
+   char argsDescription[100]="<source path>";
    commandBank.push_back(new Command(2, alias, description, 2, args, argsDescription));
    addedCommandInfo(**(commandBank.end()-1));
    }
-   
+   cout << "============\n";
+   {
+   char alias[100][100]={"paste", "p"};
+   char description[100]="pastes all files from ram.";
+   char args[100][100]={"cmd", "str"};
+   char argsDescription[100]="<destination path>";
+   commandBank.push_back(new Command(2, alias, description, 2, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
+   cout << "============\n";
+   {
+   char alias[100][100]={"cp", "copypaste"};
+   char description[100]="copies a file into memory and pastes it.";
+   char args[100][100]={"cmd", "str", "str"};
+   char argsDescription[100]="<source path> <destination path>";
+   commandBank.push_back(new Command(2, alias, description, 3, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
+   cout << "============\n";
+   {
+   char alias[100][100]={"rm", "remove"};
+   char description[100]="Deletes a file.";
+   char args[100][100]={"cmd", "str"};
+   char argsDescription[100]="<file path>";
+   commandBank.push_back(new Command(2, alias, description, 2, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
+   cout << "============\n";
+   {
+   char alias[100][100]={"man", "manual"};
+   char description[100]="Shows detals on how to use a program.";
+   char args[100][100]={"cmd", "str"};
+   char argsDescription[100]="<program>";
+   commandBank.push_back(new Command(2, alias, description, 2, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
    
    
 }
