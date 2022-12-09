@@ -15,24 +15,21 @@
 using namespace std;
 
 //a template for any data type, who knew such a powerful feature existed
-//(most likely will increase file size since the compiler will compile each function that uses it with each datatype)
-template <typename T>
-
+// template <class arr1, class arr2>
 struct Command{
+
   char** aliases;  //valid variations of the command, the 0th index is the main command
-  char* description; //what the command is actualy about, does it pick apples? pears?
+  char* description; //what the command is actualy about, does it pick up apples? pears?
   char** args; //which arg is int, bool, float, etc, the 0th index is the command itself
-  char* argsDescription; //what are actually the arguments, apples? pears?
+  char* argsDescription; //what are actually the arguments, amount of apples? pears?
+  int aliasesAmount; //amount of aliases, self explanatory
+  int argsAmount; //amount of arguments, self explanatory
   
-  Command(int AliasesAmount, T Aliases, char* Description, int ArgsAmount, char** Args, char* ArgsDescription){
+template <class arr1, class arr2>
+  Command(int AliasesAmount, arr1 Aliases, char* Description, int ArgsAmount, arr2 Args, char* ArgsDescription){
     
     
     
-    
-    // for(int i=0; i<AliasesAmount; i++)
-      // cout << inAliases[AliasesAmount*i]<<endl;
-    
-        
     //command aliases copy over
     aliases= new char*[AliasesAmount];
     for(int i=0; i<AliasesAmount; i++){
@@ -57,6 +54,9 @@ struct Command{
     strcpy(description, Description);
     strcpy(argsDescription, ArgsDescription);
     
+    //copy over amounts
+    aliasesAmount=AliasesAmount;  
+    argsAmount=ArgsAmount;  
     
   }
   
