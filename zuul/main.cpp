@@ -15,8 +15,12 @@ https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-
 #include <cstring>
 
 
-#include "./parser.h"
+// #include "./parser.h"
+
+#ifndef qwe
+#define qwe
 #include "./command.h"
+#endif
 
 using namespace std;
 
@@ -240,5 +244,7 @@ void addAllCommands(vector<Command*> &commandBank){
    commandBank.push_back(new Command(3, alias, description, 1, args, argsDescription));
    addedCommandInfo(**(commandBank.end()-1));
    }
+   
+   
    
 }

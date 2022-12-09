@@ -14,7 +14,13 @@
 //commandIndex is the index of the inputed command (help is 0, features is 1, tips is 2, etc) 
 
 #include <vector>
-#include "command.h"
+
+
+#ifndef COMMAND
+#define COMMAND
+#include "./command.h"
+#endifi
+
 
 
 class Parser{
