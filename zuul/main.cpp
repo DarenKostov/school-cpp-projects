@@ -203,6 +203,42 @@ void addAllCommands(vector<Command*> &commandBank){
    commandBank.push_back(new Command(2, alias, description, 2, args, argsDescription));
    addedCommandInfo(**(commandBank.end()-1));
    }
-   
+   cout << "============\n";
+   {
+   char alias[100][100]={"free", "fr"};
+   char description[100]="Shows the ram usage.";
+   char args[100][100]={"cmd", "str"};
+   char argsDescription[100]="<flag>";
+   commandBank.push_back(new Command(2, alias, description, 2, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
+   cout << "============\n";
+   {
+   char alias[100][100]={"mv", "move"};
+   char description[100]="Moves a file.";
+   char args[100][100]={"cmd", "str", "str"};
+   char argsDescription[100]="<source path> <destination path>";
+   commandBank.push_back(new Command(2, alias, description, 3, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
+   cout << "============\n";
+   {
+   //Table Of Processes, i know it doesn't stand for that, but makes more sense as an alieas than "top CPU consumers"
+   char alias[100][100]={"top", "tlboprc", "tbloprs"};
+   char description[100]="Shows process's name, memory usage, and cpu usage";
+   char args[100][100]={"cmd"};
+   char argsDescription[100]="none";
+   commandBank.push_back(new Command(3, alias, description, 1, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
+   cout << "============\n";
+   {
+   char alias[100][100]={"cb", "copybuffer", "copybank"};
+   char description[100]="Shows you what files you have in the copy buffer.";
+   char args[100][100]={"cmd"};
+   char argsDescription[100]="none";
+   commandBank.push_back(new Command(3, alias, description, 1, args, argsDescription));
+   addedCommandInfo(**(commandBank.end()-1));
+   }
    
 }

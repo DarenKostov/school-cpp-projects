@@ -13,25 +13,24 @@
 
 //commandIndex is the index of the inputed command (help is 0, features is 1, tips is 2, etc) 
 
+#include <vector>
+#include "command.h"
+
+
 class Parser{
   public:
-    Parser(char AllCommands[20][10][15], char AllCommandsDescription[20][50], char allCommandArgsDef[20][10][5], char AllCommandsArgs[20][50]);
+    Parser();
+    void addCommand(Command);
     void readLn();
-    char* returnCommand(int i);
+  
+    template <class output>
+    output returnCommand(int i){
+    //cast the output type to the void, add i to it (go to index i), and de-reference it
+      return *((output*)command+i);
+    }
   private:
-    int commandsAmount=20;
-    int commandsWordLength=15;
-    int aliasesAmount=10;
-    int argumentsAmount=10;
-    int descriptionLength=50;
-
-    char allCommands[20][10][15];
-    char allCommandsDescription[20][50];
-    char allCommandArgsDef[20][10][5];
-    char allCommandsArgs[20][50];
-    char input[99];
-    //the void pointer
-    char command[10][15];
+    vector<Command*> allCommands;  
+    void* command;
     bool fixCommand();
     bool fixArgs();
     int commandIndex;

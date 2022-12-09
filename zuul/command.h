@@ -5,17 +5,13 @@
   resources used:
   https://stackoverflow.com/questions/16724368/how-to-pass-a-2d-array-by-pointer-in-c
   https://stackoverflow.com/questions/8767166/passing-a-2d-array-to-a-c-function
+  //a template for any data type, who knew such a powerful feature existed
   https://www.geeksforgeeks.org/templates-cpp/
 */
-#include <iostream>
 #include <cstring>
-
-
 
 using namespace std;
 
-//a template for any data type, who knew such a powerful feature existed
-// template <class arr1, class arr2>
 struct Command{
 
   char** aliases;  //valid variations of the command, the 0th index is the main command
@@ -25,11 +21,9 @@ struct Command{
   int aliasesAmount; //amount of aliases, self explanatory
   int argsAmount; //amount of arguments, self explanatory
   
-template <class arr1, class arr2>
+  template <class arr1, class arr2>
   Command(int AliasesAmount, arr1 Aliases, char* Description, int ArgsAmount, arr2 Args, char* ArgsDescription){
-    
-    
-    
+   
     //command aliases copy over
     aliases= new char*[AliasesAmount];
     for(int i=0; i<AliasesAmount; i++){
