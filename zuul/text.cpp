@@ -13,7 +13,6 @@ Text::Text(){
   length=0;
 
   id=rand();
-  std::cout << "=Creating Text object " << id << "\n";
   
   
 }
@@ -25,7 +24,6 @@ Text::Text(char* initText){
   strcpy(text, initText);
 
   id=rand();
-  std::cout << "=Creating Text object " << id << "\n";
   
   
 }
@@ -37,19 +35,11 @@ Text::Text(const Text &initText){
   text= new char[length+1];
   strcpy(text, initText.getCharArr());
   id=rand();
-  std::cout << "=Creating a copy Text object " << id << "\n";
 }
 
 Text::~Text(){
-  // std::cout << typeid(text).name() << '\n';
-  std::cout << "/\"\"\"\"\\\n";
-  std::cout << strlen(text) << '\n';
-  std::cout << (length) << '\n';
-  std::cout << (text) << '\n';
-  
+  //free the memory so no memory leaks happen  
   delete[] text;
-  std::cout << "Destroying Text object " << id << "\n";
-  std::cout << "\\____/\n";
   
 }
 
@@ -58,7 +48,6 @@ Text::~Text(){
 
 //set text from char array
 void Text::operator=(char* setTo){
-  std::cout << "set with char*\n";
   //set the size of the new text
   length=strlen(setTo); 
   
@@ -72,7 +61,6 @@ void Text::operator=(char* setTo){
 
 //set text from another Text
 void Text::operator=(Text setTo){
-  std::cout << "set with Text\n";
   //use the + operator for char*
   *this=setTo.getCharArr(); 
 }
@@ -109,8 +97,8 @@ Text Text::operator+(Text input){
 
   //use the + operator for char*
   output=output+input.getCharArr();
-  std::cout << ((*this).len()) << '\n';
-  // //use the += operator for Text
+
+  // use the += operator for Text
   // output+=text;
   
   return output;

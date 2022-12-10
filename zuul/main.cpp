@@ -44,8 +44,6 @@ int main(){
    
    char textB[10]="1234";
    Text B(textB);
-   
-   
    cout << "initialization from char* works if output is \"1234\"\n";
    cout << B.getCharArr() << endl;
    
@@ -76,6 +74,9 @@ int main(){
    cout << "getting a copy of the Text works if output is \"abcd1234\"\n"; 
    cout << A.getText().getCharArr() << endl;    
    
+   Text C(B);
+   cout << "copy constructor works if output is \"abcdabcd\"\n";
+   cout << C.getCharArr() << endl;
 }
 
 // template <class arr1, class arr2, class par1, class par2, class par3, class par4, class par5, class par6>
