@@ -8,7 +8,7 @@
 
 //empty Text
 Text::Text(){
-  //very important to difine the pointer! 
+  //very important to define the pointer! 
   text=new char[0];
   length=0;
 
@@ -143,6 +143,9 @@ char Text::getCharAt(int i) const{
   return charAt(i);
 }
 
+int Text::getId() const{
+  return id;
+}
 
 
 

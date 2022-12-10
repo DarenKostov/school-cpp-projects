@@ -35,7 +35,7 @@ class Text{
     int len()const; //returns the length of this text
     char* getCharArr()const; //returns the text in the form of a char array
     Text getText()const; //returns a copy Text of the class itself (why whould you use that, just use the class itself without the getText())
-  
+    int getId()const; //returns the id of the Text, purely for debugging purposes
   //note:
   //want to concatinate 2 Texts into a char array? just do:
   //(text1+text2).getCharArr()
