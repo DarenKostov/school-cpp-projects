@@ -20,8 +20,8 @@ https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-
 
 #ifndef q
 #define q
-#include "./command.h"
 #include "./text.h"
+#include "./command.h"
 #endif
 
 using namespace std;
@@ -38,53 +38,10 @@ void slep(int x){ usleep(x*100000);};
 
 int main(){
    vector<Command*> commandBank;
-   // addAllCommands(commandBank);
-   
-   {
-   
-   char textB[10]="1234";
-   Text B(textB);
-   cout << "initialization from char* works if output is \"1234\"\n";
-   cout << B.getCharArr() << endl;
-   
-   Text A;
-   char textA[10]="abcd";
-   A=textA;
-   cout << "assignment from char* works if output is \"abcd\"\n";
-   cout << A.getCharArr() << endl;
-
-   B=A;
-   cout << "assignment from Text works if output is \"abcd\"\n";
-   cout << B.getCharArr() << endl;
-   
-   cout << "Text X Text concatenation works if output is \"abcdabcd\"\n";
-   cout << (B+A).getCharArr() << endl;
-   
-   cout << "Text X char* concatenation works if output is \"abcd1234\"\n";
-   cout << (B+textB).getCharArr() << endl;
-   
-   cout << "concatenation with += works for Text if output is \"abcdabcd\"\n";
-   B+=A;
-   cout << B.getCharArr() << endl;
-   
-   cout << "concatenation with += works for char* if output is \"abcd1234\"\n";
-   A+=textB;
-   cout << A.getCharArr() << endl;
-   
-   cout << "getting a copy of the Text works if output is \"abcd1234\"\n"; 
-   cout << A.getText().getCharArr() << endl;    
-   
-   Text C(B);
-   cout << "copy constructor works if output is \"abcdabcd\"\n";
-   cout << C.getCharArr() << endl;
+   addAllCommands(commandBank);
    
    
-   }
    
-   char char1[10]="qwe";   
-   char char2[10]="rty";   
-   
-   cout << (Text(char1)+char2).val() << endl;
    
    
 }
@@ -178,14 +135,14 @@ int main(){
 
    
 void addedCommandInfo(Command command){
-  cout << "=created "<< command.aliases[0] << "\n=command description:\n";
-  cout << command.description << "\n=includes these aliases:\n";
+  cout << "=created "<< command.aliases[0].val() << "\n=command description:\n";
+  cout << command.description.val() << "\n=includes these aliases:\n";
   for(int i=0; i<command.aliasesAmount; i++)
-     cout << command.aliases[i] << ", ";
-  cout << "\n=these arguments:\n" << command.argsDescription << endl;
+     cout << command.aliases[i].val() << ", ";
+  cout << "\n=these arguments:\n" << command.argsDescription.val() << endl;
   cout <<  "=argument types:\n";
   for(int i=0; i<command.argsAmount; i++)
-     cout << command.args[i] << ", ";
+     cout << command.args[i].val() << ", ";
   cout << endl;
 }   
 

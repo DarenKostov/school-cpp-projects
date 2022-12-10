@@ -19,7 +19,8 @@
 #ifndef COMMAND
 #define COMMAND
 #include "./command.h"
-#endifi
+#include "./text.h"
+#endif
 
 
 
