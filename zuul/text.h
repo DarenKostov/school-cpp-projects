@@ -4,7 +4,9 @@
   
   resources used:
   https://www.geeksforgeeks.org/operator-overloading-c/
-  
+  https://stackoverflow.com/questions/56387509/this-argument-to-member-function-select-has-type-const-selectparam-but-fu
+
+
 */
 
 
@@ -15,9 +17,9 @@
 class Text{
   public:
     //whenever I say char array I mean char pointer pointing to a char array
-    Text(); //make an empty Text
     Text(char*); //make a Text from a char array
-    // Text(Text&); //make a Text from a Text | gives errors, TODO: fix
+    Text(); //make an empty Text
+    Text(const Text&); //make a Text from a Text | gives errors, TODO: fix
     // Text(Text); //make a Text from Text, from Text, from Text that is also made from Test....
     ~Text(); //deconstructor, makes sure no memory leaks occur
     Text operator+(char*); //Concatenates the text and char array into a Text
@@ -26,12 +28,13 @@ class Text{
     void operator=(Text); //sets our text to the data in the Text input
     //I wont be doing stuff like a=b+="c" so no need to return anything
     void operator+=(Text); // Concatenates the text given to this text
-    void operator+=(char*); // Concatenates the char array given to this text 
-    char charAt(int); //returns the character at this index
-    char getCharAt(int); //returns the character at this index
-    int len(); //returns the length of this text
-    char* getCharArr(); //returns the text in the form of a char array
-    Text getText(); //returns a copy Text of the class itself (why whould you use that, just use the class itself without the getText())
+    void operator+=(char*); // Concatenates the char array given to this text
+    //functions that dont modify anything
+    char charAt(int)const; //returns the character at this index
+    char getCharAt(int)const; //returns the character at this index
+    int len()const; //returns the length of this text
+    char* getCharArr()const; //returns the text in the form of a char array
+    Text getText()const; //returns a copy Text of the class itself (why whould you use that, just use the class itself without the getText())
   
   //note:
   //want to concatinate 2 Texts into a char array? just do:
@@ -41,6 +44,7 @@ class Text{
   private:
     char* text;
     int length;
+    int id;
     
     
 };
