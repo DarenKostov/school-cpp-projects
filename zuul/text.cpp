@@ -30,11 +30,11 @@ Text::Text(char* initText){
   
 }
 
-//gives errors, TODO: fix
 //Text from Text
 //gotta have a custom copy constructor because we are dealing with char pointers
 Text::Text(const Text &initText){
   length=initText.len();
+  text= new char[length+1];
   strcpy(text, initText.getCharArr());
   id=rand();
   std::cout << "=Creating a copy Text object " << id << "\n";
@@ -47,7 +47,7 @@ Text::~Text(){
   std::cout << (length) << '\n';
   std::cout << (text) << '\n';
   
-  // delete[] text;
+  delete[] text;
   std::cout << "Destroying Text object " << id << "\n";
   std::cout << "\\____/\n";
   
