@@ -17,9 +17,10 @@ https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-
 
 // #include "./parser.h"
 
-#ifndef qwe
-#define qwe
+#ifndef q
+#define q
 #include "./command.h"
+#include "./text.h"
 #endif
 
 using namespace std;
@@ -35,6 +36,26 @@ void addedCommandInfo(Command command);
 int main(){
    vector<Command*> commandBank;
    addAllCommands(commandBank);
+   
+   
+   
+   char textB[10]="1234";
+   Text B(textB);
+   
+   
+   cout << "initialization from char* works if output is \"1234\"\n";
+   cout << B.getCharAt(1) << "lklk" << endl;
+   
+   cout << "qwqwqww/n";
+   Text A;
+   cout << "qwqwqww/n";
+   char textA[10]="abcd";
+   A=textA;
+   cout << "assignment from char* works if output is \"abcd\"\n";
+   cout << A.getCharArr() << endl;
+   
+   
+   
    
    
    
@@ -228,7 +249,7 @@ void addAllCommands(vector<Command*> &commandBank){
    cout << "============\n";
    {
    //Table Of Processes, i know it doesn't stand for that, but makes more sense as an alieas than "top CPU consumers"
-   char alias[100][100]={"top", "tlboprc", "tbloprs"};
+   char alias[100][100]={"top", "tbloprc", "tbloprs"};
    char description[100]="Shows process's name, memory usage, and cpu usage";
    char args[100][100]={"cmd"};
    char argsDescription[100]="none";
