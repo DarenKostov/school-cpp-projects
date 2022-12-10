@@ -13,6 +13,7 @@ https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <unistd.h>
 
 
 // #include "./parser.h"
@@ -31,11 +32,13 @@ void addAllCommands(vector<Command*> &commandBank);
 
 void addedCommandInfo(Command command);
 
-
+//usleep but less 0's needed
+void slep(){ usleep(100000);};
+void slep(int x){ usleep(x*100000);};
 
 int main(){
    vector<Command*> commandBank;
-   addAllCommands(commandBank);
+   // addAllCommands(commandBank);
    
    
    
@@ -44,20 +47,34 @@ int main(){
    
    
    cout << "initialization from char* works if output is \"1234\"\n";
-   cout << B.getCharAt(1) << "lklk" << endl;
+   cout << B.getCharArr() << endl;
    
-   cout << "qwqwqww/n";
    Text A;
-   cout << "qwqwqww/n";
    char textA[10]="abcd";
    A=textA;
    cout << "assignment from char* works if output is \"abcd\"\n";
    cout << A.getCharArr() << endl;
+
+   B=A;
+   cout << "assignment from Text works if output is \"abcd\"\n";
+   cout << B.getCharArr() << endl;
    
+   cout << "Text X Text concatenation works if output is \"abcdabcd\"\n";
+   cout << (B+A).getCharArr() << endl;
    
+   cout << "Text X char* concatenation works if output is \"abcd1234\"\n";
+   cout << (B+textB).getCharArr() << endl;
    
+   cout << "concatenation with += works for Text if output is \"abcdabcd\"\n";
+   B+=A;
+   cout << B.getCharArr() << endl;
    
+   cout << "concatenation with += works for char* if output is \"abcd1234\"\n";
+   A+=textB;
+   cout << A.getCharArr() << endl;
    
+   cout << "getting a copy of the Text works if output is \"abcd1234\"\n"; 
+   cout << A.getText().getCharArr() << endl;    
    
 }
 
