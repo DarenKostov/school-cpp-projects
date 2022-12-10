@@ -40,7 +40,7 @@ int main(){
    vector<Command*> commandBank;
    // addAllCommands(commandBank);
    
-   
+   {
    
    char textB[10]="1234";
    Text B(textB);
@@ -77,6 +77,16 @@ int main(){
    Text C(B);
    cout << "copy constructor works if output is \"abcdabcd\"\n";
    cout << C.getCharArr() << endl;
+   
+   
+   }
+   
+   char char1[10]="qwe";   
+   char char2[10]="rty";   
+   
+   cout << (Text(char1)+char2).val() << endl;
+   
+   
 }
 
 // template <class arr1, class arr2, class par1, class par2, class par3, class par4, class par5, class par6>
