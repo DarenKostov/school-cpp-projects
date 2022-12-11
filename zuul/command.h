@@ -51,4 +51,36 @@ struct Command{
     
   }
   
+  //copy constructor
+  Command(Command &input){
+    //copy over descriptions
+    description=input.description;
+    argsDescription=input.argsDescription;
+    
+    //copy over amounts
+    aliasesAmount=input.aliasesAmount;  
+    argsAmount=input.argsAmount;  
+    
+    //command aliases copy over
+    aliases= new Text[input.aliasesAmount];
+    for(int i=0; i<input.aliasesAmount; i++){
+      //copy the input into the internal variable
+      aliases[i]=input.aliases[i];
+    }  
+
+    //command argument definitions copy over
+    args= new Text[input.argsAmount];
+    for(int i=0; i<input.argsAmount; i++){
+      //copy the input into the internal variable
+      args[i]=input.args[i];
+    }  
+  }
+  
+  //deconstructor, we dont want memory leaks now do we
+  ~Command(){
+    delete[] aliases;
+    delete[] args;
+  }
+  
+  
 };
