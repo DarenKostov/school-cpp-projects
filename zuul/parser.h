@@ -16,10 +16,10 @@
 #include <vector>
 
 
-#ifndef COMMAND
-#define COMMAND
-#include "./command.h"
+#ifndef q
+#define q
 #include "./text.h"
+#include "./command.h"
 #endif
 
 
@@ -27,7 +27,9 @@
 class Parser{
   public:
     Parser();
-    void addCommand(Command);
+    ~Parser();
+    void addCommand(Command*); //adds a single command from a command POINTER
+    void addCommands(std::vector<Command*>); //adds commands from a vector of command POINTERS
     void readLn();
   
     template <class output>
@@ -36,7 +38,7 @@ class Parser{
       return *((output*)command+i);
     }
   private:
-    vector<Command*> allCommands;  
+    std::vector<Command*> allCommands;  
     void* command;
     bool fixCommand();
     bool fixArgs();
