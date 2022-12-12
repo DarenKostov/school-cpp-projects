@@ -19,6 +19,7 @@ struct Command{
 
   Text* aliases;  //valid variations of the command, the 0th index is the main command
   Text description; //what the command is actualy about, does it pick up apples? pears?
+  Text longDescription; //like description but with more details, could include tips as well 
   Text* args; //which arg is int, bool, float, etc, the 0th index is the command itself
   Text argsDescription; //what are actually the arguments, amount of apples? pears?
   int aliasesAmount; //amount of aliases, self explanatory
@@ -51,8 +52,11 @@ struct Command{
     
   }
   
+  //empty command
+  Command(){}
+  
   //copy constructor
-  Command(Command &input){
+  Command(const Command &input){
     //copy over descriptions
     description=input.description;
     argsDescription=input.argsDescription;
