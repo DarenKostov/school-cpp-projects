@@ -69,12 +69,16 @@ void Parser::readLn(){
     
     if(input[i]=='\0'){
       //cout <<i<<endl;
+      // word++;
       break;     
     }
   }
   
+  //free the memory in the command
+  delete[] commandText;
+  
   //allocate memory for the command
-  commandText=new Text[word];
+  commandText=new Text[word+1];
   
   //fill the command with the found words
   for(int i=0; i<word+1; i++){
@@ -87,7 +91,8 @@ void Parser::readLn(){
 
 
 Text Parser::returnCommandT(int i){
-  return commandText[i];
+  //makes sure we are not going over the limit
+  return commandText[i%currentCommandDef.argsAmount];
 }
 
 
@@ -102,7 +107,7 @@ bool Parser::fixCommand(){
       
       //if our cmd is any valid alias
       if((*i).aliases[j]==commandText[0]){
-        cout << "$ " << (*i).aliases[0].val() << endl;
+        // cout << "$ " << (*i).aliases[0].val() << endl;
         commandText[0]=(*i).aliases[0];
         commandIndex=count;
         currentCommandDef=(*i);        
@@ -145,8 +150,6 @@ bool Parser::fixArgs(){
 
   }
   
-  
-  cout << "fixed args" << endl;
   return true;
 }
 
