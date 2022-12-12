@@ -22,6 +22,7 @@ https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-
 #define q
 #include "./text.h"
 #include "./command.h"
+#include "./parser.h"
 #endif
 
 using namespace std;
@@ -36,12 +37,28 @@ void addedCommandInfo(Command command);
 void slep(){ usleep(100000);};
 void slep(int x){ usleep(x*100000);};
 
+
+template <class T>
+void emptyVector(vector<T*>&); //empties a vector
+
+
+
+
+
+
 int main(){
-   vector<Command*> commandBank;
-   addAllCommands(commandBank);
+   Parser parser;
    
-   
-   
+   //a {} block since we wanna remove commandBank after its used
+   {
+      vector<Command*> commandBank;
+      addAllCommands(commandBank);
+      parser.addCommands(commandBank);
+      //no longer are definitions of the commands needed, lets free up the memory used by them   
+      emptyVector(commandBank);
+   }
+      
+   addedCommandInfo(parser.commandDefAt(1));
    
    
 }
@@ -132,10 +149,21 @@ int main(){
 // }
 
 
+template <class T>
+void  emptyVector(vector<T*> &toBeEmptied){
+   //free up the memory used by the objects in the vector
+   for(typename vector<T*>::iterator i=toBeEmptied.begin(); i!=toBeEmptied.end(); i++){
+      delete (*i);
+   }
+   //delete all of the pointers in the vector
+   while(toBeEmptied.size()!=0){
+      toBeEmptied.erase(toBeEmptied.begin());  
+   } 
+}
 
-   
+
 void addedCommandInfo(Command command){
-  cout << "=created "<< command.aliases[0].val() << "\n=command description:\n";
+  cout << "=command name: "<< command.aliases[0].val() << "\n=command description:\n";
   cout << command.description.val() << "\n=includes these aliases:\n";
   for(int i=0; i<command.aliasesAmount; i++)
      cout << command.aliases[i].val() << ", ";

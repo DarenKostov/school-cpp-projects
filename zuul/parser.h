@@ -22,27 +22,34 @@
 #include "./command.h"
 #endif
 
-
+//watch out fot "command" capitalization in the comments
 
 class Parser{
   public:
     Parser();
     ~Parser();
-    void addCommand(Command*); //adds a single command from a command POINTER
-    void addCommands(std::vector<Command*>); //adds commands from a vector of command POINTERS
+    void addCommand(Command*); //adds a single Command from a Command
+    void addCommands(std::vector<Command*>); //adds Commands from a vector of Command POINTERS
     void readLn();
   
     template <class output>
-    output returnCommand(int i){
+    output returnCommand(int i){ //returns what is the command/argument at that index
     //cast the output type to the void, add i to it (go to index i), and de-reference it
       return *((output*)command+i);
     }
+
+    Text returnCommandT(int i); //returns what is the command/argument at that index in Text form`
+    Command commandDefAt(int); //returns what is the Command at an index
+  
   private:
-    std::vector<Command*> allCommands;  
-    void* command;
-    bool fixCommand();
-    bool fixArgs();
-    int commandIndex;
+    //all Commands should be stored in the parser since its safer, we dont want main to delete the commands and the parser to throw a seg fault
+    std::vector<Command> allCommands; //where all posible Commands are stored
+    void* command; //the current commands inputed with its inputed arguments
+    Text* commandText; // the command inputed but in Text form
+    bool fixCommand(); //fixes the command inputed returns 1 for success
+    bool fixArgs(); //fixes the arguments inputed returns 1 for sucess
+    int commandIndex; // the current command index
+    Command currentCommandDef; // the current command inputed definition
     
 
 
