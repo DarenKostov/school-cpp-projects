@@ -90,5 +90,34 @@ struct Command{
     delete[] args;
   }
   
+  void operator=(Command in){//sets the command to another command
+    delete[] aliases;
+    delete[] args;
+    
+    
+    //command aliases copy over
+    aliases= new Text[in.aliasesAmount];
+    for(int i=0; i<in.aliasesAmount; i++){
+      //copy the input into the internal variable
+      aliases[i]=in.aliases[i];
+    }  
+
+    //command argument definitions copy over
+    args= new Text[in.argsAmount];
+    for(int i=0; i<in.argsAmount; i++){
+      //copy the input into the internal variable
+      args[i]=in.args[i];
+    }  
+    
+    //copy over descriptions
+    description=in.description;
+    argsDescription=in.argsDescription;
+    
+    //copy over amounts
+    aliasesAmount=in.aliasesAmount;  
+    argsAmount=in.argsAmount;  
+  }
+  
+  
   
 };

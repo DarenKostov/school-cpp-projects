@@ -59,7 +59,7 @@ int main(){
    }
       
    addedCommandInfo(parser.commandDefAt(1));
-   
+      parser.readLn();
    
 }
 
