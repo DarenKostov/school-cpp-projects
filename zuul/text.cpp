@@ -129,6 +129,21 @@ Text Text::operator+=(Text input){
   
 }
 
+bool Text::operator==(char* input){
+  if(0==strcmp(text, input))
+    return true;
+  return false;
+}
+
+bool Text::operator==(Text input){
+  //use the == operator for char*
+  if(input==text)
+    return true;
+  return false;
+}
+
+
+
 
 
 char Text::charAt(int i) const{
