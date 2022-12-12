@@ -42,6 +42,7 @@ class Parser{
     }
 
     Text returnCommandT(int i);// returns what is the command/argument inputed at that index in Text form`
+    int getCommandIndex(); //returns the current command index in the Command vector
     Command commandDefAt(int);// returns what is the Command definition at an index
   
   private:
@@ -49,11 +50,12 @@ class Parser{
     std::vector<Command> allCommands; //where all posible Commands are stored
     void* command; //the current commands inputed with its inputed arguments (cast a type pointer of the type it should be)
     Text* commandText; // the command inputed but in Text form
-    bool fixCommand(); //fixes the command inputed returns 1 for success
-    bool fixArgs(); // fixes the arguments inputed returns 1 for success
+    bool setCurrentCommand(Text); //determines what command the user inputed, returns false if it couldnt determine
+    void fixArgs(Text*); // fixes the arguments inputed returns 1 for success
     int commandIndex; // the current command index
     Command* currentCommandDef; // the current command inputed definition
     
+    Command emptyCommand;//an empty command
 
 
 };

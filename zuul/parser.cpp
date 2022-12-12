@@ -15,6 +15,13 @@ using namespace std;
 //constructor
 Parser::Parser(){
   commandText=new Text[0];
+  
+  char alias[100][100]={""};
+  char description[100]="";
+  char args[100][100]={""};
+  char argsDescription[100]="";
+  emptyCommand=Command(1, alias, description, 1, args, argsDescription);
+  
 }
 
 Parser::~Parser(){
@@ -64,7 +71,6 @@ void Parser::readLn(){
   
   char output[99][99];
   
-  
   cin.getline(input, 99);
   int j=0;
   int word=0;
@@ -85,30 +91,40 @@ void Parser::readLn(){
     }
   }
   
+  //make a Text of all the commands separated by " "
+  Text outputText[word+1];
+   for(int i=0; i<word+1; i++){
+    outputText[i]=output[i];
+  }
+  
+  
   //free the memory in the command
   delete[] commandText;
   
-  //allocate memory for the command
-  commandText=new Text[word+1];
-  
-  //fill the command with the found words
-  for(int i=0; i<word+1; i++){
-    commandText[i]=output[i];
+  if(setCurrentCommand(Text(output[0]))){
+    commandText=new Text[currentCommandDef->argsAmount];
+    fixArgs(outputText);
+  }else{//if it could find an alias the command inputed was invalid
+    //the current command is nothing, empty
+    currentCommandDef=&emptyCommand;
+    commandText=new Text[1];
+    commandText[0]=currentCommandDef->aliases[0];
+    
   }
   
-  //fix the command
-  fixCommand() && fixArgs();
 }
 
 
 Text Parser::returnCommandT(int i){
-  //makes sure we are not going over the limit
-  return commandText[i%currentCommandDef->argsAmount];
+  char empty[1]="";
+  if(i>=currentCommandDef->argsAmount)
+    return Text(empty);
+  return commandText[i];
 }
 
 
 
-bool Parser::fixCommand(){
+bool Parser::setCurrentCommand(Text input){
   
   int count=0;
   bool skipErasing=false;
@@ -117,10 +133,7 @@ bool Parser::fixCommand(){
     for(int j=0; j<(*i).aliasesAmount; j++){//aliases loop
       
       //if our cmd is any valid alias
-      if((*i).aliases[j]==commandText[0]){
-        // cout << "$ " << (*i).aliases[0].val() << endl;
-        commandText[0]=(*i).aliases[0];
-        commandIndex=count;
+      if((*i).aliases[j]==input){
         //set the curComDef to the adress of the command
         currentCommandDef=&(*i);        
         return true;
@@ -130,12 +143,11 @@ bool Parser::fixCommand(){
   }
   commandsLoopEnd:
 
-  char empty[1]="";
-  commandText[0]=empty;
   return false;
 }
 
-bool Parser::fixArgs(){
+//fix with "what"
+void Parser::fixArgs(Text* what){
   
   for(int i=0; i<currentCommandDef->argsAmount; i++){//loop through all of the args definitions (if its int, bool, str, ect)
       
@@ -148,20 +160,22 @@ bool Parser::fixArgs(){
       char empty[1]="";
 
       if(currentCommandDef->args[i]==cmd){
-        //do nothing, its the command
+        commandText[i]=currentCommandDef->aliases[0];
       }else if(currentCommandDef->args[i]==str){
         //do nothing, we arent using strings
       }else if(currentCommandDef->args[i]==txt){
         //do nothing it's already a Text
+        commandText[i]=what[i];
       }else if(currentCommandDef->args[i]==cmd){
         //convert to int
+        commandText[i]=what[i];
       }else if(currentCommandDef->args[i]==cmd){
         //convert to bool
+        commandText[i]=what[i];
       }else
         commandText[i]=empty; 
 
   }
   
-  return true;
 }
 
