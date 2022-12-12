@@ -52,8 +52,6 @@ struct Command{
     
   }
   
-  //empty command
-  Command(){}
   
   //copy constructor
   Command(const Command &input){
@@ -78,6 +76,12 @@ struct Command{
       //copy the input into the internal variable
       args[i]=input.args[i];
     }  
+  }
+  
+  //empty command
+  Command(){
+    aliases= new Text[0];
+    args= new Text[0];
   }
   
   //deconstructor, we dont want memory leaks now do we
