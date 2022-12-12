@@ -26,14 +26,25 @@ Parser::~Parser(){
   // free(command);
 }
 
-//add from Command
+//add from a Command pointer
 void Parser::addCommand(Command* input){
   allCommands.push_back(Command(*input));
 }
-
-//add from Command vector
+//add from a Command pointer vector
 void Parser::addCommands(vector<Command*> input){
   for(vector<Command*>::iterator i=input.begin(); i!=input.end(); i++){
+    addCommand(*i);
+    // allCommands.push_back(**i);       
+  }
+}
+
+//add from a Command
+void Parser::addCommand(Command input){
+  allCommands.push_back(Command(input));
+}
+//add from a Command vector
+void Parser::addCommands(vector<Command> input){
+  for(vector<Command>::iterator i=input.begin(); i!=input.end(); i++){
     addCommand(*i);
     // allCommands.push_back(**i);       
   }
@@ -92,7 +103,7 @@ void Parser::readLn(){
 
 Text Parser::returnCommandT(int i){
   //makes sure we are not going over the limit
-  return commandText[i%currentCommandDef.argsAmount];
+  return commandText[i%currentCommandDef->argsAmount];
 }
 
 
@@ -110,7 +121,8 @@ bool Parser::fixCommand(){
         // cout << "$ " << (*i).aliases[0].val() << endl;
         commandText[0]=(*i).aliases[0];
         commandIndex=count;
-        currentCommandDef=(*i);        
+        //set the curComDef to the adress of the command
+        currentCommandDef=&(*i);        
         return true;
         goto commandsLoopEnd;
       }
@@ -125,7 +137,7 @@ bool Parser::fixCommand(){
 
 bool Parser::fixArgs(){
   
-  for(int i=0; i<currentCommandDef.argsAmount; i++){//loop through all of the args definitions (if its int, bool, str, ect)
+  for(int i=0; i<currentCommandDef->argsAmount; i++){//loop through all of the args definitions (if its int, bool, str, ect)
       
       // cout << allCommandArgsDef[commandIndex][i] << endl;  
       char cmd[5]="cmd";
@@ -134,16 +146,16 @@ bool Parser::fixArgs(){
       char iNt[5]="int";
       char bOol[5]="bool";
       char empty[1]="";
-      
-      if(currentCommandDef.args[i]==cmd){
+
+      if(currentCommandDef->args[i]==cmd){
         //do nothing, its the command
-      }else if(currentCommandDef.args[i]==str){
+      }else if(currentCommandDef->args[i]==str){
         //do nothing, we arent using strings
-      }else if(currentCommandDef.args[i]==txt){
+      }else if(currentCommandDef->args[i]==txt){
         //do nothing it's already a Text
-      }else if(currentCommandDef.args[i]==cmd){
+      }else if(currentCommandDef->args[i]==cmd){
         //convert to int
-      }else if(currentCommandDef.args[i]==cmd){
+      }else if(currentCommandDef->args[i]==cmd){
         //convert to bool
       }else
         commandText[i]=empty; 

@@ -106,7 +106,7 @@ Text Text::operator+(Text input){
 }
 
 Text Text::operator+=(char* input){
-  
+ 
   //use the = for Text
   //use the + operator for char
   *this=*this+input;

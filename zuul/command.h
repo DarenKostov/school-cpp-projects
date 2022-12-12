@@ -91,9 +91,10 @@ struct Command{
   }
   
   void operator=(Command in){//sets the command to another command
+    
+    //free up the memory used
     delete[] aliases;
     delete[] args;
-    
     
     //command aliases copy over
     aliases= new Text[in.aliasesAmount];
@@ -117,7 +118,5 @@ struct Command{
     aliasesAmount=in.aliasesAmount;  
     argsAmount=in.argsAmount;  
   }
-  
-  
   
 };

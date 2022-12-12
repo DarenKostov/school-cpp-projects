@@ -28,8 +28,11 @@ class Parser{
   public:
     Parser();
     ~Parser();
-    void addCommand(Command*); //adds a single Command from a Command
+    void addCommand(Command*); //adds a single Command from a Command POINTER
     void addCommands(std::vector<Command*>); //adds Commands from a vector of Command POINTERS
+    void addCommand(Command); //adds a single Command from a Command
+    void addCommands(std::vector<Command>); //adds Commands from a vector of Commands
+    
     void readLn();
   
     template <class output>
@@ -44,12 +47,12 @@ class Parser{
   private:
     //all Commands should be stored in the parser since its safer, we dont want main to delete the commands and the parser to throw a seg fault
     std::vector<Command> allCommands; //where all posible Commands are stored
-    void* command; //the current commands inputed with its inputed arguments
+    void* command; //the current commands inputed with its inputed arguments (cast a type pointer of the type it should be)
     Text* commandText; // the command inputed but in Text form
     bool fixCommand(); //fixes the command inputed returns 1 for success
-    bool fixArgs(); // fixes the arguments inputed returns 1 for sucess
+    bool fixArgs(); // fixes the arguments inputed returns 1 for success
     int commandIndex; // the current command index
-    Command currentCommandDef; // the current command inputed definition
+    Command* currentCommandDef; // the current command inputed definition
     
 
 
