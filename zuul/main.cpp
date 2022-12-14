@@ -23,6 +23,23 @@ https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-
 #include "./text.h"
 #include "./command.h"
 #include "./parser.h"
+
+//slot in inventory
+#include "./path.h"
+//item
+#include "./file.h"
+//ghost item?? TBD
+// #include "./linkfile.h"
+//inventory
+// #include "./memory.h"
+//room
+// #include "./folder.h"
+//building
+// #include "./computer.h"
+//longitude and latidude of a city?? TBD
+// #include "./ipadress.h"
+//city? TBD
+// #include "./network.h"
 #endif
 
 using namespace std;
@@ -49,26 +66,33 @@ void emptyVector(vector<T>&); //empties a vector of objects
 int main(){
    Parser parser;
    
+   //a {} block since we wanna remove commandBank after its used
    {
-      //no real reason for this to be a vector of pointers
       vector<Command> commandBank;
       addAllCommands(commandBank);
       parser.addCommands(commandBank);
-      //no longer are definitions of the commands needed, lets free up the memory used by them   
-      emptyVector(commandBank);
    }
       
-   addedCommandInfo(parser.commandDefAt(1));
-   parser.readLn();
+   // addedCommandInfo(parser.commandDefAt(1));
+   // parser.readLn();
    
-   cout << parser.returnCommandT(0).val()<<endl;
-   cout << parser.returnCommandT(1).val()<<endl;
-   cout << parser.returnCommandT(2).val()<<endl;
+   
+   
+   
+   // cout << parser.returnCommandT(0).val()<<endl;
+   // cout << parser.returnCommandT(1).val()<<endl;
+   // cout << parser.returnCommandT(2).val()<<endl;
+   
+   char pathA[100]="az/qs/xw/dce";
+   Path a = Path(Text(pathA));
+   cout << a.wholeT().val() << endl;
+   cout << a.len() << endl;
+   cout << (*(a.wholeV().begin()+1233%a.len())).val() << endl;
    
    
 }
 
-//vecor object pointers
+//vector object pointers
 template <class T>
 void  emptyVector(vector<T*> &toBeEmptied){
    //free up the memory used by the objects in the vector
@@ -112,82 +136,63 @@ void addAllCommands(vector<Command> &commandBank){
    char args[100][100]={"cmd"};
    char argsDescription[100]="none";
    commandBank.push_back( Command(2, alias, description, 1, args, argsDescription));
-   //pointer aritmetic
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"cd", "chgdir", "cngdir", "chngdir"};
    char description[100]="Changes the current directory.";
    char args[100][100]={"cmd", "txt"};
    char argsDescription[100]="<directory path>";
    commandBank.push_back( Command(4, alias, description, 2, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"copy", "c"};
    char description[100]="Copies a file into the ram.";
    char args[100][100]={"cmd", "txt"};
    char argsDescription[100]="<source path>";
    commandBank.push_back( Command(2, alias, description, 2, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"paste", "p"};
    char description[100]="pastes all files from ram. OR pastes a specifc file";
    char args[100][100]={"cmd", "txt", "txt"};
    char argsDescription[100]="<destination path> [file id]";
    commandBank.push_back( Command(2, alias, description, 2, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"cp", "copypaste"};
    char description[100]="copies a file into memory and pastes it.";
    char args[100][100]={"cmd", "txt", "txt"};
    char argsDescription[100]="<source path> <destination path>";
    commandBank.push_back( Command(2, alias, description, 3, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"rm", "remove"};
    char description[100]="Deletes a file.";
    char args[100][100]={"cmd", "txt"};
    char argsDescription[100]="<file path>";
    commandBank.push_back( Command(2, alias, description, 2, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"man", "manual"};
    char description[100]="Shows detals on how to use a program.";
    char args[100][100]={"cmd", "txt"};
    char argsDescription[100]="<program>";
    commandBank.push_back( Command(2, alias, description, 2, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"free", "fr"};
    char description[100]="Shows the ram usage.";
    char args[100][100]={"cmd", "txt"};
    char argsDescription[100]="<flag>";
    commandBank.push_back( Command(2, alias, description, 2, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"mv", "move"};
    char description[100]="Moves a file.";
    char args[100][100]={"cmd", "txt", "txt"};
    char argsDescription[100]="<source path> <destination path>";
    commandBank.push_back( Command(2, alias, description, 3, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    //Table Of Processes, i know it doesn't stand for that, but makes more sense as an alieas than "top CPU consumers"
    char alias[100][100]={"top", "tbloprc", "tbloprs"};
@@ -195,18 +200,43 @@ void addAllCommands(vector<Command> &commandBank){
    char args[100][100]={"cmd"};
    char argsDescription[100]="none";
    commandBank.push_back( Command(3, alias, description, 1, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
-   cout << "============\n";
    {
    char alias[100][100]={"cb", "copybuffer", "copybank"};
    char description[100]="Shows you what files you have in the copy buffer.";
    char args[100][100]={"cmd"};
    char argsDescription[100]="none";
    commandBank.push_back( Command(3, alias, description, 1, args, argsDescription));
-   addedCommandInfo(*(commandBank.end()-1));
    }
    
+   {
+   char alias[100][100]={"ssh", "secureshell"};
+   char description[100]="Secure Shell";
+   char args[100][100]={"cmd", "txt"};
+   char argsDescription[100]="<who>@<adress>\n<adress>";
+   commandBank.push_back( Command(2, alias, description, 2, args, argsDescription));
+   }
+   {
+   char alias[100][100]={"scp", "securecopy"};
+   char description[100]="Secure, Contain, Protect!\n\nAhem, SSH secure file copy";
+   char args[100][100]={"cmd", "txt", "txt"};
+   char argsDescription[100]="<who>@<adress>:<source path> <who>@<adress>:<destination path>";
+   commandBank.push_back( Command(2, alias, description, 3, args, argsDescription));
+   }
+   {
+   char alias[100][100]={"cat", "catout"};
+   char description[100]="Concatenate files and print on the standard output. tl;dr Print files into terminal.";
+   char args[100][100]={"cmd", "txt", "txt"};
+   char argsDescription[100]="<file path>";
+   commandBank.push_back( Command(2, alias, description, 2, args, argsDescription));
+   }
+   {
+   char alias[100][100]={"grep"};
+   char description[100]="Print lines from a file that match a pattern.";
+   char args[100][100]={"cmd", "txt", "txt"};
+   char argsDescription[100]="<pattern> <file path>";
+   commandBank.push_back( Command(2, alias, description, 3, args, argsDescription));
+   }
    
    
 }

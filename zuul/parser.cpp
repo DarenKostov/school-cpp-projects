@@ -137,11 +137,9 @@ bool Parser::setCurrentCommand(Text input){
         //set the curComDef to the adress of the command
         currentCommandDef=&(*i);        
         return true;
-        goto commandsLoopEnd;
       }
     }
   }
-  commandsLoopEnd:
 
   return false;
 }
