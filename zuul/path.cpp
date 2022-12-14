@@ -108,6 +108,10 @@ Text Path::atDepth(int i){
   return *(path.begin()+i);
 }
 
+Text Path::name(){  
+  //pointer arithmetic
+  return *(path.end()-1);
+}
 //recalculates depth based on the size of the vector
 void Path::reCalculateDepth(){
   depth=path.size();

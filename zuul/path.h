@@ -36,7 +36,9 @@ class Path{
   Text atLength(int); //gives you the folder/file at length i, starting from root
   Text atLen(int); //gives you the folder/file at length i, starting from root
   Text atIndex(int); //gives you the folder/file at index i, starting from root
-
+  Text name(); //gives you the name of the file (basically does "path1.atIndex(path1.len()-1)")
+  
+  
   private:
   void reCalculateDepth(); //recalculates the depth of the Path
   
