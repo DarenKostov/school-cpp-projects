@@ -1,6 +1,9 @@
 /*
   Daren Kostov
   a simple class that stores a path to a file/folder in the system
+
+  please use the entire path from root, not "path/to/file", but "/path/to/file"
+
 */
 
 #include <vector>

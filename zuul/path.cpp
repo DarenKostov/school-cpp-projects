@@ -43,7 +43,7 @@ void Path::operator=(Text input){
   char outputC[999][999];
   
   int j=0;
-  int word=0;
+  int word=-1;
   for(int i=0; i<999; i++){
     //if the next charcter is "\" go to the next folder/file
     if(input.val()[i]=='/'){
