@@ -31,9 +31,25 @@ File::File(Path inPath){
 };
 
 
-void File::operator=(File input){
+void File::operator=(File in){
+  //location
+  path=in.path;
+  id=in.id;
   
-
+  contents=in.cont();
+  date=in.getDate();
 }
 
+// file.path.name()
+Text File::name(){
+  return path.name();
+}
+
+long File::getDate(){
+  return date;
+}
+
+Text& File::cont(){
+  return contents;
+}
 
