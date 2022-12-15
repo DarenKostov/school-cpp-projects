@@ -4,7 +4,7 @@
 
 
 
-
+//==CONSTRUCTOR==\\
 
 //empty Text
 Text::Text(){
@@ -17,6 +17,17 @@ Text::Text(){
   
 }
 
+//Text from a char 
+Text::Text(char initText){
+  length=1;
+  text=new char[2];
+  text[0]=initText;    
+  text[0]='\0';    
+
+  id=rand();
+  
+}
+
 //Text from char array
 Text::Text(char* initText){
   length=strlen(initText);
@@ -24,7 +35,6 @@ Text::Text(char* initText){
   strcpy(text, initText);
 
   id=rand();
-  
   
 }
 
@@ -44,6 +54,22 @@ Text::~Text(){
 }
 
 
+//== EQUALS OPERATOR==\\
+
+
+//set text from a char
+void Text::operator=(char setTo){
+  //set the size of the new text
+  length=1; 
+  
+  
+  delete [] text;
+
+  //create memory for our new text
+  text=new char[2];
+  text[0]=setTo;
+  text[1]='\0';
+}
 
 
 //set text from char array
@@ -63,6 +89,32 @@ void Text::operator=(char* setTo){
 void Text::operator=(Text setTo){
   //use the + operator for char*
   *this=setTo.getCharArr(); 
+}
+
+//==PLUS OPERATOR==\\
+
+
+Text Text::operator+(char input){
+
+  //the length of the output text
+  int outputLength=1+length;
+  
+  char* outputCharArr= new char[outputLength+1];
+  
+  //copy text into it first because its before the + operator
+  strcpy(outputCharArr, text);
+  
+  //copy the char after the text
+  outputCharArr[outputLength-1]=input;
+  //dont forget about the \0 char
+  outputCharArr[outputLength]='\0';
+  
+  //create the output  
+  Text output(outputCharArr);
+  
+  
+  return output;
+  
 }
 
 Text Text::operator+(char* input){
@@ -105,10 +157,23 @@ Text Text::operator+(Text input){
   
 }
 
-Text Text::operator+=(char* input){
- 
+//==PLUS EQUALS OPERATOR==\\
+
+Text Text::operator+=(char input){
+  
   //use the = for Text
   //use the + operator for char
+  *this=*this+input;
+  
+  //output
+  Text output(*this);
+  return output;
+  
+}
+Text Text::operator+=(char* input){
+  
+  //use the = for Text
+  //use the + operator for char array
   *this=*this+input;
   
   //output
@@ -129,6 +194,14 @@ Text Text::operator+=(Text input){
   
 }
 
+//==EQUALS EQUALS OPERATOR==\\
+
+bool Text::operator==(char input){
+  if(text[0]==input && text[1]=='\0')
+    return true;
+  return false;
+}
+
 bool Text::operator==(char* input){
   if(0==strcmp(text, input))
     return true;
@@ -146,7 +219,7 @@ bool Text::operator==(Text input){
 
 
 
-char Text::charAt(int i) const{
+char Text::operator[](int i) const{
   return text[i%length];
 }
 
@@ -170,6 +243,10 @@ int Text::getId() const{
 
 //alias functions
 
+char Text::charAt(int i) const{
+  // return (*this)[i];
+  return text[i%length];
+}
 char Text::getCharAt(int i) const{
   return charAt(i);
 }

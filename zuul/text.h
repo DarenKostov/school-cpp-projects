@@ -24,26 +24,39 @@
 class Text{
   public:
     //whenever I say char array I mean char pointer pointing to a char array
-    Text(char*); //make a Text from a char array
+
     Text(); //make an empty Text
+    Text(char); //make a Text from a single char
+    Text(char*); //make a Text from a char array
     Text(const Text&); //make a Text from a Text
     // Text(Text); //make a Text from Text, from Text, from Text that is also made from Test....
     ~Text(); //deconstructor, makes sure no memory leaks occur
+  
+    Text operator+(char); //Concatenates the text and a char into a Text
     Text operator+(char*); //Concatenates the text and char array into a Text
     Text operator+(Text); //Concatenates the 2 texts into a Text
+    
+    void operator=(char); //sets our text to the data in a char
     void operator=(char*); //sets our text to the data in a char array
     void operator=(Text); //sets our text to the data in the Text input
+    
+    Text operator+=(char); // Concatenates the char given to this text, returns the result
     Text operator+=(char*); // Concatenates the char array given to this text, returns the result
     Text operator+=(Text); // Concatenates the text given to this text, returns the result
-    bool operator==(char*); //returns weather the text is equal to a char*
+    
+    bool operator==(char); //returns weather the text is equal to a char
+    bool operator==(char*); //returns weather the text is equal to a char array
     bool operator==(Text); //returns weather the text is equal to a text in a Text
+
     //functions that dont modify anything
-    char charAt(int)const; //returns the character at this index
+    char operator[](int) const; //returns the character at that index
     int len()const; //returns the length of this text
     char* val()const; //returns the text in the form of a char array
     Text getText()const; //returns a copy Text of the class itself (why whould you use that, just use the class itself without the getText())
     int getId()const; //returns the id of the Text, purely for debugging purposes
-    //alias functions
+   
+     //alias functions
+    char charAt(int)const; //returns the character at this index
     char getCharAt(int)const; //returns the character at this index
     int getLength()const; //returns the length of this text
     char* getCharArr()const; //returns the text in the form of a char array
