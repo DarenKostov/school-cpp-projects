@@ -8,6 +8,7 @@ resources used:
 https://www.geeksforgeeks.org/getline-string-c/
 https://stackoverflow.com/questions/213761/what-are-some-uses-of-template-template-parameters
 https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-function-without-initializing-it-first
+https://stackoverflow.com/questions/4000358/is-possible-to-get-automatic-cast-from-user-defined-type-to-stdstring-using-co
 
 */
 #include <iostream>
@@ -31,7 +32,7 @@ https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-
 //ghost item?? TBD
 // #include "./linkfile.h"
 //inventory
-// #include "./memory.h"
+#include "./memory.h"
 //room
 // #include "./folder.h"
 //building
@@ -61,6 +62,14 @@ template <class T>
 void emptyVector(vector<T>&); //empties a vector of objects
 
 
+std::ostream &operator <<(std::ostream &stream, const Text &right){
+    stream << right.val();
+    return stream;
+}
+
+// extern std::ostream &operator <<(std::ostream &stream, const Text &right);
+
+
 
 
 int main(){
@@ -73,23 +82,49 @@ int main(){
       parser.addCommands(commandBank);
    }
       
-   // addedCommandInfo(parser.commandDefAt(1));
-   // parser.readLn();
+   addedCommandInfo(parser.commandDefAt(1));
+   parser.readLn();
+   
+   // /usr/include/c++/12.2.0/ostream
+   
+   char charA=parser.returnCommandT(1);
+   
+   char* charArrB=new char[10];
+   strcpy(charArrB,parser.returnCommandT(2));
+   
+   // int intC=parser.returnCommandT(1);
+   
+   cout << (char*)parser.returnCommandT(0)<<endl;
+   cout << parser.returnCommandT(1).val()<<endl;
+   cout << parser.returnCommandT(2)<<endl;
+   
+   cout <<"========\n";
+   cout << charA<<endl;
+   cout << charArrB<<endl;
+   // cout << intC<<endl;
    
    
    
+   char pathA[100]="/path/of/file/A";
    
-   // cout << parser.returnCommandT(0).val()<<endl;
-   // cout << parser.returnCommandT(1).val()<<endl;
-   // cout << parser.returnCommandT(2).val()<<endl;
+   char contA[100]="contents of file A"; 
    
-   char pathA[100]="az/qs/xw/dce";
-   Path a = Path(Text(pathA));
-   cout << a.wholeT().val() << endl;
-   cout << a.len() << endl;
-   cout << (*(a.wholeV().begin()+1233%a.len())).val() << endl;
+   File fileA= File(Path(Text(pathA)), Text(contA));
+   
+   cout << "file name:\n";
+   cout << fileA.path.name().val() << endl;
+   
+   cout << "file path:\n";
+   cout << (char*)fileA.path.wholeT() << endl;
+   cout << fileA.path.wholeV().size() << endl;
+   
+   cout << "file contents:\n";
+   cout << fileA.cont().val() << endl;
    
    
+   
+   cout << "\n\n==this project is not ready==\n\n\n";
+   return 0;
 }
 
 //vector object pointers
@@ -202,6 +237,7 @@ void addAllCommands(vector<Command> &commandBank){
    commandBank.push_back( Command(3, alias, description, 1, args, argsDescription));
    }
    {
+   //doesnt copy to the buffer, its the buffer thats copied into
    char alias[100][100]={"cb", "copybuffer", "copybank"};
    char description[100]="Shows you what files you have in the copy buffer.";
    char args[100][100]={"cmd"};
