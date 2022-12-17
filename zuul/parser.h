@@ -13,6 +13,9 @@
 
 //commandIndex is the index of the inputed command (help is 0, features is 1, tips is 2, etc) 
 
+#pragma GCC diagnostic ignored "-Wall"
+#pragma GCC diagnostic ignored "-Wextra"
+
 #include <vector>
 
 
@@ -48,10 +51,14 @@ class Parser{
   private:
     //all Commands should be stored in the parser since its safer, we dont want main to delete the commands and the parser to throw a seg fault
     std::vector<Command> allCommands; //where all posible Commands are stored
+    
+    //the command inputed
     void* command; //the current commands inputed with its inputed arguments (cast a type pointer of the type it should be)
     Text* commandText; // the command inputed but in Text form
+    int commandLength; // the amount of arguments inputed, believe it or not without this there is a major seg fault
+  
     bool setCurrentCommand(Text); //determines what command the user inputed, returns false if it couldnt determine
-    void fixArgs(Text*); // fixes the arguments inputed returns 1 for success
+    void fixArgs(Text*, int); // fixes the arguments inputed returns 1 for success
     int commandIndex; // the current command index
     Command* currentCommandDef; // the current command inputed definition
     

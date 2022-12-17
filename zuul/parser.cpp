@@ -9,7 +9,6 @@
 #include "./parser.h"
 #endif
 
-
 using namespace std;
 
 //constructor
@@ -91,9 +90,13 @@ void Parser::readLn(){
     }
   }
   
+  
+  commandLength=word+1;
+  
+  
   //make a Text of all the commands separated by " "
-  Text outputText[word+1];
-   for(int i=0; i<word+1; i++){
+  Text outputText[commandLength];
+   for(int i=0; i<commandLength; i++){
     outputText[i]=output[i];
   }
   
@@ -101,9 +104,13 @@ void Parser::readLn(){
   //free the memory in the command
   delete[] commandText;
   
+  
+  //word is your amount of arguments
+  
+  
   if(setCurrentCommand(Text(output[0]))){
-    commandText=new Text[currentCommandDef->argsAmount];
-    fixArgs(outputText);
+    commandText=new Text[commandLength];
+    fixArgs(outputText, commandLength);
   }else{//if it could find an alias the command inputed was invalid
     //the current command is nothing, empty
     currentCommandDef=&emptyCommand;
@@ -116,9 +123,8 @@ void Parser::readLn(){
 
 
 Text Parser::returnCommandT(int i){
-  char empty[1]="";
-  if(i>=currentCommandDef->argsAmount)
-    return Text(empty);
+  if(i>=commandLength)
+    return Text('\0');
   return commandText[i];
 }
 
@@ -144,12 +150,14 @@ bool Parser::setCurrentCommand(Text input){
   return false;
 }
 
+
 //fix with "what"
-void Parser::fixArgs(Text* what){
+void Parser::fixArgs(Text* what, int amount){
   
-  for(int i=0; i<currentCommandDef->argsAmount; i++){//loop through all of the args definitions (if its int, bool, str, ect)
+      cout << amount << endl;  
+  for(int i=0; i<amount; i++){//loop through all of the args definitions (if its int, bool, str, ect)
       
-      // cout << allCommandArgsDef[commandIndex][i] << endl;  
+      cout << what[i].val() << endl;  
       char cmd[5]="cmd";
       char str[5]="str";
       char txt[5]="txt";
@@ -164,10 +172,10 @@ void Parser::fixArgs(Text* what){
       }else if(currentCommandDef->args[i]==txt){
         //do nothing it's already a Text
         commandText[i]=what[i];
-      }else if(currentCommandDef->args[i]==cmd){
+      }else if(currentCommandDef->args[i]==iNt){
         //convert to int
         commandText[i]=what[i];
-      }else if(currentCommandDef->args[i]==cmd){
+      }else if(currentCommandDef->args[i]==bOol){
         //convert to bool
         commandText[i]=what[i];
       }else
