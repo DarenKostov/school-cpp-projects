@@ -78,12 +78,10 @@ void Path::operator=(Path input){
 
 //gets the path in Text form
 Text Path::wholeT(){
-  char slash[2]="/";
   Text output;
   
   for(vector<Text>::iterator i=path.begin(); i!=path.end(); i++){
-    //the magic of using Text instead of char*
-     output+=slash;
+     output+="/";
      output+=*i;
   }
   return output;

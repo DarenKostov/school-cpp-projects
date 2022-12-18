@@ -29,7 +29,7 @@ Text::Text(char initText){
 }
 
 //Text from char array
-Text::Text(char* initText){
+Text::Text(const char* initText){
   length=strlen(initText);
   text=new char[length+1];    
   strcpy(text, initText);
@@ -58,7 +58,7 @@ Text::~Text(){
 
 
 //set text from a char
-void Text::operator=(char setTo){
+Text& Text::operator=(char setTo){
   //set the size of the new text
   length=1; 
   
@@ -67,13 +67,17 @@ void Text::operator=(char setTo){
 
   //create memory for our new text
   text=new char[2];
+
   text[0]=setTo;
   text[1]='\0';
+
+  return *this;
+
 }
 
 
 //set text from char array
-void Text::operator=(char* setTo){
+Text& Text::operator=(const char* setTo){
   //set the size of the new text
   length=strlen(setTo); 
   
@@ -83,18 +87,22 @@ void Text::operator=(char* setTo){
   //create memory for our new text
   text=new char[length+1];
   strcpy(text, setTo);
+  
+  return *this;
 }
 
 //set text from another Text
-void Text::operator=(Text setTo){
+Text& Text::operator=(Text setTo){
   //use the + operator for char*
   *this=setTo.getCharArr(); 
+  
+  return *this;
 }
 
 //==PLUS OPERATOR==\\
 
 
-Text Text::operator+(char input){
+const Text Text::operator+(char input){
 
   //the length of the output text
   int outputLength=1+length;
@@ -117,7 +125,7 @@ Text Text::operator+(char input){
   
 }
 
-Text Text::operator+(char* input){
+const Text Text::operator+(const char* input){
 
   //the length of the output text
   int outputLength=strlen(input)+length;
@@ -143,7 +151,7 @@ Text Text::operator+(char* input){
 }
 
 
-Text Text::operator+(Text input){
+const Text Text::operator+(Text input){
   // make an output Text from out text
   Text output(getCharArr()); 
 
@@ -159,38 +167,32 @@ Text Text::operator+(Text input){
 
 //==PLUS EQUALS OPERATOR==\\
 
-Text Text::operator+=(char input){
+Text& Text::operator+=(char input){
   
   //use the = for Text
   //use the + operator for char
   *this=*this+input;
   
-  //output
-  Text output(*this);
-  return output;
+  return *this;
   
 }
-Text Text::operator+=(char* input){
+Text& Text::operator+=(const char* input){
   
   //use the = for Text
   //use the + operator for char array
   *this=*this+input;
   
-  //output
-  Text output(*this);
-  return output;
+  return *this;
   
 }
 
-Text Text::operator+=(Text input){
+Text& Text::operator+=(Text input){
   
   //use the = for Text
   //use the + operator for Text
   *this=*this+input;
   
-  //output
-  Text output(*this);
-  return output;
+  return *this;
   
 }
 
@@ -202,7 +204,7 @@ bool Text::operator==(char input){
   return false;
 }
 
-bool Text::operator==(char* input){
+bool Text::operator==(const char* input){
   if(0==strcmp(text, input))
     return true;
   return false;
@@ -217,9 +219,9 @@ bool Text::operator==(Text input){
 
 
 
+//function getters
 
-
-char Text::operator[](int i) const{
+char& Text::operator[](int i) const{
   return text[i%length];
 }
 
@@ -230,11 +232,8 @@ int Text::len() const{
 char* Text::val() const{
   return text;
 }
-
 Text Text::getText() const{
-  Text copy;
-  copy=*this;
-  return copy;
+  return Text(*this);
 }
 
 int Text::getId() const{
@@ -243,7 +242,7 @@ int Text::getId() const{
 
 //alias functions
 
-char Text::charAt(int i) const{
+char& Text::charAt(int i) const{
   // return (*this)[i];
   return text[i%length];
 }
@@ -262,5 +261,51 @@ char* Text::getCharArr() const{
 char* Text::charArr() const{
   return val();
 }
+
+
+//casting
+
+
+Text::operator char*(){
+  return this->val();
+}
+
+Text::operator const char*(){
+  return this->val();
+}
+
+Text::operator char(){
+  return (*this)[0];
+}
+
+
+
+
+
+//reverse operators
+
+
+std::ostream &operator <<(std::ostream &stream, Text right){
+    stream << right.val();
+    return stream;
+}
+Text operator+(const char* left, Text right){
+  //use char* constructor and Text+Text concatenation
+  return Text(left)+right;
+} 
+Text operator+(char left, Text right){
+  //use char constructor and Text+Text concatenation
+  return Text(left)+right;
+}
+
+
+//reverse operators
+// /*
+// char*& Text::operator=(char*& left, Text& right){
+//   strcpy(left, right.val());
+//   return left;
+// }
+// */
+
 
 
