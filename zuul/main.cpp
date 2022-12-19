@@ -31,16 +31,22 @@ https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-a
 #include "./path.h"
 //item
 #include "./file.h"
-//ghost item?? TBD
-// #include "./linkfile.h"
 //inventory
 #include "./memory.h"
 //room
-// #include "./folder.h"
+#include "./folder.h"
 //building
-// #include "./computer.h"
-//longitude and latidude of a city?? TBD
+#include "./computer.h"
+
+//location 2
 // #include "./ipadress.h"
+
+//street adress of a building
+// #include "./localipadress.h"
+
+//longitude and latidude of a city?? TBD
+// #include "./globalipadress.h"
+
 //city? TBD
 // #include "./network.h"
 
@@ -156,23 +162,6 @@ int main(){
    fasttalk(isColorOn, "\n\n==this project is not ready==\n\n\n", Daren_thinking);
    
    
-   slowtalk(isColorOn, "me talking\n", Daren_talking);
-   slowtalk(isColorOn, "me thinking\n", Daren_thinking);
-   
-   slowtalk(isColorOn, "player talking\n", Player_talking);
-   slowtalk(isColorOn, "player thinking\n", Player_thinking);
-   
-   
-   slowtalk(isColorOn, "boss talking\n", Boss_talking);
-   slowtalk(isColorOn, "boss thinking\n", Boss_thinking);
-   
-   slowtalk(isColorOn, "admin talking\n", Admin_talking);
-   slowtalk(isColorOn, "admin thinking\n", Admin_thinking);
-   
-   info(isColorOn, "this is an info message");
-   warning(isColorOn, "this is a warning message");
-   error(isColorOn, "this is an error message");
-   unexpectedIO(isColorOn, "this is an unexpected io message");
    
    
    
@@ -185,44 +174,36 @@ int main(){
       parser.addCommands(commandBank);
    }
       
+   
    parser.readLn();
    
-   // /usr/include/c++/12.2.0/ostream
-   
-   char charA=(char)parser.returnCommandT(1);
-   
-   char* charArrB=new char[10];
-   strcpy(charArrB,(char*)parser.returnCommandT(2));
    
    
    cout << (char*)parser.returnCommandT(0)<<endl;
    cout << parser.returnCommandT(1).val()<<endl;
    cout << parser.returnCommandT(2)<<endl;
    
-   cout <<"========\n";
-   cout << charA<<endl;
-   cout << charArrB<<endl;
    
    
    
-   char pathA[100]="/path/of/file/A";
+   File fileA= File(Path(Text("/path/of/file/A")), Text("contents of file A"));
+   File fileB= File(Path(Text("/path/of/file/B")), Text("contents of file B"));
    
-   char contA[100]="contents of file A"; 
+   cout << "disk usage A:\n";
+   cout << fileA.usage() << endl;
+   cout << "disk usage B:\n";
+   cout << fileB.usage() << endl;
    
-   File fileA= File(Path(Text(pathA)), Text(contA));
+   Memory mem1=Memory(100);   
    
-   cout << "file name:\n";
-   cout << fileA.path.name().val() << endl;
-   
-   cout << "file path:\n";
-   cout << fileA.path.wholeT().val() << endl;
-   cout << fileA.path.wholeV().size() << endl;
-   
-   cout << "file contents:\n";
-   cout << fileA.cont().val() << endl;
-   
-   
-   
+   mem1.addFile(fileA);
+   mem1.addFile(fileB);
+   cout << "all files\n";
+   cout << mem1.AllItems()<< endl;
+   cout << "usage\n";
+   cout << mem1.getUsage()<< endl;
+   cout << "free\n";
+   cout << mem1.getFree()<< endl;
    
    
    return 0;
