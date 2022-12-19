@@ -125,6 +125,7 @@ void uSlep(){ usleep(rand()%(printSpeed/2)+printSpeed/2);};
 
 //types chars one by one
 void slowtalk(bool on, Text in, Text format);
+void slowtalk(bool on, Text in, Text format, int speed);
 void fasttalk(bool on, Text in, Text format);
 
 
@@ -159,7 +160,9 @@ int main(){
    
    
    slowtalk(isColorOn, "Welcome to Zuul", Daren_talking);
-   fasttalk(isColorOn, "\n\n==this project is not ready==\n\n\n", Daren_thinking);
+   fasttalk(isColorOn, "\n\n  This project is not ready", Daren_thinking);
+   // slowtalk(isColorOn, ".....", Daren_thinking, 50);
+   fasttalk(isColorOn, "\n\n  Should be ready soon thought.\n\n", Daren_thinking);
    
    
    
@@ -189,39 +192,64 @@ int main(){
    File fileA= File(Path(Text("/path/of/file/A")), Text("contents of file A"));
    File fileB= File(Path(Text("/path/of/file/B")), Text("contents of file B"));
    
-   cout << "disk usage A:\n";
-   cout << fileA.usage() << endl;
-   cout << "disk usage B:\n";
-   cout << fileB.usage() << endl;
+   Folder folderA= Folder(Path(Text("/path/of/folder/A")));
+   
+   Folder folderB= Folder(Path(Text("/path/of/folder/B")));
+   
+   folderA.addFile(fileA);
+   folderB.addFile(fileB);
+   
+   folderB.addFolder(folderA);
+   
+   
+   
+   
+   cout << "==folder B:\n";
+   cout << "=path:\n";
+   cout << folderB.path.wholeT()+'\n';
+   cout << "=contents:\n";
+   cout << folderB.allItems();
+   
+   cout << "\n";
+   
+   cout << "==folder A:\n";
+   cout << "=path:\n";
+   cout << folderA.path.wholeT()+'\n';
+   cout << "=contents:\n";
+   cout << folderA.allItems();
+   
+   
+   
+   
+   // cout << folderA.allItems() << endl;
+   
    
    Memory mem1=Memory(100);   
    
    mem1.addFile(fileA);
    mem1.addFile(fileB);
-   cout << "all files\n";
-   cout << mem1.AllItems()<< endl;
-   cout << "usage\n";
-   cout << mem1.getUsage()<< endl;
-   cout << "free\n";
-   cout << mem1.getFree()<< endl;
    
    
    return 0;
 }
-void slowtalk(bool on, Text in, Text format){
+void slowtalk(bool on, Text in, Text format, int speed){
    //are we coloring this?
    if(on)
       cout << format << flush;
    //print everything
    for(int i=0; i<in.len(); i++){
       cout << in[i] << flush;
-      slep(5);
+      slep(speed);
     }
    //reset the color
    if(on)
       cout << "\033[0m";
 }
 
+
+void slowtalk(bool on, Text in, Text format){
+   slowtalk(on, in, format, 5);   
+}
 
 void fasttalk(bool on, Text in, Text format){
    //are we coloring this?
@@ -402,6 +430,12 @@ void addAllCommands(vector<Command> &commandBank){
    char argsDescription[100]="<pattern> <file path>";
    commandBank.push_back( Command(2, alias, description, 3, args, argsDescription));
    }
-   
+   {
+   char alias[100][100]={"tree"};
+   char description[100]="Print a tree of all child folders/files";
+   char args[100][100]={"cmd"};
+   char argsDescription[100]="none";
+   commandBank.push_back( Command(1, alias, description, 1, args, argsDescription));
+   }
    
 }
