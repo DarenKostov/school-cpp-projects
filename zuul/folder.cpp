@@ -12,7 +12,10 @@
 #endif
 #include <cstring>
 #include <vector>
+<<<<<<< HEAD
 #include <ctime>
+=======
+>>>>>>> efc742e (folder class)
 
 using namespace std;
 
@@ -33,7 +36,11 @@ Text Folder::name(){
   return path.name();
 }
 
+<<<<<<< HEAD
 time_t Folder::getDate(){
+=======
+long Folder::getDate(){
+>>>>>>> efc742e (folder class)
   return date;
 }
 
@@ -42,7 +49,10 @@ bool Folder::deleteFile(Text name){
     //is the file there, if so remove it
     if(strcmp(name.val(), i->path.name().val())==0){
       files.erase(i);
+<<<<<<< HEAD
       date=time(nullptr);
+=======
+>>>>>>> efc742e (folder class)
       return true;
     }
     
@@ -82,7 +92,10 @@ bool Folder::deleteFolder(Text name){
     //is the file there, if so remove it
     if(strcmp(name.val(), i->path.name().val())==0){
       folders.erase(i);
+<<<<<<< HEAD
       date=time(nullptr);
+=======
+>>>>>>> efc742e (folder class)
       return true;
     }
     
