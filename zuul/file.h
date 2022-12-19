@@ -27,6 +27,7 @@
 #include "./text.h"
 #include "./path.h"
 #endif
+#include <ctime>
 
 
 class File{
@@ -39,9 +40,11 @@ class File{
     File(int); //makes an empty file at ID X
     void operator=(File); //sets the contents of the File to another File
     Text name(); //gets the name of the file
-    long getDate(); //gets the last date modified
+    std::time_t getDate(); //gets the last date modified
     Text& cont(); //gives full access to the contents of the file
-  
+    
+    //returns disk usage of ONLY its contents, up to 4gb
+    long usage();
   
   
     //the path, should be fully accesible, we dont track it being changed and its class manages itself
@@ -50,7 +53,7 @@ class File{
   
     private:
     Text contents; //what the file stores. apples? pears? how many? is that a grocery list?
-    long date; //when was the last time the file was accessed (includes modifications)
+    std::time_t date; //when was the last time the file was accessed (includes modifications)
   
   /*
     name() might get discontinued due to:

@@ -9,7 +9,8 @@
 //empty Text
 Text::Text(){
   //very important to define the pointer! 
-  text=new char[0];
+  text=new char[1];
+  text[0]='\0';
   length=0;
 
   id=rand();
@@ -22,7 +23,7 @@ Text::Text(char initText){
   length=1;
   text=new char[2];
   text[0]=initText;    
-  text[0]='\0';    
+  text[1]='\0';    
 
   id=rand();
   
@@ -35,8 +36,11 @@ Text::Text(const char* initText){
   strcpy(text, initText);
 
   id=rand();
-  
+ char* a;
+  char* b;
+  bool c=a==b; 
 }
+
 
 //Text from Text
 //gotta have a custom copy constructor because we are dealing with char pointers
@@ -102,7 +106,7 @@ Text& Text::operator=(Text setTo){
 //==PLUS OPERATOR==\\
 
 
-const Text Text::operator+(char input){
+Text Text::operator+(char input){
 
   //the length of the output text
   int outputLength=1+length;
@@ -125,7 +129,7 @@ const Text Text::operator+(char input){
   
 }
 
-const Text Text::operator+(const char* input){
+Text Text::operator+(const char* input){
 
   //the length of the output text
   int outputLength=strlen(input)+length;
@@ -151,7 +155,7 @@ const Text Text::operator+(const char* input){
 }
 
 
-const Text Text::operator+(Text input){
+Text Text::operator+(Text input){
   // make an output Text from out text
   Text output(getCharArr()); 
 

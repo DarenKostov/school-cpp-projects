@@ -9,6 +9,7 @@
 #include "./path.h"
 #include "./file.h"
 #endif
+#include <ctime>
 
 
 //empty and nowhere
@@ -45,11 +46,18 @@ Text File::name(){
   return path.name();
 }
 
-long File::getDate(){
+time_t File::getDate(){
   return date;
 }
 
 Text& File::cont(){
+  date=time(nullptr);
   return contents;
 }
+
+long File::usage(){
+  //+1 beacuse of '\0'i
+  return (sizeof(char)*(contents.len()+1));
+}
+
 

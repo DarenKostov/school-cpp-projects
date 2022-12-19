@@ -54,13 +54,13 @@ class Text{
     //=plus operator
   
     // Concatenates the text and a char into a Text
-    const Text operator+(char); 
+    Text operator+(char); 
   
     // Concatenates the text and char array into a Text
-    const Text operator+(const char*); 
+    Text operator+(const char*); 
   
     // Concatenates the 2 texts into a Text
-    const Text operator+(Text);     
+    Text operator+(Text);     
   
   
   

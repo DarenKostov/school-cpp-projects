@@ -9,6 +9,7 @@ https://www.geeksforgeeks.org/getline-string-c/
 https://stackoverflow.com/questions/213761/what-are-some-uses-of-template-template-parameters
 https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-function-without-initializing-it-first
 https://stackoverflow.com/questions/4000358/is-possible-to-get-automatic-cast-from-user-defined-type-to-stdstring-using-co
+https://en.cppreference.com/w/cpp/chrono/c/time
 
 https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-ansi-codes
 

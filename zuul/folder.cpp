@@ -12,6 +12,7 @@
 #endif
 #include <cstring>
 #include <vector>
+#include <ctime>
 
 using namespace std;
 
@@ -32,7 +33,7 @@ Text Folder::name(){
   return path.name();
 }
 
-long Folder::getDate(){
+time_t Folder::getDate(){
   return date;
 }
 
@@ -41,6 +42,7 @@ bool Folder::deleteFile(Text name){
     //is the file there, if so remove it
     if(strcmp(name.val(), i->path.name().val())==0){
       files.erase(i);
+      date=time(nullptr);
       return true;
     }
     
@@ -80,6 +82,7 @@ bool Folder::deleteFolder(Text name){
     //is the file there, if so remove it
     if(strcmp(name.val(), i->path.name().val())==0){
       folders.erase(i);
+      date=time(nullptr);
       return true;
     }
     

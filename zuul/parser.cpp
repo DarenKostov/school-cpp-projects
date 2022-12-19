@@ -21,15 +21,13 @@ Parser::Parser(){
   char argsDescription[100]="";
   emptyCommand=Command(1, alias, description, 1, args, argsDescription);
   
+  command=malloc(100);
+  
 }
 
 Parser::~Parser(){
   delete[] commandText;
-
-  // free the memory command stores somehow 
-  // delete[] command;
-  // delete command;
-  // free(command);
+  free(command);
 }
 
 //add from a Command pointer
