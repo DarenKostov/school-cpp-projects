@@ -13,10 +13,7 @@
 #include "./file.h"
 #endif
 #include <vector>
-<<<<<<< HEAD
 #include <ctime>
-=======
->>>>>>> efc742e (folder class)
 
 class Folder{
   public:
@@ -33,11 +30,7 @@ class Folder{
   Text name();
   
   //gets when the folder was last modified
-<<<<<<< HEAD
   std::time_t getDate();
-=======
-  long getDate();
->>>>>>> efc742e (folder class)
   
   //deletes a File with name, returns false if unsuccessful
   bool deleteFile(Text);
@@ -72,10 +65,6 @@ class Folder{
   void updatePaths();
   std::vector<File> files;
   std::vector<Folder> folders;
-<<<<<<< HEAD
   std::time_t date;
-=======
-  long date;
->>>>>>> efc742e (folder class)
   
 };
