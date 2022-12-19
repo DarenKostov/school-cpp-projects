@@ -65,13 +65,13 @@ void Path::operator=(Text input){
     outputV.push_back(Text(outputC[i]));
   
   
-  //use the == operator for vector
+  //use the = operator for vector
   *this=outputV;
 }
 
 //= PATH
 void Path::operator=(Path input){
-  //set with the == operator for vector
+  //set with the = operator for vector
   *this=input.wholeV();
 }
 
@@ -114,6 +114,30 @@ Text Path::name(){
 void Path::reCalculateDepth(){
   depth=path.size();
 }
+
+
+void Path::changePathOnly(Text in){
+  Text output;
+  output+=in+"/"+name();
+  //use the = operator for Text
+  *this=output;
+}
+
+void Path::changePathOnly(Path in){
+  Text output;
+  //make into Text
+  output+=in.wholeT()+"/"+name();
+  //use the == operator for Path
+  *this=output;
+}
+
+void Path::changePathOnly(vector<Text> in){
+  in.push_back(name());
+  //use the = operator for vector
+  *this=in;
+}
+
+
 
 //aliases
 

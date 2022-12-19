@@ -41,6 +41,12 @@ class Path{
   Text atIndex(int); //gives you the folder/file at index i, starting from root
   Text name(); //gives you the name of the file (basically does "path1.atIndex(path1.len()-1)")
   
+  //changes the path, without the name
+  void changePathOnly(Path);
+  void changePathOnly(Text);
+  void changePathOnly(std::vector<Text>);
+  
+  
   
   private:
   void reCalculateDepth(); //recalculates the depth of the Path
