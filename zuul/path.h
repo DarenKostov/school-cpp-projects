@@ -46,8 +46,8 @@ class Path{
   void changeParentOnly(Text);
   void changeParentOnly(std::vector<Text>);
   
-  //gives you the parent directory path in Text form
-  Text getParent();
+  //gives you the parent directory Path
+  Path getParent();
   
   
   //map needs this operator

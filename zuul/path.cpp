@@ -173,13 +173,12 @@ Text Path::atIndex(int i){
   return atDepth(i);
 }
 
-Text Path::getParent(){
-  Text output;
+Path Path::getParent(){
+  vector<Text> outputV;
   
   for(vector<Text>::iterator i=path.begin(); i!=(path.end()-1); i++){
-     output+="/";
-     output+=*i;
+     outputV.push_back(*i);
   }
-  return output;
+  return Path(outputV);
 }
 
