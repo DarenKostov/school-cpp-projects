@@ -164,11 +164,11 @@ long Folder::usage(){
 
 void Folder::updatePaths(){
 for(int i=0; i<files.size(); i++)
-    files[i].path.changePathOnly(path);
+    files[i].path.changeParentOnly(path);
   
   //folders, this will eterate through all child folders, and the children of those, etc until only files are left
   for(int i=0; i<folders.size(); i++){  
-    folders[i].path.changePathOnly(path);
+    folders[i].path.changeParentOnly(path);
     folders[i].updatePaths();
   }
   
@@ -218,6 +218,5 @@ vector<Folder*> Folder::allFoldersAdr(){
   
   return output;
 }
-
 
 

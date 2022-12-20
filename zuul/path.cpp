@@ -116,14 +116,14 @@ void Path::reCalculateDepth(){
 }
 
 
-void Path::changePathOnly(Text in){
+void Path::changeParentOnly(Text in){
   Text output;
   output+=in+"/"+name();
   //use the = operator for Text
   *this=output;
 }
 
-void Path::changePathOnly(Path in){
+void Path::changeParentOnly(Path in){
   Text output;
   //make into Text
   output+=in.wholeT()+"/"+name();
@@ -131,7 +131,7 @@ void Path::changePathOnly(Path in){
   *this=output;
 }
 
-void Path::changePathOnly(vector<Text> in){
+void Path::changeParentOnly(vector<Text> in){
   in.push_back(name());
   //use the = operator for vector
   *this=in;
@@ -173,5 +173,13 @@ Text Path::atIndex(int i){
   return atDepth(i);
 }
 
-
+Text Path::getParent(){
+  Text output;
+  
+  for(vector<Text>::iterator i=path.begin(); i!=(path.end()-1); i++){
+     output+="/";
+     output+=*i;
+  }
+  return output;
+}
 

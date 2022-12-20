@@ -42,9 +42,12 @@ class Path{
   Text name(); //gives you the name of the file (basically does "path1.atIndex(path1.len()-1)")
   
   //changes the path, without the name
-  void changePathOnly(Path);
-  void changePathOnly(Text);
-  void changePathOnly(std::vector<Text>);
+  void changeParentOnly(Path);
+  void changeParentOnly(Text);
+  void changeParentOnly(std::vector<Text>);
+  
+  //gives you the parent directory path in Text form
+  Text getParent();
   
   
   //map needs this operator
