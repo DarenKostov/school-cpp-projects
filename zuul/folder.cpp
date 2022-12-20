@@ -18,14 +18,21 @@ using namespace std;
 
 
 
-Folder::Folder(){}
+Folder::Folder(){
+  date=time(nullptr);
+}
 
 
 Folder::Folder(Path initPath){
   path=initPath;
+  date=time(nullptr);
 }
 
 Folder& Folder::operator=(Folder in){
+  path=in.path;
+  files=in.allFiles();
+  folders=in.allFolders();
+  date=in.getDate();
   return *this;
 }
 
