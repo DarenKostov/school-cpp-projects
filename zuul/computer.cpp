@@ -29,10 +29,12 @@ void Computer::setRoot(Folder newRoot){
   
   //add children to our map so we know where they are
   for(int i=0; i<newFiles.size(); i++){
-    allFiles[newFiles[i]->path]=newFiles[i];
+    allFiles.insert(pair<Path, File*>(newFiles[i]->path, newFiles[i]));
+    // allFiles[newFiles[i]->path]=newFiles[i];
   }
   for(int i=0; i<newFolders.size(); i++){
-    allFolders[newFolders[i]->path]=newFolders[i];
+    allFolders.insert(pair<Path, Folder*>(newFolders[i]->path, newFolders[i]));
+    // allFolders[newFolders[i]->path]=newFolders[i];
   }
   
   

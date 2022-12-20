@@ -137,6 +137,10 @@ void Path::changePathOnly(vector<Text> in){
   *this=in;
 }
 
+bool Path::operator<(Path in)const {
+  //i dont really care how the map orders the keys
+  return true;
+}
 
 
 //aliases

@@ -47,6 +47,8 @@ class Path{
   void changePathOnly(std::vector<Text>);
   
   
+  //map needs this operator
+  bool operator<(Path in) const;
   
   private:
   void reCalculateDepth(); //recalculates the depth of the Path
