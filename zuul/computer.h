@@ -30,10 +30,6 @@ class Computer{
     //sets up the folder tree
     void setRoot(Folder);
   
-    //set up the parser
-    void setParser(Parser);
-    
-  
     //=files
     //deletes a file from name OR path
     bool deleteFile(Text);
@@ -52,8 +48,8 @@ class Computer{
     //create a folder from name OR path
     bool createFolder(Folder, Text);
   
-    //get full access to a folder with name or path
-    Folder& getFolder(Text);
+    //get a copy of a folder with name or path
+    Folder getFolder(Text);
   
     //=currentFolder
     
@@ -69,12 +65,16 @@ class Computer{
   
   private:
     Folder* currentFolder;
-    
+    Text* currentUser;  
+  
     // root folder (not root user folder)
     Folder root;
   
     std::map<Path, Folder*> allFolders;
-    std::map<Path, File*> allFiless;
+    std::map<Path, File*> allFiles;
+    
+    //name and home folder
+    std::map<Text, Folder*> users;
+    
   
-
 };
