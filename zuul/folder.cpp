@@ -177,3 +177,47 @@ for(int i=0; i<files.size(); i++)
 }
 
 
+vector<File*> Folder::allFilesAdr(){
+  vector<File*> output;
+  
+  for(auto i=files.begin(); i!=files.end(); i++)
+    //adress of the derefrenced file iterator
+    output.push_back(&*i);
+  
+  for(auto i=folders.begin(); i!=folders.end(); i++){
+    //adress of the derefrenced folder iterator
+    // output.push_back(&*i);
+    
+    //get the children's files
+    vector<File*> childFiles=i->allFilesAdr(); 
+    
+    //add them to output
+    for(auto j=childFiles.begin(); j!=childFiles.end(); j++)
+      output.push_back(*j);
+  }
+  
+  return output;
+}
+  
+vector<Folder*> Folder::allFoldersAdr(){
+  vector<Folder*> output;
+  
+  for(auto i=folders.begin(); i!=folders.end(); i++){
+    
+    //add the children
+    //adress of the derefrenced folder iterator
+    output.push_back(&*i);
+    
+    //get the childrens's folders
+    vector<Folder*> childFolders=i->allFoldersAdr(); 
+    
+    //add them to output
+    for(auto j=childFolders.begin(); j!=childFolders.end(); j++)
+      output.push_back(*j);
+  }
+  
+  return output;
+}
+
+
+

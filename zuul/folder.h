@@ -46,11 +46,18 @@ class Folder{
   //adds a Folder, deletes false if unsuccessful
   bool addFolder(Folder);
   
-  //returns all files in this Folder
+  //returns all files in this Folder, a copy
   std::vector<File> allFiles();
   
-  //returns all folders in this Folder
+  //returns all folders in this Folder, a copy
   std::vector<Folder> allFolders();
+  
+  
+  //returns all file adresses in this Folder and its children
+  std::vector<File*> allFilesAdr();
+  
+  //returns all folder adresses in this Folder and its children
+  std::vector<Folder*> allFoldersAdr();
   
   //return all files/folder in Text form
   Text allItems();
@@ -60,11 +67,11 @@ class Folder{
   
   //location of folder
   Path path;
-  
+
   private:
-  void updatePaths();
   std::vector<File> files;
   std::vector<Folder> folders;
+  void updatePaths();
   std::time_t date;
   
 };
