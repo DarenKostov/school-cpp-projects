@@ -47,8 +47,7 @@ class Parser{
     int getCommandIndex(); //returns the current command index in the Command vector
     Command commandDefAt(int);// returns what is the Command definition at an index
   
-  private:
-    //all Commands should be stored in the parser since its safer, we dont want main to delete the commands and the parser to throw a seg fault
+  private:    //all Commands should be stored in the parser since its safer, we dont want main to delete the commands and the parser to throw a seg fault
     std::vector<Command> allCommands; //where all posible Commands are stored
     
     //the command inputed

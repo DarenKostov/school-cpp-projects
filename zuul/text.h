@@ -156,6 +156,7 @@ class Text{
   explicit operator char(); 
   
   
+  bool operator<(Text a)const{return true;};     
   
   private:
   

@@ -143,6 +143,10 @@ void error(bool on, Text in);
 void unexpectedIO(bool on, Text in);
 
 
+//generates random Text with certain size
+Text randomText(int);
+//like randomText but limited to only numbers
+Text randomText(int);
 
 
 template <class T>
@@ -151,6 +155,9 @@ template <class T>
 void emptyVector(vector<T>&); //empties a vector of objects
 
 
+Computer baseComputer();
+Computer brokenComputer();
+Computer workingComputer();
 
 
 
@@ -216,7 +223,9 @@ int main(){
    cout << myCompter.getCurrentFolder().path.wholeT() << endl;;
    
    
-   
+   for(int i=0; i<100; i++){
+      cout << parser.commandDefAt(i).aliases[0] << "\n";
+   }
    
    cout << "END\n";
    return 0;
@@ -292,6 +301,18 @@ void  emptyVector(vector<T> &toBeEmptied){
 }
 
 
+Text randomText(int size){
+   Text out;
+      for(int i=0; i<size; i++)
+         out+='!'+(rand()%93);
+   return out;
+}
+Text randomTextNumbers(int size){
+   Text out;
+      for(int i=0; i<size; i++)
+         out+='0'+(rand()%10);
+   return out;
+}
 
 
 
@@ -426,5 +447,87 @@ void addAllCommands(vector<Command> &commandBank){
    char argsDescription[100]="none";
    commandBank.push_back( Command(1, alias, description, 1, args, argsDescription));
    }
+   
+}
+
+
+Computer baseComputer(){
+   //==parser
+   Parser parser;
+   //the amount of commands in parser
+   int parserSize;
+   {
+      vector<Command> commandBank;
+      addAllCommands(commandBank);
+      parser.addCommands(commandBank);
+      parserSize=commandBank.size();
+   }
+      
+   
+   
+   //==folder system
+   //=root   
+   Folder root= Folder(Path(Text("")));
+   //=root level
+   Folder bin= Folder(Path(Text("/bin")));
+   Folder boot= Folder(Path(Text("/boot")));
+   Folder dev= Folder(Path(Text("/dev")));
+   Folder etc= Folder(Path(Text("/etc")));
+   Folder home= Folder(Path(Text("/home")));
+   Folder lib= Folder(Path(Text("/lib")));
+   Folder mnt= Folder(Path(Text("/mnt")));
+   Folder opt= Folder(Path(Text("/opt")));
+   Folder proc= Folder(Path(Text("/proc")));
+   Folder rootFolder= Folder(Path(Text("/root")));
+   Folder run= Folder(Path(Text("/run")));
+   Folder srv= Folder(Path(Text("/srv")));
+   Folder sys= Folder(Path(Text("/sys")));
+   Folder tmp= Folder(Path(Text("/tmp")));
+   Folder usr= Folder(Path(Text("/usr")));
+   Folder var= Folder(Path(Text("/var")));
+   Folder lostNfound= Folder(Path(Text("/lost+found")));
+   
+   //=bin
+   File command[parserSize];
+   for(int i=0; i<parserSize; i++)
+      //                               get the command at index i and get its 1st alias
+      command[i]= File(Path(Text("/bin/"+parser.commandDefAt(i).aliases[0])), randomText(100));
+   
+   //=proc
+   File process[100];
+   //note that rand() changes every time
+   for(int i=0; i<100; i++)
+      process[i]= File(Path(Text("/proc/"+randomTextNumbers(5))), randomText(100));
+   
+   //=dev 
+   //drives
+   File sda[4];
+   sda[0]= File(Path(Text("/dev/sda")), randomText(100));
+   for(int i=1; i<4; i++)
+      sda[i]= File(Path(Text("/dev/sda")+'0'+i), randomText(100));
+   //tty
+   File tty[11];
+   tty[0]= File(Path(Text("/dev/tty")), randomText(100));
+   for(int i=0; i<10; i++)
+      tty[i+1]= File(Path(Text("/dev/tty")+('0'+i)), randomText(100));
+   //vcs
+   File vcs[11];
+   vcs[0]= File(Path(Text("/dev/vcs")), randomText(100));
+   for(int i=0; i<10; i++)
+      vcs[i+1]= File(Path(Text("/dev/vcs")+('0'+i)), randomText(100));
+   
+   //==add up all of the items
+   //=dev
+   //drives
+   for(int i=0; i<4; i++)
+      dev.addFile(sda[i]);
+   //drives
+   for(int i=0; i<11; i++)
+      dev.addFile(tty[i]);
+   //drives
+   for(int i=0; i<11; i++)
+      dev.addFile(vcs[i]);
+   
+   
    
 }
