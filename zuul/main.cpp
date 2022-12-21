@@ -115,7 +115,7 @@ void addAllCommands(vector<Command> &commandBank);
 void addedCommandInfo(Command command);
 
 // const long printSpeed=10000;
-const long printSpeed=10000;
+const long printSpeed=1000;
 
 //SLEeP, shorter than usleep, uses less 0's
 void slep(){ usleep(printSpeed);};
@@ -164,6 +164,7 @@ int main(){
    fasttalk(isColorOn, "\n\n  This project is not ready", Daren_thinking);
    // slowtalk(isColorOn, ".....", Daren_thinking, 50);
    fasttalk(isColorOn, "\n\n  Should be ready soon thought.\n\n", Daren_thinking);
+   fasttalk(isColorOn, "\n\n  ...I hope...\n\n", Daren_thinking);
    
    
    
@@ -183,54 +184,41 @@ int main(){
    
    
    
-   cout << (char*)parser.returnCommandT(0)<<endl;
-   cout << parser.returnCommandT(1).val()<<endl;
-   cout << parser.returnCommandT(2)<<endl;
+   // cout << (char*)parser.returnCommandT(0)<<endl;
+   // cout << parser.returnCommandT(1).val()<<endl;
+   // cout << parser.returnCommandT(2)<<endl;
    
    
    
    
-   File fileA= File(Path(Text("/path/of/file/A")), Text("contents of file A"));
-   File fileB= File(Path(Text("/path/of/file/B")), Text("contents of file B"));
    
-   Folder folderA= Folder(Path(Text("/path/of/folder/A")));
+   Folder root= Folder(Path(Text("")));
    
-   Folder folderB= Folder(Path(Text("/path/of/folder/B")));
+   Folder bin= Folder(Path(Text("/bin")));
+   Folder home= Folder(Path(Text("/home")));
    
-   folderA.addFile(fileA);
-   folderB.addFile(fileB);
+   File cd= File(Path(Text("/home/cd")), Text("2rwegyygeb6tcryewgynml"));
    
-   folderB.addFolder(folderA);
+   bin.addFile(cd);
    
+   root.addFolder(bin);   
+   root.addFolder(home);   
    
+   Computer myCompter;
+   myCompter.setRoot(root);
+   cout << "we should be in root\n";
+   cout << myCompter.getCurrentFolder().path.wholeT() << endl;;
    
+   cout << "going to bin\n";
+   myCompter.goTo(Text("bin"));
    
-   cout << "==folder B:\n";
-   cout << "=path:\n";
-   cout << folderB.path.wholeT()+'\n';
-   cout << "=contents:\n";
-   cout << folderB.allItems();
-   
-   cout << "\n";
-   
-   cout << "==folder A:\n";
-   cout << "=path:\n";
-   cout << folderA.path.wholeT()+'\n';
-   cout << "=contents:\n";
-   cout << folderA.allItems();
+   cout << "we should be in bin\n";
+   cout << myCompter.getCurrentFolder().path.wholeT() << endl;;
    
    
    
    
-   // cout << folderA.allItems() << endl;
-   
-   
-   Memory mem1=Memory(100);   
-   
-   mem1.addFile(fileA);
-   mem1.addFile(fileB);
-   
-   
+   cout << "END\n";
    return 0;
 }
 void slowtalk(bool on, Text in, Text format, int speed){

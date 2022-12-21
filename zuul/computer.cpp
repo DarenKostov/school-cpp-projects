@@ -16,8 +16,31 @@
 #include <vector>
 #include <map>
 #include <ctime>
+#include <unistd.h>
+#include <stdlib.h>
 
 using namespace std;
+
+//map.find doesnt work so heres a TEMP solution until i figue out why
+//search for a SINGLE element in the WHOLE thing
+template <class T>
+T* find(map<Text, T*> whole, Text single){
+  T* out=nullptr;
+  
+  for(auto i=whole.begin(); i!=whole.end(); i++){
+      Text forComparing=i->first;
+      if(forComparing==single)
+        return i->second;
+    }
+  return out;
+}
+
+
+
+
+
+
+
 
 Computer::Computer(){
 }
@@ -36,10 +59,21 @@ void Computer::setRoot(Folder newRoot){
   for(int i=0; i<newFolders.size(); i++){
     allFolders[newFolders[i]->path.wholeT()]=newFolders[i];
         cout << newFolders[i]->path.wholeT() << "\n";
+        cout << newFolders[i] << "\n";
   }
   
   //we are starting from root
   currentFolder=&root;
+  cout << "=============\n";
+  for(auto i=allFolders.begin(); i!=allFolders.end(); i++)
+    cout << i->second->path.wholeT() << endl;
+  
+  Text b="/bin";
+  Folder* a=find(allFolders, b);
+  
+    cout << a->path.wholeT() << endl;
+  
+  
 }
 
 
@@ -65,7 +99,8 @@ bool Computer::goTo(Text where){
     for(auto i=currentChildren.begin(); i!=currentChildren.end(); i++){
       //if the folder exists
       if(where==i->name()){
-        nextFolder=allFolders.find(i->path.wholeT())->second;
+        Text name=i->path.wholeT();
+        nextFolder=find(allFolders, name);
         currentFolder=nextFolder;
         return true;
       }
@@ -74,6 +109,10 @@ bool Computer::goTo(Text where){
   return false;
 }
 
+Folder Computer::getCurrentFolder(){
+
+  return *currentFolder;
+}
 
 
 
