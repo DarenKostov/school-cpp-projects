@@ -73,8 +73,5 @@ class Computer{
     std::map<Path, Folder*> allFolders;
     std::map<Path, File*> allFiles;
     
-    //name and home folder
-    std::map<Text, Folder*> users;
-    
-  
+ 
 };
