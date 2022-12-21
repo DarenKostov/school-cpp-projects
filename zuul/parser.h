@@ -13,11 +13,7 @@
 
 //commandIndex is the index of the inputed command (help is 0, features is 1, tips is 2, etc) 
 
-#pragma GCC diagnostic ignored "-Wall"
-#pragma GCC diagnostic ignored "-Wextra"
-
 #include <vector>
-
 
 #ifndef q
 #define q
@@ -36,6 +32,9 @@ class Parser{
     void addCommand(Command); //adds a single Command from a Command
     void addCommands(std::vector<Command>); //adds Commands from a vector of Commands
     
+    //removes a command given its 1st alias
+    bool removeCommand(Text);
+  
     void readLn();
   
     template <class output>

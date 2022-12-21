@@ -53,7 +53,18 @@ void Parser::addCommands(vector<Command> input){
     // allCommands.push_back(**i);       
   }
 }
+ 
+bool Parser::removeCommand(Text in){
   
+  for(auto i=allCommands.begin(); i!=allCommands.end(); i++){
+    if(i->aliases[0]==in)
+      allCommands.erase(i);
+    return true; 
+  }
+    return false; 
+}
+
+ 
 Command Parser::commandDefAt(int i){
   //add i to the pointer (go to index i) and derefrence it
   return *(allCommands.begin()+i);
