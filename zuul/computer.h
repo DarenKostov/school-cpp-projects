@@ -70,8 +70,8 @@ class Computer{
     // root folder (not root user folder)
     Folder root;
   
-    std::map<Path, Folder*> allFolders;
-    std::map<Path, File*> allFiles;
+    std::map<Text, Folder*> allFolders;
+    std::map<Text, File*> allFiles;
     
  
 };

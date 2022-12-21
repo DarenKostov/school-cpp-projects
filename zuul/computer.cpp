@@ -30,10 +30,12 @@ void Computer::setRoot(Folder newRoot){
   
   //add children to our map so we know where they are
   for(int i=0; i<newFiles.size(); i++){
-    allFiles[newFiles[i]->path]=newFiles[i];
+    allFiles[newFiles[i]->path.wholeT()]=newFiles[i];
+        cout << newFiles[i]->path.wholeT() << "\n";
   }
   for(int i=0; i<newFolders.size(); i++){
-    allFolders[newFolders[i]->path]=newFolders[i];
+    allFolders[newFolders[i]->path.wholeT()]=newFolders[i];
+        cout << newFolders[i]->path.wholeT() << "\n";
   }
   
   //we are starting from root
@@ -53,7 +55,7 @@ bool Computer::goTo(Text where){
     //get parent path
     Path parentPath=currentFolder->path.getParent();
    
-    nextFolder=allFolders.at(parentPath);
+    nextFolder=allFolders.at(parentPath.wholeT());
     currentFolder=nextFolder;
     return true;
   }else{
@@ -63,15 +65,14 @@ bool Computer::goTo(Text where){
     for(auto i=currentChildren.begin(); i!=currentChildren.end(); i++){
       //if the folder exists
       if(where==i->name()){
-        
-        nextFolder=allFolders.at(i->path);
+        nextFolder=allFolders.find(i->path.wholeT())->second;
         currentFolder=nextFolder;
+        return true;
       }
     } 
   }
   return false;
 }
-
 
 
 
@@ -94,7 +95,7 @@ bool Computer::deleteFile(Text name){
   
   //if deletion is successfull
   if(currentFolder->deleteFile(name)){
-    allFiles.erase(path);
+    allFiles.erase(path.wholeT());
     return true;
   }
   //deletion was not successfull
