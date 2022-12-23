@@ -32,7 +32,8 @@ const Text fileColor="\033[97m";
 //types chars one by one
 void slowtalk(bool on, Text in, Text format);
 void slowtalk(bool on, Text in, Text format, int speed);
-void fasttalk(bool on, Text in, Text format);
+void fasttalk(bool on, Text in);
+
 
 //function names might and most likely will be confused with their respective colors
 
@@ -48,7 +49,7 @@ void unexpectedIO(bool on, Text in);
 
 // const long printSpeed=10000;
 //the global speed of all custom slep commands
-const long printSpeed=1000;
+const long printSpeed=10000;
 
 //SLEeP, shorter than usleep, uses less 0's
 void slep();

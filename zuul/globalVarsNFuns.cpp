@@ -27,7 +27,7 @@ void slowtalk(bool on, Text in, Text format, int speed){
     }
    //reset the color
    if(on)
-      cout << "\033[0m";
+      cout << "\033[0m" << flush;
 }
 
 
@@ -46,7 +46,18 @@ void fasttalk(bool on, Text in, Text format){
     }
    //reset the color
    if(on)
-      cout << "\033[0m";
+      cout << "\033[0m" << flush;
+}
+
+void fasttalk(bool on, Text in){
+   //are we coloring this?
+   if(on)
+      cout << "\033[0m" << flush;
+   //print everything
+   for(int i=0; i<in.len(); i++){
+      cout << in[i] << flush;
+      slep(1);
+    }
 }
 
 
