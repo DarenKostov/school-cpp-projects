@@ -80,9 +80,14 @@ void Parser::readLn(){
   char output[99][99];
   
   cin.getline(input, 99);
+  
+  
   int j=0;
   int word=0;
+  
+  //loop through until you meet a /0
   for(int i=0; i<99; i++){
+    //once a you see a ' ' go to the next word
     if(input[i]==' '){
       output[word][i-j]='\0';
       j=++i;
@@ -117,6 +122,10 @@ void Parser::readLn(){
   
   
   if(setCurrentCommand(Text(output[0]))){
+    //fix the command length
+    commandLength=min(commandLength, currentCommandDef->argsAmount);
+    
+    
     commandText=new Text[commandLength];
     fixArgs(outputText, commandLength);
   }else{//if it could find an alias the command inputed was invalid
