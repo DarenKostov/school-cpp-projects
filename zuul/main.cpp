@@ -101,6 +101,7 @@ using namespace std;
 //commands from user
 void execCD(Computer&);
 void execLS(Computer&);
+void execCAT(Computer&);
 
 
 int main(){
@@ -129,11 +130,14 @@ int main(){
       Text curCom=myComputer.parser.returnCommandT(0);
       if(curCom=="cd")
          execCD(myComputer);
-      if(curCom=="ls")
+      else if(curCom=="ls")
          execLS(myComputer);
-      if(curCom=="exit")
+      else if(curCom=="cat")
+         execCAT(myComputer);
+      else if(curCom=="exit")
          break;
-      
+      else
+         unexpectedIO(myComputer.on, "The command inputted is non existant.");
       
       myComputer.parser.readLn();
       
@@ -169,9 +173,6 @@ void execLS(Computer& inComp){
          spacer='\n';  
    }
    
-   
-   
-   
    //all Folders
    auto allFold=inComp.getCurrentFolder().allFolders();
    for(auto i=allFold.begin(); i!=allFold.end(); i++)
@@ -195,6 +196,11 @@ void execLS(Computer& inComp){
    fasttalk(inComp.on, Text("\n"), Info);
 }
    
+void execCAT(Computer& inComp){
+   File* file=inComp.getFile(inComp.parser.returnCommandT(1));
+   if(file!=nullptr)
+   fasttalk(inComp.on, file->cont()+'\n');
+}
 
 
 
