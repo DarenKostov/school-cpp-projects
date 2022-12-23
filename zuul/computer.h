@@ -43,8 +43,8 @@ class Computer{
     //create a file from name OR path
     bool createFile(File, Text);
   
-    //get full access to file with name or path
-    File& getFile(Text);
+    //get adress to file with name or path
+    File* getFile(Text);
     
     //=folders
     

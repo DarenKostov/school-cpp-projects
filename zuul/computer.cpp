@@ -1,5 +1,10 @@
 /*
   Daren Kostov
+
+  Note:
+    do not `delete` files/folders here, the folder class manages that 
+
+
 */
 #ifndef q
 #define q
@@ -23,6 +28,8 @@
 using namespace std;
 
 //could be optimized not to search in a folder that the file/folder is for sure not it
+
+//searches for a file anywhere in a folder, given the Path
 File* findFile(Folder* root, Path where){
   
   //every single file in this folder
@@ -35,6 +42,7 @@ File* findFile(Folder* root, Path where){
     }
   return nullptr;
 }
+//searches for a folder anywhere in a folder, given the Path
 Folder* findFolder(Folder* root, Path where){
   
   //every single file in this folder
@@ -62,15 +70,16 @@ Computer::Computer(){
   //make all commands bins
   auto allCommands=parser.getAllCommands();
   for(auto i=allCommands.begin(); i!=allCommands.end(); i++)
-    bin->addFile(new File(Path(Text("/bin/"+i->aliases[0])), randomText(100)));
+    bin->addFile(new File(Path(Text("/bin/"+i->aliases[0])), randomText(rand()%800+400)));
   
   //=tmp
   Folder* tmp=new Folder(Path(Text("/tmp")));
   
   //fills /tmp with random junk
-  for(int i=0; i!=5; i++)
-    tmp->addFile(new File(Path(Text("/tmp/"+randomText(5))), randomText(100)));
-  for(int i=0; i!=5; i++)
+  //be aware that rand() is called each time and it changes
+  for(int i=0; i!=rand()%5+5; i++)
+    tmp->addFile(new File(Path(Text("/tmp/"+randomText(5))), randomText(rand()%100)));
+  for(int i=0; i!=rand()%5+5; i++)
     tmp->addFolder(new Folder(Path(Text("/tmp/"+randomText(5)))));
       
   root=new Folder(Path(Text("")));
@@ -106,6 +115,7 @@ Computer::Computer(){
 }
 
 void Computer::setRoot(Folder* newRoot){
+  delete root;
   root=newRoot;
 }
 
@@ -130,7 +140,7 @@ bool Computer::goTo(Text where){
     //get parent path
     Path parentPath=currentFolder->path.getParent();
     
-    //find the parent
+    //find the parent pointer
     nextFolder=findFolder(root, parentPath.wholeT());
     currentFolder=nextFolder;
     
@@ -164,29 +174,98 @@ Folder Computer::getCurrentFolder(){
 //=files
 
 bool Computer::deleteFile(Text name){
-  Path path;
+
   //first check if we are giving the name or full path
   if(name[0]=='/'){
-    // //delete by full path
-    //==Currently you can delete files only by name if you are in their parent directory
-  }
-  
-  //delete by name
+    //=delete by full path
     
-  //get path
-  // "/path/to/folder" + "/" + "name of file" 
-  path=currentFolder->path.wholeT()+'/'+name;
+    Folder* parentFolder=findFolder(root, Path(name).getParent());
+    
+    //is the path given valid?
+    if(parentFolder==nullptr){
+       unexpectedIO(on, "Parent path non-existant.");
+       return false;
+    }
+
+    //remove the file from the parent via its name
+    if(parentFolder->deleteFile(Path(name).name())){
+      return true;
+    }
+        
+  }
+  //delete by name in current folder
   
   //if deletion is successfull
   if(currentFolder->deleteFile(name)){
-    // allFiles.erase(path.wholeT());
     return true;
   }
+
   //deletion was not successfull
+  unexpectedIO(on, "File path non-existant.");
   return false;
 }
 
 
+bool Computer::createFile(File in, Text name){
+  
+  //first check if we are giving the name or full path
+  if(name[0]=='/'){
+    //=create by full path
+    
+    //get parent path
+    Folder* parentFolder=findFolder(root, Path(name).getParent());
+    
+    //is the path given valid?
+    if(parentFolder==nullptr){
+       unexpectedIO(on, "Parent path non-existant.");
+       return false;
+    }
+
+    //create an empty File (its path will be updated automatically)
+    if(parentFolder->addFile(new File())){
+      unexpectedIO(on, "File path already existant.");
+      return true;
+    }
+        
+  }
+  //create by name in current folder
+  
+  //create an empty File (its path will be updated automatically)
+  if(currentFolder->deleteFile(name)){
+    return true;
+  }
+
+  //creation was not successfull
+  unexpectedIO(on, "File path already existant.");
+  return false;
+
+}
+
+File* Computer::getFile(Text name){
+  File* output=nullptr;
+  
+  //first check if we are giving the name or full path
+  if(name[0]=='/'){
+    //=get by full path
+    
+    //get file adress
+    output=findFile(root, Path(name));
+    
+    //is the path given valid?
+    if(output==nullptr)
+       unexpectedIO(on, "File or parent folder path non-existant.");
+
+    
+  }else{
+    output=currentFolder->getFile(name);
+    
+    if(output==nullptr)
+       unexpectedIO(on, "File path non-existant.");
+  
+  }
+
+  return output;
+}
 
 
 
