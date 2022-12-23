@@ -73,11 +73,12 @@ class Computer{
     bool on;
   
   private:
+    
     Folder* currentFolder;
     Memory memory;
     // root folder (not root user folder)
     Folder* root;
-  
+    void addAllCommands();
 };
 
 
