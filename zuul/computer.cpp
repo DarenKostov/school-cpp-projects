@@ -266,6 +266,114 @@ File* Computer::getFile(Text name){
 }
 
 
+//=folders
+
+bool Computer::deleteFolder(Text name){
+
+  //first check if we are giving the name or full path
+  if(name[0]=='/'){
+    //=delete by full path
+    
+    Folder* parentFolder=findFolder(root, Path(name).getParent());
+    
+    //is the path given valid?
+    if(parentFolder==nullptr){
+       unexpectedIO(on, "Parent path non-existant.");
+       return false;
+    }
+
+    //remove the file from the parent via its name
+    if(parentFolder->deleteFolder(Path(name).name())){
+      return true;
+    }
+        
+  }
+  //delete by name in current folder
+  
+  //if deletion is successfull
+  if(currentFolder->deleteFolder(name)){
+    return true;
+  }
+
+  //deletion was not successfull
+  unexpectedIO(on, "Folder path non-existant.");
+  return false;
+}
+
+
+bool Computer::createFolder(Folder in, Text name){
+  
+  //first check if we are giving the name or full path
+  if(name[0]=='/'){
+    //=create by full path
+    
+    //get parent path
+    Folder* parentFolder=findFolder(root, Path(name).getParent());
+    
+    //is the path given valid?
+    if(parentFolder==nullptr){
+       unexpectedIO(on, "Parent path non-existant.");
+       return false;
+    }
+
+    //create a File (its path will be updated automatically)
+    if(parentFolder->addFolder(new Folder(in))){
+      return true;
+    }
+        
+  }else{
+    //=create by name in current folder
+  
+    //create a File (its path will be updated automatically)
+    if(currentFolder->addFolder(new Folder(in))){
+      return true;
+    }
+  }
+  //creation was not successfull
+  unexpectedIO(on, "Folder path already existant.");
+  return false;
+
+}
+
+Folder Computer::getFolder(Text name){
+  Folder* output=nullptr;
+  
+  //first check if we are giving the name or full path
+  if(name[0]=='/'){
+    //=get by full path
+    
+    //get file adress
+    output=findFolder(root, Path(name));
+    
+    //is the path given valid?
+    if(output==nullptr)
+       unexpectedIO(on, "Folder or parent folder path non-existant.");
+
+    
+  }else{
+    output=currentFolder->getFolder(name);
+    
+    if(output==nullptr)
+       unexpectedIO(on, "File path non-existant.");
+  
+  }
+  
+  if(output==nullptr)
+    return Folder();
+  else
+    return *output;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
