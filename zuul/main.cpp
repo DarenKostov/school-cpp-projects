@@ -102,6 +102,8 @@ using namespace std;
 void execCD(Computer&);
 void execLS(Computer&);
 void execCAT(Computer&);
+void execTOUCH(Computer&);
+void execRM(Computer&);
 
 
 int main(){
@@ -134,6 +136,10 @@ int main(){
          execLS(myComputer);
       else if(curCom=="cat")
          execCAT(myComputer);
+      else if(curCom=="touch")
+         execTOUCH(myComputer);
+      else if(curCom=="rm")
+         execRM(myComputer);
       else if(curCom=="exit")
          break;
       else
@@ -202,7 +208,13 @@ void execCAT(Computer& inComp){
    fasttalk(inComp.on, file->cont()+'\n');
 }
 
-
+void execTOUCH(Computer& inComp){
+   Text name=inComp.parser.returnCommandT(1);
+   inComp.createFile(File(Path("/a/"+name)), name);
+}
+void execRM(Computer& inComp){
+   inComp.deleteFile(inComp.parser.returnCommandT(1));
+}
 
 
 
