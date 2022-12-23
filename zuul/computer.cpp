@@ -58,7 +58,6 @@ Folder* findFolder(Folder* root, Path where){
 
 
 Computer::Computer(){
-  
   //==parser
   addAllCommands();
   
