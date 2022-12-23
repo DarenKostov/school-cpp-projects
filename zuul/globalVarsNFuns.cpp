@@ -2,6 +2,9 @@
   Daren Kostov
   this file stores variables and functions that don't really belong anywgere but are use
 
+   sources used:
+   https://www.delftstack.com/howto/cpp/how-to-convert-int-to-char-array-in-cpp/
+   
 */
 #ifndef q
 #define q
@@ -10,6 +13,7 @@
 #endif
 #include <unistd.h>
 #include <stdlib.h>
+#include <charconv>
 
 using namespace std;
 
@@ -99,3 +103,10 @@ Text randomTextNumbers(int size){
    return out;
 }
 
+
+
+Text intToText(int in){
+   char outputChar[13];
+   to_chars(outputChar, outputChar+12, in);
+   return Text(outputChar);
+}

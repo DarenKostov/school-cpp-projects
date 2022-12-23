@@ -177,7 +177,7 @@ void execLS(Computer& inComp){
    auto allFold=inComp.getCurrentFolder().allFolders();
    for(auto i=allFold.begin(); i!=allFold.end(); i++)
       if(longList){
-         fasttalk(inComp.on, (*i)->getDate(), folderColor);
+         fasttalk(inComp.on, intToText((*i)->getDate()), folderColor);
          fasttalk(inComp.on, ' '+(*i)->path.wholeT()+'\n', folderColor);
       }else
          fasttalk(inComp.on, (*i)->name() +spacer, folderColor);
@@ -188,7 +188,7 @@ void execLS(Computer& inComp){
    auto allFile=inComp.getCurrentFolder().allFiles();
    for(auto i=allFile.begin(); i!=allFile.end(); i++)   
       if(longList){
-         fasttalk(inComp.on, (*i)->getDate(), fileColor);
+         fasttalk(inComp.on, intToText((*i)->getDate()), fileColor);
          fasttalk(inComp.on, ' '+(*i)->path.wholeT()+'\n', fileColor);
       }else
          fasttalk(inComp.on, (*i)->name() +spacer, fileColor);

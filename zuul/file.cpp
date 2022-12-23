@@ -13,21 +13,26 @@
 
 
 //empty and nowhere
-File::File(){};
+File::File(){
+  date=time(nullptr);
+};
 
 //with path and contents
 File::File(Path inPath, Text inCont){
+  date=time(nullptr);
   path=inPath;
   contents=inCont;
 };
 
 //without path
 File::File(Text inCont){
+  date=time(nullptr);
   contents=inCont;
 };
 
 //empty file
 File::File(Path inPath){
+  date=time(nullptr);
   path=inPath;
 };
 

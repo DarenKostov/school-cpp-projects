@@ -66,4 +66,6 @@ Text randomText(int);
 Text randomText(int);
 
 
+Text intToText(int);
+
 
