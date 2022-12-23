@@ -18,6 +18,9 @@ class Folder{
   //empty Folder, nowhere
   Folder();
   
+  //deconstructor
+  ~Folder();
+  
   //Folder with a Path
   Folder(Path);
 

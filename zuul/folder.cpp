@@ -19,10 +19,13 @@ using namespace std;
 
 
 Folder::Folder(){
-  path=
+  path=Path();
   date=time(nullptr);
 }
 
+Folder::~Folder(){
+  emptyMe();
+}
 
 Folder::Folder(Path initPath){
   path=initPath;
@@ -99,8 +102,6 @@ vector<File*> Folder::allChildFiles(){
     output.push_back(*i);
   
   for(auto i=folders.begin(); i!=folders.end(); i++){
-    //adress of the derefrenced folder iterator
-    // output.push_back(&*i);
     
     //get the children's files
     vector<File*> childFiles=(*i)->allChildFiles(); 
@@ -129,8 +130,7 @@ File* Folder::getFile(Text name){
 bool Folder::deleteFolder(Text name){
   for(auto i=folders.begin(); i!=folders.end(); i++){
     //is the file there, if so remove it
-    if(strcmp(name.val(), (*i)->path.name().val())==0){
-      (*i)->emptyMe();
+    if(name==(*i)->path.name()){
       delete *i;
       folders.erase(i);
       //update time, we modified the folder
@@ -150,15 +150,15 @@ bool Folder::deleteFolder(const char* name){
 bool Folder::addFolder(Folder* in){
   
   //is there a file with the same name? if so dont add it
-  for(int  i=0; i<files.size(); i++){
-    if(strcmp(in->name().val(), files[i]->path.name().val())==0){
+  for(auto i=files.begin(); i<files.end(); i++){
+    if(in->name()==(**i).path.name()){
       return false;
     }
   }
   
   //is there a folder with the same name? if so dont add it
-  for(int  i=0; i<folders.size(); i++){
-    if(strcmp(in->name().val(), folders[i]->path.name().val())==0){
+  for(auto i=folders.begin(); i<folders.end(); i++){
+    if(in->name()==(**i).path.name()){
       return false;
     }
   }
