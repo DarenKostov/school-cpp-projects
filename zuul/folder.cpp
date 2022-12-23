@@ -19,6 +19,7 @@ using namespace std;
 
 
 Folder::Folder(){
+  path=
   date=time(nullptr);
 }
 
@@ -112,6 +113,15 @@ vector<File*> Folder::allChildFiles(){
   return output;
 }
 
+File* Folder::getFile(Text name){
+  for(auto i=files.begin(); i!=files.end(); i++)
+    //if file is found
+    if(name==(*i)->path.name())
+      return *i;   
+  
+  //file is not found
+  return nullptr;
+}
 
 
 //==folder
@@ -189,6 +199,16 @@ vector<Folder*> Folder::allChildFolders(){
   return output;
 }
 
+Folder* Folder::getFolder(Text name){
+  for(auto i=folders.begin(); i!=folders.end(); i++)
+    //if file is found
+    if(name==(*i)->path.name())
+      return *i;   
+  
+  //file is not found
+  return nullptr;
+}
+
 void Folder::emptyMe(){
   //delete all files
   for(auto i=files.begin(); i!=files.end(); i++){
@@ -243,7 +263,7 @@ void Folder::updatePaths(){
 for(int i=0; i<files.size(); i++)
     files[i]->path.changeParentOnly(path);
   
-  //folders, this will eterate through all child folders, and the children of those, etc until only files are left
+  //folders, this will iterate through all child folders, and the children of those, etc until only files are left
   for(int i=0; i<folders.size(); i++){  
     folders[i]->path.changeParentOnly(path);
     folders[i]->updatePaths();

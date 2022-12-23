@@ -45,6 +45,9 @@ class Folder{
   //returns all file adresses in this Folder and its children
   std::vector<File*> allChildFiles();
   
+  //gives you the child Folder given its name
+  File* getFile(Text);
+  
   //searches for a File in any of its children given the path, recursive
   File* findFileInChildren(Path);
   
@@ -64,7 +67,11 @@ class Folder{
   //returns all folder adresses in this Folder and its children
   std::vector<Folder*> allChildFolders();
   
-    //searches for a File in any of its children given the path, recursive
+  //gives you the child Folder given its name
+  Folder* getFolder(Text);
+  
+  
+  //searches for a File in any of its children given the path, recursive
   Folder* findFolderInChildren(Path);
   
   // erases everything from this folder, no questions asked
