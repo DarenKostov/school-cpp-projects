@@ -189,6 +189,23 @@ vector<Folder*> Folder::allChildFolders(){
   return output;
 }
 
+void Folder::emptyMe(){
+  //delete all files
+  for(auto i=files.begin(); i!=files.end(); i++){
+    delete *i;
+    files.erase(i);
+  }
+
+  //delete all folders, recursevely
+  for(auto i=folders.begin(); i!=folders.end(); i++){
+    //make sure its empty when deleting it
+    (*i)->emptyMe();
+    delete *i;
+    folders.erase(i);   
+  }
+  
+}
+
 
 
 Text Folder::allItems(){
