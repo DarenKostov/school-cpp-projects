@@ -32,6 +32,7 @@ const Text fileColor="\033[97m";
 //types chars one by one
 void slowtalk(bool on, Text in, Text format);
 void slowtalk(bool on, Text in, Text format, int speed);
+void fasttalk(bool on, Text in, Text format);
 void fasttalk(bool on, Text in);
 
 
