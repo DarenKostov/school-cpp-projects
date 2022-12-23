@@ -93,7 +93,6 @@ void Parser::readLn(){
     output[word][i-j]=input[i];
     
     if(input[i]=='\0'){
-      //cout <<i<<endl;
       // word++;
       break;     
     }
@@ -163,10 +162,8 @@ bool Parser::setCurrentCommand(Text input){
 //fix with "what"
 void Parser::fixArgs(Text* what, int amount){
   
-      cout << amount << endl;  
   for(int i=0; i<amount; i++){//loop through all of the args definitions (if its int, bool, str, ect)
       
-      cout << what[i].val() << endl;  
       char cmd[5]="cmd";
       char str[5]="str";
       char txt[5]="txt";

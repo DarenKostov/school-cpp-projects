@@ -4,6 +4,7 @@
 #ifndef q
 #define q
 #include "./text.h"
+#include "./globalVarsNFuns.h"
 #include "./command.h"
 #include "./parser.h"
 #include "./path.h"
@@ -26,23 +27,25 @@ using namespace std;
 template <class T>
 T* find(map<Text, T*> whole, Text single){
   T* out=nullptr;
-  
+  cout << whole.size() << "\n" << flush;  
   for(auto i=whole.begin(); i!=whole.end(); i++){
       Text forComparing=i->first;
-      if(forComparing==single)
-        return i->second;
+        error(true, forComparing+'\n');
+      if(forComparing==single){
+        warning(true, Text("FOUND IT!!!!!!!\n"));
+        out=i->second;
+        // break;
+      }
+        unexpectedIO(true, Text("Didnt find it\n"));
     }
   return out;
 }
 
 
 
-
-
-
-
-
 Computer::Computer(){
+  memory=Memory();
+  
 }
 
 void Computer::setRoot(Folder newRoot){
@@ -54,25 +57,16 @@ void Computer::setRoot(Folder newRoot){
   //add children to our map so we know where they are
   for(int i=0; i<newFiles.size(); i++){
     allFiles[newFiles[i]->path.wholeT()]=newFiles[i];
-        cout << newFiles[i]->path.wholeT() << "\n";
+        // cout << newFiles[i]->path.wholeT() << "\n";
   }
   for(int i=0; i<newFolders.size(); i++){
     allFolders[newFolders[i]->path.wholeT()]=newFolders[i];
         cout << newFolders[i]->path.wholeT() << "\n";
-        cout << newFolders[i] << "\n";
+        // cout << newFolders[i] << "\n";
   }
   
   //we are starting from root
   currentFolder=&root;
-  cout << "=============\n";
-  for(auto i=allFolders.begin(); i!=allFolders.end(); i++)
-    cout << i->second->path.wholeT() << endl;
-  
-  Text b="/bin";
-  Folder* a=find(allFolders, b);
-  
-    cout << a->path.wholeT() << endl;
-  
   
 }
 
@@ -88,9 +82,11 @@ bool Computer::goTo(Text where){
   if(where==".." || where=="../"){ 
     //get parent path
     Path parentPath=currentFolder->path.getParent();
-   
-    nextFolder=allFolders.at(parentPath.wholeT());
+    info(on, parentPath.wholeT()+"\n");
+    
+    nextFolder=find(allFolders, parentPath.wholeT());
     currentFolder=nextFolder;
+    info(on, Text("going to folder: "+where));
     return true;
   }else{
   
@@ -102,10 +98,15 @@ bool Computer::goTo(Text where){
         Text name=i->path.wholeT();
         nextFolder=find(allFolders, name);
         currentFolder=nextFolder;
+        info(on, name+"\n");
+        info(on, nextFolder->path.wholeT()+"\n");
+        info(on, currentFolder->path.wholeT()+"\n");
+        info(on, Text("going to folder: "+where));
         return true;
       }
     } 
   }
+  error(on, Text("unable to locate folder: "+where));
   return false;
 }
 
@@ -140,7 +141,4 @@ bool Computer::deleteFile(Text name){
   //deletion was not successfull
   return false;
 }
-
-
-
 

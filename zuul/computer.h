@@ -19,6 +19,7 @@
 #include <map>
 #include <ctime>
 
+
 class Computer{
   public:
 
@@ -42,18 +43,18 @@ class Computer{
     
     //=folders
     
-    //deletes a folder from name OR path
+    //deletes a folder from name
     bool deleteFolder(Text);
   
-    //create a folder from name OR path
+    //create a folder from name
     bool createFolder(Folder, Text);
   
-    //get a copy of a folder with name or path
+    //get a copy of a folder with name
     Folder getFolder(Text);
   
     //=currentFolder
     
-    //gives you acopy of the current folder
+    //gives you a copy of the current folder
     Folder getCurrentFolder();
       
     //changes your current folder to from name or path
@@ -62,16 +63,19 @@ class Computer{
     //the parser manages itself, no need to be private
     //command parser
     Parser parser;  
+    
+    //weather color is off or on
+    bool on;
   
   private:
     Folder* currentFolder;
     Text* currentUser;  
-  
+    Memory memory;
     // root folder (not root user folder)
     Folder root;
   
     std::map<Text, Folder*> allFolders;
     std::map<Text, File*> allFiles;
-    
- 
 };
+
+

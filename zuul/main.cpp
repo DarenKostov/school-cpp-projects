@@ -25,6 +25,7 @@ https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-a
 #ifndef q
 #define q
 #include "./text.h"
+#include "./globalVarsNFuns.h"
 #include "./command.h"
 #include "./parser.h"
 
@@ -67,44 +68,30 @@ https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-a
 //=me!
 
 //cyan fg, black bg, bold
-const Text Daren_talking="\033[36;40;1m";
+const Text Daren_talking="\033[36;1m";
 //bright cyan fg, black bg
-const Text Daren_thinking="\033[96;40m";
+const Text Daren_thinking="\033[96m";
 
 //=you, the player
 
 //green fg, black bg, bold
-const Text Player_talking="\033[32;40;1m";
+const Text Player_talking="\033[32;1m";
 //bright green fg, black bg
-const Text Player_thinking="\033[92;40m";
+const Text Player_thinking="\033[92m";
 
 //=your boss in the game plot
 
 //green fg, black bg, bold
-const Text Boss_talking="\033[33;40;1m";
+const Text Boss_talking="\033[33;1m";
 //bright green fg, black bg
-const Text Boss_thinking="\033[93;40m";
+const Text Boss_thinking="\033[93m";
 
 //=some admin in the system you are infiltrating
 
 //green fg, black bg, bold
-const Text Admin_talking="\033[31;40;1m";
+const Text Admin_talking="\033[31;1m";
 //bright green fg, black bg
-const Text Admin_thinking="\033[91;40m";
-
-//=messages
-
-//white (not default) fg, black bg
-const Text Info="\033[97;40m";
-
-//yellow fg, black bg
-const Text Warning="\033[33;40m";
-
-//red fg, black bg
-const Text Error="\033[31;40m";
-
-//magenta fg, black bg
-const Text UnexpectedIO="\033[35;40m";
+const Text Admin_thinking="\033[91m";
 
 
 
@@ -114,33 +101,6 @@ using namespace std;
 void addAllCommands(vector<Command> &commandBank);
 void addedCommandInfo(Command command);
 
-// const long printSpeed=10000;
-const long printSpeed=1000;
-
-//SLEeP, shorter than usleep, uses less 0's
-void slep(){ usleep(printSpeed);};
-void slep(int x){ usleep(x*printSpeed);};
-
-//Unconfortable SLEeP, like when sleeping on an airplane, you wake up, you sleep again, etc at random
-void uSlep(){ usleep(rand()%(printSpeed/2)+printSpeed/2);};
-
-//types chars one by one
-void slowtalk(bool on, Text in, Text format);
-void slowtalk(bool on, Text in, Text format, int speed);
-void fasttalk(bool on, Text in, Text format);
-
-
-
-//=function names might and most likely will be confused with their respective colors
-
-//prints an info
-void info(bool on, Text in);
-//prints a warning
-void warning(bool on, Text in);
-//prints an error
-void error(bool on, Text in);
-//prints an unexpected input/output, cant name function "unexpected"
-void unexpectedIO(bool on, Text in);
 
 
 //generates random Text with certain size
@@ -160,6 +120,9 @@ Computer brokenComputer();
 Computer workingComputer();
 
 
+//commands from user
+void execCD(Computer&);
+void execLS(Computer&);
 
 
 int main(){
@@ -175,109 +138,53 @@ int main(){
    
    
    
+   Computer myComputer=baseComputer();
+   myComputer.on=true;
    
    
-   Parser parser;
+   myComputer.parser.readLn();
    
-   //a {} block since we wanna remove commandBank after its used
-   {
-      vector<Command> commandBank;
-      addAllCommands(commandBank);
-      parser.addCommands(commandBank);
-   }
+   
+   
+   while(true){
+      //current command
+      Text curCom=myComputer.parser.returnCommandT(0);
+      cout <<curCom+"\n";
+      if(curCom=="cd")
+         execCD(myComputer);
+      if(curCom=="ls")
+         execLS(myComputer);
+      if(curCom=="exit")
+         break;
       
-   
-   parser.readLn();
-   
-   
-   
-   // cout << (char*)parser.returnCommandT(0)<<endl;
-   // cout << parser.returnCommandT(1).val()<<endl;
-   // cout << parser.returnCommandT(2)<<endl;
-   
-   
-   
-   
-   
-   Folder root= Folder(Path(Text("")));
-   
-   Folder bin= Folder(Path(Text("/bin")));
-   Folder home= Folder(Path(Text("/home")));
-   
-   File cd= File(Path(Text("/home/cd")), Text("2rwegyygeb6tcryewgynml"));
-   
-   bin.addFile(cd);
-   
-   root.addFolder(bin);   
-   root.addFolder(home);   
-   
-   Computer myCompter;
-   myCompter.setRoot(root);
-   cout << "we should be in root\n";
-   cout << myCompter.getCurrentFolder().path.wholeT() << endl;;
-   
-   cout << "going to bin\n";
-   myCompter.goTo(Text("bin"));
-   
-   cout << "we should be in bin\n";
-   cout << myCompter.getCurrentFolder().path.wholeT() << endl;;
-   
-   
-   for(int i=0; i<100; i++){
-      cout << parser.commandDefAt(i).aliases[0] << "\n";
+      
+      myComputer.parser.readLn();
+      
    }
+   
    
    cout << "END\n";
    return 0;
 }
-void slowtalk(bool on, Text in, Text format, int speed){
-   //are we coloring this?
-   if(on)
-      cout << format << flush;
-   //print everything
-   for(int i=0; i<in.len(); i++){
-      cout << in[i] << flush;
-      slep(speed);
-    }
-   //reset the color
-   if(on)
-      cout << "\033[0m";
-}
 
 
-void slowtalk(bool on, Text in, Text format){
-   slowtalk(on, in, format, 5);   
+//==commands from user
+void execCD(Computer& inComp){
+   if(inComp.goTo(inComp.parser.returnCommandT(1)))
+      execLS(inComp);
 }
-
-void fasttalk(bool on, Text in, Text format){
-   //are we coloring this?
-   if(on)
-      cout << format << flush;
-   //print everything
-   for(int i=0; i<in.len(); i++){
-      cout << in[i] << flush;
-      slep(1);
-    }
-   //reset the color
-   if(on)
-      cout << "\033[0m";
+void execLS(Computer& inComp){
+   vector<Folder> curFolders=inComp.getCurrentFolder().allFolders();
+   fasttalk(inComp.on,Text("Folders:\n"), Info);
+   for(auto i=curFolders.begin(); i!=curFolders.end(); i++){
+      fasttalk(inComp.on,i->path.wholeT()+"\n", Info);
+   }
+   vector<File> curFiles=inComp.getCurrentFolder().allFiles();
+   fasttalk(inComp.on,Text("Files:\n"), Info);
+   for(auto i=curFiles.begin(); i!=curFiles.end(); i++){
+      fasttalk(inComp.on,i->path.wholeT()+"\n", Info);
+   }
 }
-
-
-
-void info(bool on, Text in){
-   fasttalk(on, "[Info] "+in+'\n', Info);
-}
-void warning(bool on, Text in){
-   fasttalk(on, "[Warning] "+in+'\n', Warning);
-}
-void error(bool on, Text in){
-   fasttalk(on, "[Error] "+in+'\n', Error);
-}
-void unexpectedIO(bool on, Text in){
-   fasttalk(on, "[Unexpected] "+in+'\n', UnexpectedIO);
-}
-
 
 //vector object pointers
 template <class T>
@@ -447,7 +354,20 @@ void addAllCommands(vector<Command> &commandBank){
    char argsDescription[100]="none";
    commandBank.push_back( Command(1, alias, description, 1, args, argsDescription));
    }
-   
+   {
+   char alias[100][100]={"exit", "quit"};
+   char description[100]="Exits the game";
+   char args[100][100]={"cmd"};
+   char argsDescription[100]="none";
+   commandBank.push_back( Command(2, alias, description, 1, args, argsDescription));
+   }
+   {
+   char alias[100][100]={"ls", "list"};
+   char description[100]="Lists the items in the current directory";
+   char args[100][100]={"cmd"};
+   char argsDescription[100]="none";
+   commandBank.push_back( Command(2, alias, description, 1, args, argsDescription));
+   }
 }
 
 
@@ -468,6 +388,7 @@ Computer baseComputer(){
    //==folder system
    //=root   
    Folder root= Folder(Path(Text("")));
+
    //=root level
    Folder bin= Folder(Path(Text("/bin")));
    Folder boot= Folder(Path(Text("/boot")));
@@ -521,13 +442,52 @@ Computer baseComputer(){
    //drives
    for(int i=0; i<4; i++)
       dev.addFile(sda[i]);
-   //drives
+   //tty
    for(int i=0; i<11; i++)
       dev.addFile(tty[i]);
-   //drives
+   //vcs
    for(int i=0; i<11; i++)
       dev.addFile(vcs[i]);
    
+   //=proc
+   for(int i=0; i<100; i++)
+      dev.addFile(process[i]);
    
+   //=bin TODO
+   
+   //=root
+   root.addFolder(bin);
+   root.addFolder(boot);
+   root.addFolder(dev);
+   root.addFolder(etc);
+   root.addFolder(home);
+   root.addFolder(lib);
+   root.addFolder(mnt);
+   root.addFolder(opt);
+   root.addFolder(proc);
+   root.addFolder(rootFolder);
+   root.addFolder(run);
+   root.addFolder(srv);
+   root.addFolder(sys);
+   root.addFolder(tmp);
+   root.addFolder(usr);
+   root.addFolder(var);
+   root.addFolder(lostNfound);
+   
+   //=init computer
+   Computer output;
+   output.setRoot(root);
+
+   //==parser
+
+   {
+      vector<Command> commandBank;
+      addAllCommands(commandBank);
+      output.parser.addCommands(commandBank);
+   }
+   
+   
+   
+   return output;
    
 }
