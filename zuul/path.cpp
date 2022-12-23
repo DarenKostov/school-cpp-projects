@@ -182,8 +182,7 @@ Text Path::atIndex(int i){
 }
 
 Path Path::getParent(){
-  vector<Text> outputV;
-  
+    vector<Text> outputV;
   for(vector<Text>::iterator i=path.begin(); i!=(path.end()-1); i++){
      outputV.push_back(*i);
   }

@@ -51,9 +51,23 @@ Folder* findFolder(Folder* root, Path where){
 
 Computer::Computer(){
   
+  //==parser
+  addAllCommands();
+  
   //==file system
+  
+  //=bin
+  Folder* bin=new Folder(Path(Text("/bin")));
+  
+  
+  //make all commands bins
+  auto allCommands=parser.getAllCommands();
+  for(auto i=allCommands.begin(); i!=allCommands.end(); i++)
+    bin->addFile(new File(Path(Text("/bin/"+i->aliases[0])), randomText(100)));
+  
+      
   root=new Folder(Path(Text("")));
-  root->addFolder(new Folder(Path(Text("/bin"))));
+  root->addFolder(bin);
   root->addFolder(new Folder(Path(Text("/boot"))));
   root->addFolder(new Folder(Path(Text("/dev"))));
   root->addFolder(new Folder(Path(Text("/etc"))));
@@ -79,8 +93,6 @@ Computer::Computer(){
   
   Text txt[10]={"2", "2"};
   
-  //==parser
-  addAllCommands();
   
   
   
@@ -101,11 +113,18 @@ bool Computer::goTo(Text where){
   //go to parent
   if(where==".." || where=="../"){ 
     
+    //if we are at root or the parent is root
+    if(currentFolder->path.getDepth()<=1){
+      currentFolder=root;
+      return true;
+    }
+    
+    
     //get parent path
     Path parentPath=currentFolder->path.getParent();
     
     //find the parent
-    nextFolder=findFolder(root, Path(parentPath.wholeT()));
+    nextFolder=findFolder(root, parentPath.wholeT());
     currentFolder=nextFolder;
     
     return true;
@@ -237,8 +256,8 @@ void Computer::addAllCommands(){
     parser.addCommand(Command(2, alias, description, 1, args, argsDescription));
   }{
     char alias[100][100]={"ls", "list"}, description[100]="Lists the items in the current directory";
-    char args[100][100]={"cmd"}, argsDescription[100]="none";
-    parser.addCommand(Command(2, alias, description, 1, args, argsDescription));
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="flags";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
   }
   
 }

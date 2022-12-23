@@ -98,24 +98,6 @@ const Text Admin_thinking="\033[91m";
 using namespace std;
 
 
-
-//generates random Text with certain size
-Text randomText(int);
-//like randomText but limited to only numbers
-Text randomText(int);
-
-
-template <class T>
-void emptyVector(vector<T*>&); //empties a vector of object pointers
-template <class T>
-void emptyVector(vector<T>&); //empties a vector of objects
-
-
-Computer baseComputer();
-Computer brokenComputer();
-Computer workingComputer();
-
-
 //commands from user
 void execCD(Computer&);
 void execLS(Computer&);
@@ -145,7 +127,6 @@ int main(){
    while(true){
       //current command
       Text curCom=myComputer.parser.returnCommandT(0);
-      cout <<curCom+"\n";
       if(curCom=="cd")
          execCD(myComputer);
       if(curCom=="ls")
@@ -164,25 +145,12 @@ int main(){
 }
 
 
-Text randomText(int size){
-   Text out;
-      for(int i=0; i<size; i++)
-         out+='!'+(rand()%93);
-   return out;
-}
-Text randomTextNumbers(int size){
-   Text out;
-      for(int i=0; i<size; i++)
-         out+='0'+(rand()%10);
-   return out;
-}
-
-
 
 //==commands from user
 void execCD(Computer& inComp){
    if(inComp.goTo(inComp.parser.returnCommandT(1)))
-      execLS(inComp);
+      // execLS(inComp);
+      1==1;
 }
 void execLS(Computer& inComp){
    char spacer='\t';
@@ -219,10 +187,10 @@ void execLS(Computer& inComp){
    auto allFile=inComp.getCurrentFolder().allFiles();
    for(auto i=allFile.begin(); i!=allFile.end(); i++)   
       if(longList){
-         fasttalk(inComp.on, (*i)->getDate(), folderColor);
-         fasttalk(inComp.on, ' '+(*i)->path.wholeT()+'\n', folderColor);
+         fasttalk(inComp.on, (*i)->getDate(), fileColor);
+         fasttalk(inComp.on, ' '+(*i)->path.wholeT()+'\n', fileColor);
       }else
-         fasttalk(inComp.on, (*i)->name() +spacer, folderColor);
+         fasttalk(inComp.on, (*i)->name() +spacer, fileColor);
    
    fasttalk(inComp.on, Text("\n"), Info);
 }

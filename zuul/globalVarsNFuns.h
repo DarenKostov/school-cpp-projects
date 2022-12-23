@@ -21,6 +21,14 @@ const Text Warning="\033[33m";
 const Text Error="\033[31m";
 //magenta fg
 const Text UnexpectedIO="\033[35m";
+
+
+//light blue fg
+const Text folderColor="\033[94m";
+//white fg
+const Text fileColor="\033[97m";
+
+
 //types chars one by one
 void slowtalk(bool on, Text in, Text format);
 void slowtalk(bool on, Text in, Text format, int speed);
@@ -49,3 +57,11 @@ void slep(int);
 
 //Unconfortable SLEeP, like when sleeping on an airplane, you wake up, you sleep again, etc at random
 void uSlep();
+
+//generates random Text with certain size
+Text randomText(int);
+//like randomText but limited to only numbers
+Text randomText(int);
+
+
+
