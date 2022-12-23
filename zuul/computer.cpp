@@ -220,20 +220,19 @@ bool Computer::createFile(File in, Text name){
        return false;
     }
 
-    //create an empty File (its path will be updated automatically)
-    if(parentFolder->addFile(new File())){
-      unexpectedIO(on, "File path already existant.");
+    //create a File (its path will be updated automatically)
+    if(parentFolder->addFile(new File(in))){
       return true;
     }
         
-  }
-  //create by name in current folder
+  }else{
+    //=create by name in current folder
   
-  //create an empty File (its path will be updated automatically)
-  if(currentFolder->deleteFile(name)){
-    return true;
+    //create a File (its path will be updated automatically)
+    if(currentFolder->addFile(new File(in))){
+      return true;
+    }
   }
-
   //creation was not successfull
   unexpectedIO(on, "File path already existant.");
   return false;
@@ -289,8 +288,8 @@ void Computer::addAllCommands(){
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<source path> <destination path>";
     parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
   }{
-    char alias[100][100]={"rm", "remove"}, description[100]="Deletes a file.";
-    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char alias[100][100]={"rm", "remove"}, description[100]="Deletes a file or a folder";
+    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="[flags] <file path>";
     parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
   }{
     char alias[100][100]={"man", "manual"}, description[100]="Shows detals on how to use a program.";
@@ -343,6 +342,14 @@ void Computer::addAllCommands(){
     char alias[100][100]={"ls", "list"}, description[100]="Lists the items in the current directory";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="flags";
     parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"touch", "tch"}, description[100]="Make an empty file";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"mkdir", "makedirectory", "mkfold"}, description[100]="Make an empty folder";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<folder path>";
+    parser.addCommand(Command(3, alias, description, 2, args, argsDescription));
   }
   
 }

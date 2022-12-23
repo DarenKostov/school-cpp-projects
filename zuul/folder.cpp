@@ -70,15 +70,15 @@ bool Folder::deleteFile(const char* name){
 bool Folder::addFile(File* in){
   
   //is there a file with the same name? if so dont add it
-  for(int  i=0; i<files.size(); i++){
-    if(strcmp(in->name().val(), files[i]->path.name().val())==0){
+  for(auto i=files.begin(); i!=files.end(); i++){
+    if(in->name()==(*i)->path.name()){
       return false;
     }
   }
   
   //is there a folder with the same name? if so dont add it
-  for(int  i=0; i<folders.size(); i++){
-    if(strcmp(in->name().val(), folders[i]->path.name().val())==0){
+  for(auto i=folders.begin(); i!=folders.end(); i++){
+    if(in->name()==(*i)->path.name()){
       return false;
     }
   }
