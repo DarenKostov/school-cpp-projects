@@ -75,6 +75,14 @@ void Path::operator=(Path input){
   *this=input.wholeV();
 }
 
+bool Path::operator==(Path in){
+  if(wholeT()==in.wholeT())
+    return true;
+  return false;
+}
+
+
+
 
 //gets the path in Text form
 Text Path::wholeT(){

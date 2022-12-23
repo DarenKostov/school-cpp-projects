@@ -26,6 +26,9 @@ class Path{
   void operator=(Path); //set with another Path
   void operator=(std::vector<Text>); //set from a vector of Texts containing folders
 
+  //compares a path to a path
+  bool operator==(Path); 
+  
   Text wholeT(); //gives you the whole path in the form of a single Text
   std::vector<Text> wholeV(); //gives you the whole path in the form of a vector of Texts
   int getDepth(); //gives you how deep the the path, ex /qw/er/ty/ has dept of 3
