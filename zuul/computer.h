@@ -19,6 +19,11 @@
 #include <map>
 #include <ctime>
 
+File* findFile(Folder* root, Path where);
+Folder* findFolder(Folder* root, Path where);
+
+
+
 
 class Computer{
   public:
@@ -29,7 +34,7 @@ class Computer{
     Computer();
   
     //sets up the folder tree
-    void setRoot(Folder);
+    void setRoot(Folder*);
   
     //=files
     //deletes a file from name OR path
@@ -43,13 +48,13 @@ class Computer{
     
     //=folders
     
-    //deletes a folder from name
+    //deletes a folder from name or path
     bool deleteFolder(Text);
   
     //create a folder from name
     bool createFolder(Folder, Text);
   
-    //get a copy of a folder with name
+    //get a copy of a folder with name or path
     Folder getFolder(Text);
   
     //=currentFolder
@@ -69,13 +74,10 @@ class Computer{
   
   private:
     Folder* currentFolder;
-    Text* currentUser;  
     Memory memory;
     // root folder (not root user folder)
-    Folder root;
+    Folder* root;
   
-    std::map<Text, Folder*> allFolders;
-    std::map<Text, File*> allFiles;
 };
 
 

@@ -22,52 +22,63 @@
 
 using namespace std;
 
-//map.find doesnt work so heres a TEMP solution until i figue out why
-//search for a SINGLE element in the WHOLE thing
-template <class T>
-T* find(map<Text, T*> whole, Text single){
-  T* out=nullptr;
-  cout << whole.size() << "\n" << flush;  
-  for(auto i=whole.begin(); i!=whole.end(); i++){
-      Text forComparing=i->first;
-        error(true, forComparing+'\n');
-      if(forComparing==single){
-        warning(true, Text("FOUND IT!!!!!!!\n"));
-        out=i->second;
-        // break;
+//could be optimized not to search in a folder that the file/folder is for sure not it
+File* findFile(Folder* root, Path where){
+  
+  //every single file in this folder
+  auto all=root->allChildFiles();
+  
+  for(auto i=all.begin(); i!=all.end(); i++){
+      if((*i)->path==where){
+        return *i;
       }
-        unexpectedIO(true, Text("Didnt find it\n"));
     }
-  return out;
+  return nullptr;
 }
-
+Folder* findFolder(Folder* root, Path where){
+  
+  //every single file in this folder
+  auto all=root->allChildFolders();
+  
+  for(auto i=all.begin(); i!=all.end(); i++){
+      if((*i)->path==where){
+        return *i;
+      }
+    }
+  return nullptr;
+}
 
 
 Computer::Computer(){
+  root=new Folder(Path(Text("")));
+  root->addFolder(new Folder(Path(Text("/bin"))));
+  root->addFolder(new Folder(Path(Text("/boot"))));
+  root->addFolder(new Folder(Path(Text("/dev"))));
+  root->addFolder(new Folder(Path(Text("/etc"))));
+  root->addFolder(new Folder(Path(Text("/home"))));
+  root->addFolder(new Folder(Path(Text("/lib"))));
+  root->addFolder(new Folder(Path(Text("/mnt"))));
+  root->addFolder(new Folder(Path(Text("/opt"))));
+  root->addFolder(new Folder(Path(Text("/proc"))));
+  root->addFolder(new Folder(Path(Text("/root"))));
+  root->addFolder(new Folder(Path(Text("/run"))));
+  root->addFolder(new Folder(Path(Text("/srv"))));
+  root->addFolder(new Folder(Path(Text("/sys"))));
+  root->addFolder(new Folder(Path(Text("/tmp"))));
+  root->addFolder(new Folder(Path(Text("/usr"))));
+  root->addFolder(new Folder(Path(Text("/var"))));
+  root->addFolder(new Folder(Path(Text("/lost+found"))));
+
   memory=Memory();
+
+  currentFolder=root;
+  
+  
   
 }
 
-void Computer::setRoot(Folder newRoot){
+void Computer::setRoot(Folder* newRoot){
   root=newRoot;
-  //get children
-  vector<File*> newFiles= root.allFilesAdr();
-  vector<Folder*> newFolders= root.allFoldersAdr();
-  
-  //add children to our map so we know where they are
-  for(int i=0; i<newFiles.size(); i++){
-    allFiles[newFiles[i]->path.wholeT()]=newFiles[i];
-        // cout << newFiles[i]->path.wholeT() << "\n";
-  }
-  for(int i=0; i<newFolders.size(); i++){
-    allFolders[newFolders[i]->path.wholeT()]=newFolders[i];
-        cout << newFolders[i]->path.wholeT() << "\n";
-        // cout << newFolders[i] << "\n";
-  }
-  
-  //we are starting from root
-  currentFolder=&root;
-  
 }
 
 
@@ -80,38 +91,36 @@ bool Computer::goTo(Text where){
   
   //go to parent
   if(where==".." || where=="../"){ 
+    
     //get parent path
     Path parentPath=currentFolder->path.getParent();
-    info(on, parentPath.wholeT()+"\n");
     
-    nextFolder=find(allFolders, parentPath.wholeT());
+    //find the parent
+    nextFolder=findFolder(root, Path(parentPath.wholeT()));
     currentFolder=nextFolder;
-    info(on, Text("going to folder: "+where));
+    
     return true;
   }else{
-  
+    //if the folder is in the current folder
+    
     // all folders in current folders
-    vector<Folder> currentChildren=currentFolder->allFolders();
+    vector<Folder*> currentChildren=currentFolder->allFolders();
+    
     for(auto i=currentChildren.begin(); i!=currentChildren.end(); i++){
+      
       //if the folder exists
-      if(where==i->name()){
-        Text name=i->path.wholeT();
-        nextFolder=find(allFolders, name);
+      if(where==(*i)->name()){
+        nextFolder=*i;
         currentFolder=nextFolder;
-        info(on, name+"\n");
-        info(on, nextFolder->path.wholeT()+"\n");
-        info(on, currentFolder->path.wholeT()+"\n");
-        info(on, Text("going to folder: "+where));
         return true;
       }
     } 
   }
-  error(on, Text("unable to locate folder: "+where));
+  error(on, Text("Unable to locate folder: \""+where+'"'));
   return false;
 }
 
 Folder Computer::getCurrentFolder(){
-
   return *currentFolder;
 }
 
@@ -135,7 +144,7 @@ bool Computer::deleteFile(Text name){
   
   //if deletion is successfull
   if(currentFolder->deleteFile(name)){
-    allFiles.erase(path.wholeT());
+    // allFiles.erase(path.wholeT());
     return true;
   }
   //deletion was not successfull
