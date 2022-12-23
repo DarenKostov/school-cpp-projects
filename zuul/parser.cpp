@@ -70,6 +70,9 @@ Command Parser::commandDefAt(int i){
   return *(allCommands.begin()+i);
 }
    
+vector<Command> Parser::getAllCommands(){
+  return allCommands;
+}
   
   
 
