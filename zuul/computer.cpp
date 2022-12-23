@@ -59,12 +59,19 @@ Computer::Computer(){
   //=bin
   Folder* bin=new Folder(Path(Text("/bin")));
   
-  
   //make all commands bins
   auto allCommands=parser.getAllCommands();
   for(auto i=allCommands.begin(); i!=allCommands.end(); i++)
     bin->addFile(new File(Path(Text("/bin/"+i->aliases[0])), randomText(100)));
   
+  //=tmp
+  Folder* tmp=new Folder(Path(Text("/tmp")));
+  
+  //fills /tmp with random junk
+  for(int i=0; i!=5; i++)
+    tmp->addFile(new File(Path(Text("/tmp/"+randomText(5))), randomText(100)));
+  for(int i=0; i!=5; i++)
+    tmp->addFolder(new Folder(Path(Text("/tmp/"+randomText(5)))));
       
   root=new Folder(Path(Text("")));
   root->addFolder(bin);
@@ -80,7 +87,7 @@ Computer::Computer(){
   root->addFolder(new Folder(Path(Text("/run"))));
   root->addFolder(new Folder(Path(Text("/srv"))));
   root->addFolder(new Folder(Path(Text("/sys"))));
-  root->addFolder(new Folder(Path(Text("/tmp"))));
+  root->addFolder(tmp);
   root->addFolder(new Folder(Path(Text("/usr"))));
   root->addFolder(new Folder(Path(Text("/var"))));
   root->addFolder(new Folder(Path(Text("/lost+found"))));
