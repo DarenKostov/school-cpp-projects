@@ -23,7 +23,7 @@ Folder::Folder(){
   date=time(nullptr);
 }
 
-Folder::~Folder(){  
+Folder::~Folder(){
   // emptyMe();
 }
 

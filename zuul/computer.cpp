@@ -466,6 +466,10 @@ void Computer::addAllCommands(){
     char alias[100][100]={"mkdir", "makedirectory", "mkfold"}, description[100]="Make an empty folder";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<folder path>";
     parser.addCommand(Command(3, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"pwd"}, description[100]="Print working directory";
+    char args[100][100]={"cmd"}, argsDescription[100]="none";
+    parser.addCommand(Command(1, alias, description, 1, args, argsDescription));
   }
   
 }

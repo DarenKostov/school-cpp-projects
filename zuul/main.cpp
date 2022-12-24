@@ -10,6 +10,8 @@ https://stackoverflow.com/questions/213761/what-are-some-uses-of-template-templa
 https://stackoverflow.com/questions/29360555/c-passing-an-array-directly-into-a-function-without-initializing-it-first
 https://stackoverflow.com/questions/4000358/is-possible-to-get-automatic-cast-from-user-defined-type-to-stdstring-using-co
 https://en.cppreference.com/w/cpp/chrono/c/time
+https://cplusplus.com/forum/beginner/4639/
+https://www.geeksforgeeks.org/typedef-in-cpp/
 
 https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-ansi-codes
 
@@ -99,16 +101,45 @@ using namespace std;
 
 
 //commands from user
-void execCD(Computer&);
-void execLS(Computer&);
-void execCAT(Computer&);
-void execTOUCH(Computer&);
-void execRM(Computer&);
+
+//typedef function pointer 
+typedef bool (*Exec)(Computer&);
+
+
+bool execCD(Computer&);
+bool execLS(Computer&);
+bool execCAT(Computer&);
+bool execTOUCH(Computer&);
+bool execRM(Computer&);
+bool execMKDIR(Computer&);
+bool execPWD(Computer&);
 
 
 int main(){
    
    bool isColorOn=true;
+   
+   //array of function pointers
+   Exec exec[]={
+      execCAT,
+      execLS,
+      execCD,
+      execTOUCH,
+      execRM,
+      execMKDIR,
+      execPWD,
+   };
+   //an array of what these functions actually are
+   Text execDef[]={
+      "cat",
+      "ls",
+      "cd",
+      "touch",
+      "rm",
+      "mkdir",
+      "pwd",
+   };
+   
    
    
    slowtalk(isColorOn, "Welcome to Zuul", Daren_talking);
@@ -125,7 +156,6 @@ int main(){
    
    do{
       
-      
       //[user@host pwd]#
       fasttalk(myComputer.on, "["+myComputer.getUser()+"@"+myComputer.getHost()+" ");
       if(myComputer.getCurrentFolder().path.len()==0)
@@ -139,21 +169,25 @@ int main(){
       
       //current command
       Text curCom=myComputer.parser.returnCommandT(0);
-      if(curCom=="cd")
-         execCD(myComputer);
-      else if(curCom=="ls")
-         execLS(myComputer);
-      else if(curCom=="cat")
-         execCAT(myComputer);
-      else if(curCom=="touch")
-         execTOUCH(myComputer);
-      else if(curCom=="rm")
-         execRM(myComputer);
-      else if(curCom=="exit")
-         break;
-      else
-         unexpectedIO(myComputer.on, "The command inputted is non existant.");
       
+      
+      
+      int commandAmount=sizeof(execDef)/sizeof(Text);
+      for(int i =0; i<(1+commandAmount); i++){
+         if(i==commandAmount){
+            unexpectedIO(myComputer.on, "The command inputted is non existant.");
+            break;
+         }
+         
+         if(curCom==execDef[i]){
+            if(exec[i](myComputer))
+               info(myComputer.on, "Action successful.");
+            else
+               info(myComputer.on, "Action unsuccessful.");
+         
+            break;
+         }
+      }
       
    }while(true);
    
@@ -165,12 +199,12 @@ int main(){
 
 
 //==commands from user
-void execCD(Computer& inComp){
+bool execCD(Computer& inComp){
    if(inComp.goTo(inComp.parser.returnCommandT(1)))
-      // execLS(inComp);
-      1==1;
+      return true;
+   return false;
 }
-void execLS(Computer& inComp){
+bool execLS(Computer& inComp){
    char spacer='\t';
    
    //long listing format
@@ -208,28 +242,64 @@ void execLS(Computer& inComp){
          fasttalk(inComp.on, (*i)->name() +spacer, fileColor);
    
    fasttalk(inComp.on, Text("\n"), Info);
+   
+   
+   //i cannot see a situation where this action would be unsuccessful
+   return true;
+   
 }
    
-void execCAT(Computer& inComp){
+bool execCAT(Computer& inComp){
    File* file=inComp.getFile(inComp.parser.returnCommandT(1));
-   if(file!=nullptr)
-   fasttalk(inComp.on, file->cont());
+   if(file!=nullptr){
+      fasttalk(inComp.on, file->cont()+'\n');
+      return true;
+   }
+   return false;
 }
 
-void execTOUCH(Computer& inComp){
+bool execTOUCH(Computer& inComp){
    Text name=inComp.parser.returnCommandT(1);
-   inComp.createFile(File(Path("/a/"+name)), name);
+   if(inComp.createFile(File(Path("/a/"+name)), name))
+      return true;
+   return false;
 }
-void execRM(Computer& inComp){
+
+
+bool execRM(Computer& inComp){
    
    Text flag=inComp.parser.returnCommandT(1);
+   
+   
+   //are we deleting a folder(-r) or a file(none)
+   //for simplicity -r works only on files
    if(flag=="-r")
-      inComp.deleteFolder(inComp.parser.returnCommandT(2));
+      if(inComp.deleteFolder(inComp.parser.returnCommandT(2))){
+         info(inComp.on, "Folder removed recursively.");
+         return true;
+      }
    else
-      inComp.deleteFile(flag);
-
-
+      if(inComp.deleteFile(flag)){
+         info(inComp.on, "Folder removed recursively.");
+         return true;
+      }
+   return false;
+   
+}
+bool execMKDIR(Computer& inComp){
+   Text name=inComp.parser.returnCommandT(1);
+   if(inComp.createFolder(Folder(Path("/a/"+name)), name))
+      return true;
+   return false;
 }
 
-
+bool execPWD(Computer& inComp){
+   
+   if(inComp.getCurrentFolder().path.len()==0)
+      fasttalk(inComp.on, "/\n");
+   else
+      fasttalk(inComp.on,inComp.getCurrentFolder().path.wholeT()+'\n');
+   
+   return true;
+}
 
