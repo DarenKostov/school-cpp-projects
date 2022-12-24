@@ -275,16 +275,17 @@ bool execRM(Computer& inComp){
    
    //are we deleting a folder(-r) or a file(none)
    //for simplicity -r works only on files
-   if(flag=="-r")
+   if(flag=="-r"){
       if(inComp.deleteFolder(inComp.parser.returnCommandT(2))){
          info(inComp.on, "Folder removed recursively.");
          return true;
       }
-   else
+   }else{
       if(inComp.deleteFile(flag)){
-         info(inComp.on, "Folder removed recursively.");
+         info(inComp.on, "File removed.");
          return true;
       }
+   }
    return false;
    
 }

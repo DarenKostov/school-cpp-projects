@@ -222,7 +222,7 @@ bool Computer::deleteFile(Text name){
     
     Folder* parentFolder=findFolder(root, Path(name).getParent());
     
-    //is the path given valid?
+    //is the path given valid? no?
     if(parentFolder==nullptr){
        unexpectedIO(on, "Parent path non-existant.");
        return false;
