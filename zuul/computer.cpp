@@ -57,8 +57,14 @@ Folder* findFolder(Folder* root, Path where){
 }
 
 
-Computer::Computer(){
-  //==parser
+Computer::Computer(Text User, Text Host){
+  //user and other stuff
+  user=User;
+  host=Host;
+  
+  
+  // ==parser
+  // parser=Parser();
   addAllCommands();
   
   //==file system
@@ -76,9 +82,10 @@ Computer::Computer(){
   
   //fills /tmp with random junk
   //be aware that rand() is called each time and it changes
-  for(int i=0; i!=rand()%5+5; i++)
+  for(int i=0; i<rand()%5+5; i++)
     tmp->addFile(new File(Path(Text("/tmp/"+randomText(5))), randomText(rand()%100)));
-  for(int i=0; i!=rand()%5+5; i++)
+
+  for(int i=0; i<rand()%5+5; i++)
     tmp->addFolder(new Folder(Path(Text("/tmp/"+randomText(5)))));
       
   root=new Folder(Path(Text("")));
@@ -368,11 +375,12 @@ Folder Computer::getFolder(Text name){
 
 
 
-
-
-
-
-
+Text Computer::getUser(){
+  return user;
+}
+Text Computer::getHost(){
+  return host;
+}
 
 
 

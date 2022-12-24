@@ -119,15 +119,24 @@ int main(){
    
    
    
-   Computer myComputer= Computer();
+   Computer myComputer= Computer(Text("DAK"), Text("001"));
    myComputer.on=true;
+     
    
-   
-   myComputer.parser.readLn();
-   
-   
-   
-   while(true){
+   do{
+      
+      
+      //[user@host pwd]#
+      fasttalk(myComputer.on, "["+myComputer.getUser()+"@"+myComputer.getHost()+" ");
+      if(myComputer.getCurrentFolder().path.len()==0)
+         fasttalk(myComputer.on, "/");
+      else
+         fasttalk(myComputer.on,myComputer.getCurrentFolder().path.wholeT());
+      fasttalk(myComputer.on,Text("]# "));
+      
+      
+      // myComputer.parser.readLn();
+      
       //current command
       Text curCom=myComputer.parser.returnCommandT(0);
       if(curCom=="cd")
@@ -145,9 +154,8 @@ int main(){
       else
          unexpectedIO(myComputer.on, "The command inputted is non existant.");
       
-      myComputer.parser.readLn();
       
-   }
+   }while(true);
    
    
    cout << "END\n";
@@ -205,7 +213,7 @@ void execLS(Computer& inComp){
 void execCAT(Computer& inComp){
    File* file=inComp.getFile(inComp.parser.returnCommandT(1));
    if(file!=nullptr)
-   fasttalk(inComp.on, file->cont()+'\n');
+   fasttalk(inComp.on, file->cont());
 }
 
 void execTOUCH(Computer& inComp){
@@ -213,7 +221,14 @@ void execTOUCH(Computer& inComp){
    inComp.createFile(File(Path("/a/"+name)), name);
 }
 void execRM(Computer& inComp){
-   inComp.deleteFile(inComp.parser.returnCommandT(1));
+   
+   Text flag=inComp.parser.returnCommandT(1);
+   if(flag=="-r")
+      inComp.deleteFolder(inComp.parser.returnCommandT(2));
+   else
+      inComp.deleteFile(flag);
+
+
 }
 
 

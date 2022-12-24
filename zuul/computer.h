@@ -31,7 +31,7 @@ class Computer{
     //=init
         
     //computer
-    Computer();
+    Computer(Text, Text);
   
     //sets up the folder tree
     void setRoot(Folder*);
@@ -65,6 +65,12 @@ class Computer{
     //changes your current folder to from name or path
     bool goTo(Text);
     
+  
+    //gives you the user's name
+    Text getUser();
+    //gives you the host's name
+    Text getHost();
+  
     //the parser manages itself, no need to be private
     //command parser
     Parser parser;  
@@ -73,11 +79,19 @@ class Computer{
     bool on;
   
   private:
+    //the user
+    Text user;
+    //the host
+    Text host;
     
+    //where are we now
     Folder* currentFolder;
+    //the ram
     Memory memory;
     // root folder (not root user folder)
     Folder* root;
+    
+    //some functions
     void addAllCommands();
 };
 

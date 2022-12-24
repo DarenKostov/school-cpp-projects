@@ -23,8 +23,8 @@ Folder::Folder(){
   date=time(nullptr);
 }
 
-Folder::~Folder(){
-  emptyMe();
+Folder::~Folder(){  
+  // emptyMe();
 }
 
 Folder::Folder(Path initPath){
@@ -131,6 +131,7 @@ bool Folder::deleteFolder(Text name){
   for(auto i=folders.begin(); i!=folders.end(); i++){
     //is the file there, if so remove it
     if(name==(*i)->path.name()){
+      (**i).emptyMe();
       delete *i;
       folders.erase(i);
       //update time, we modified the folder
@@ -218,7 +219,7 @@ void Folder::emptyMe(){
 
   //delete all folders, recursevely
   for(auto i=folders.begin(); i!=folders.end(); i++){
-    //make sure its empty when deleting it
+    //make sure its empty when deleting it | lets not do that, causes multiple delete sequences | nvm lets actually do this and fix whats actually the problem
     (*i)->emptyMe();
     delete *i;
     folders.erase(i);   
