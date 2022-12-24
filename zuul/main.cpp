@@ -135,7 +135,7 @@ int main(){
       fasttalk(myComputer.on,Text("]# "));
       
       
-      // myComputer.parser.readLn();
+      myComputer.parser.readLn();
       
       //current command
       Text curCom=myComputer.parser.returnCommandT(0);

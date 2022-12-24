@@ -406,7 +406,7 @@ void Computer::addAllCommands(){
   }{
     char alias[100][100]={"rm", "remove"}, description[100]="Deletes a file or a folder";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="[flags] <file path>";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
   }{
     char alias[100][100]={"man", "manual"}, description[100]="Shows detals on how to use a program.";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<program>";
