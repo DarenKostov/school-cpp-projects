@@ -151,6 +151,23 @@ bool Computer::goTo(Text where){
     currentFolder=nextFolder;
     
     return true;
+  }else if(where[0]=='/'){
+    //if we are give full path
+  
+      //get path
+      Folder* folder=findFolder(root, Path(where));
+    
+      //is the path given valid? no?
+      if(folder==nullptr){
+        error(on, Text("Unable to locate folder: \""+where+'"'));
+        return false;
+      }
+      //yes?
+      currentFolder=folder;
+      return true;
+    
+    
+  
   }else{
     //if the folder is in the current folder
     
@@ -165,7 +182,25 @@ bool Computer::goTo(Text where){
         currentFolder=nextFolder;
         return true;
       }
-    } 
+    }
+    
+    //if the destinations is in the children
+    
+    //make the path
+    Path path=Path(currentFolder->path.wholeT()+'/'+where);
+    
+    //get path
+    Folder* folder=findFolder(currentFolder, path);
+  
+    //does this path exist in any of the children? no?
+    if(folder==nullptr){
+      error(on, Text("Unable to locate folder: \""+path.wholeT()+'"'));
+      return false;
+    }
+    //yes?
+    currentFolder=folder;
+    return true; 
+
   }
   error(on, Text("Unable to locate folder: \""+where+'"'));
   return false;
