@@ -505,6 +505,10 @@ void Computer::addAllCommands(){
     char alias[100][100]={"pwd"}, description[100]="Print working directory";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
     parser.addCommand(Command(1, alias, description, 1, args, argsDescription));
+  }{
+    char alias[100][100]={"clear", "cl"}, description[100]="Clears the screen, unlike other commands this is instant.";
+    char args[100][100]={"cmd"}, argsDescription[100]="none";
+    parser.addCommand(Command(2, alias, description, 1, args, argsDescription));
   }
   
 }

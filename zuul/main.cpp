@@ -113,7 +113,7 @@ bool execTOUCH(Computer&);
 bool execRM(Computer&);
 bool execMKDIR(Computer&);
 bool execPWD(Computer&);
-
+bool execCLEAR(Computer&);
 
 int main(){
    
@@ -128,6 +128,7 @@ int main(){
       execRM,
       execMKDIR,
       execPWD,
+      execCLEAR,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -138,6 +139,7 @@ int main(){
       "rm",
       "mkdir",
       "pwd",
+      "clear",
    };
    
    
@@ -300,6 +302,12 @@ bool execPWD(Computer& inComp){
    else
       fasttalk(inComp.on,inComp.getCurrentFolder().path.wholeT()+'\n');
    
+   return true;
+}
+
+bool execCLEAR(Computer& inComp){
+   for(int i=0; i<1000; i++)
+      cout << '\n' << flush;   
    return true;
 }
 
