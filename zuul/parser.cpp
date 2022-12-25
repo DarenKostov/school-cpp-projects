@@ -174,31 +174,69 @@ bool Parser::setCurrentCommand(Text input){
 //fix with "what"
 void Parser::fixArgs(Text* what, int amount){
   
-  for(int i=0; i<amount; i++){//loop through all of the args definitions (if its int, bool, str, ect)
-      
-      char cmd[5]="cmd";
-      char str[5]="str";
-      char txt[5]="txt";
-      char iNt[5]="int";
-      char bOol[5]="bool";
-      char empty[1]="";
+  for(int i=0, j=0; i<amount; i++, j++){//loop through all of the args definitions (if its int, bool, str, ect)
 
-      if(currentCommandDef->args[i]==cmd){
+      if(currentCommandDef->args[i]=="cmd"){
         commandText[i]=currentCommandDef->aliases[0];
-      }else if(currentCommandDef->args[i]==str){
+      }else if(currentCommandDef->args[i]=="str"){
         //do nothing, we arent using strings
-      }else if(currentCommandDef->args[i]==txt){
+      }else if(currentCommandDef->args[i]=="txt"){
         //do nothing it's already a Text
-        commandText[i]=what[i];
-      }else if(currentCommandDef->args[i]==iNt){
+        commandText[i]=what[j];
+      }else if(currentCommandDef->args[i]=="int"){
         //convert to int
-        commandText[i]=what[i];
-      }else if(currentCommandDef->args[i]==bOol){
+        commandText[i]=what[j];
+      }else if(currentCommandDef->args[i]=="bool"){
         //convert to bool
-        commandText[i]=what[i];
-      }else
-        commandText[i]=empty; 
+        commandText[i]=what[j];
+      }else if(currentCommandDef->args[i]=="''"){
+        //take in whatever is in the quotes
+      
+        //make sure we start with empty Text
+        commandText[i]="";
+      
+        //if we start with quotes
+        if(what[j][0]=='\''){
+          
+            //we end with quites as well?
+            if(what[j][what[j].len()-1]=='\''){ 
+              //yes?
+              //remove first and last charcter and onto the next argument
+              for(int k=1; k<what[j].len()-1; k++)
+                commandText[i]+=what[j];
+              continue;
+            }
+        
+        
+          //no?
+          //loop until we find the ending quotes
+          while(true){
+          
+            //next word
+            j++;  
+          
+            //we end with quites?
+            if(what[j][what[j].len()-1]=='\''){ 
+              //yes?
+              //add the word (withut the ending ') to our argument and onto the next argument 
+              for(int k=1; k<what[j].len()-1; k++)
+                commandText[i]+=what[j];
+              break;
+            }
 
+            //no? add the entire word to the argument and onto the next word
+            for(int k=1; k<what[j].len()-1; k++)
+              commandText[i]+=what[j];
+          }
+        
+        
+        }
+    
+      }else
+        commandText[i]=""; 
+
+    
+    
   }
   
 }
