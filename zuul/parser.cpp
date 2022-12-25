@@ -215,6 +215,8 @@ void Parser::fixArgs(Text* what, int amount){
           for(int k=1; k<what[j].len(); k++)
             commandText[i]+=what[j][k];
         
+          //THIS WILL CAUSE  A SEGFAULT WHEN THE USER DOEST END WITH A QUOTE
+          //BUT THIS IS AN INTENDED FEATURE REST ASSURED
           while(true){
           
           
