@@ -316,10 +316,47 @@ bool execCLEAR(Computer& inComp){
 }
 
 bool execGREP(Computer& inComp){
-   fasttalk(inComp.on, inComp.parser.returnCommandT(0)+'\n');   
-   fasttalk(inComp.on, inComp.parser.returnCommandT(1)+'\n');   
-   fasttalk(inComp.on, inComp.parser.returnCommandT(2)+'\n');   
+   //get the file
+   File* file=inComp.getFile(inComp.parser.returnCommandT(2));
+   if(file==nullptr)
+      return false;
    
+   //get the search term
+   Text pattern=inComp.parser.returnCommandT(1);
+   
+   int lineNumber=1;
+   Text currentLine;
+   
+   //design copied from ./parser.cpp from readLn   
+   for(long unsigned i=0; true; i++){
+      currentLine+=file->cont()[i];
+      
+      if(file->cont()[i]=='\n'){
+         //we are the end of the line
+         
+         //does the line match the patters?
+         char* cmpr=strstr(currentLine.val(), pattern.val());
+         if(cmpr!=nullptr)
+            fasttalk(inComp.on, intToText(lineNumber)+": "+currentLine);
+
+         //clear the current line, we are goig to the necxr line
+         currentLine="";
+      }
+      //are we at the end of the file?
+      if(i==file->cont().len()-1){
+         
+         //does the line match the patters?
+         char* cmpr=strstr(currentLine.val(), pattern.val());
+         if(cmpr!=nullptr)
+            fasttalk(inComp.on, intToText(lineNumber)+": "+currentLine);
+         
+         //end with new line just in case
+         fasttalk(inComp.on, '\n');
+         break;
+         
+         
+      }
+   }      
    
    return true;
 }
