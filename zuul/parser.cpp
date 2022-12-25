@@ -203,14 +203,23 @@ void Parser::fixArgs(Text* what, int amount){
               //yes?
               //remove first and last charcter and onto the next argument
               for(int k=1; k<what[j].len()-1; k++)
-                commandText[i]+=what[j];
+                commandText[i]+=what[j][k];
               continue;
             }
         
         
+        
           //no?
-          //loop until we find the ending quotes
+          //add the word (without the starting "'") and loop until we find the ending quotes 
+        
+          for(int k=1; k<what[j].len(); k++)
+            commandText[i]+=what[j][k];
+        
           while(true){
+          
+          
+            //the words were initially separated by spaces
+            commandText[i]+=" ";
           
             //next word
             j++;  
@@ -219,14 +228,13 @@ void Parser::fixArgs(Text* what, int amount){
             if(what[j][what[j].len()-1]=='\''){ 
               //yes?
               //add the word (withut the ending ') to our argument and onto the next argument 
-              for(int k=1; k<what[j].len()-1; k++)
-                commandText[i]+=what[j];
+              for(int k=0; k<what[j].len()-1; k++)
+                commandText[i]+=what[j][k];
               break;
             }
 
             //no? add the entire word to the argument and onto the next word
-            for(int k=1; k<what[j].len()-1; k++)
-              commandText[i]+=what[j];
+            commandText[i]+=what[j];
           }
         
         

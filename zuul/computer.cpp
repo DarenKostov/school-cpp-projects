@@ -88,6 +88,12 @@ Computer::Computer(Text User, Text Host){
   for(int i=0; i<rand()%5+5; i++)
     tmp->addFolder(new Folder(Path(Text("/tmp/"+randomText(5)))));
       
+  //files in /tmp for testing 
+   
+  tmp->addFile(new File(Path(Text("/tmp/file001")), Text("this is a file\nthat contains multiple\nlines")));
+  
+  
+  
   root=new Folder(Path(Text("")));
   root->addFolder(bin);
   root->addFolder(new Folder(Path(Text("/boot"))));
@@ -479,7 +485,7 @@ void Computer::addAllCommands(){
     parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
   }{
     char alias[100][100]={"grep"}, description[100]="Print lines from a file that match a pattern.";
-    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<pattern> <file path>";
+    char args[100][100]={"cmd", "''", "txt"}, argsDescription[100]="<pattern> <file path>";
     parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
   }{
     char alias[100][100]={"tree"}, description[100]="Print a tree of all child folders/files";

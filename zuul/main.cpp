@@ -114,6 +114,7 @@ bool execRM(Computer&);
 bool execMKDIR(Computer&);
 bool execPWD(Computer&);
 bool execCLEAR(Computer&);
+bool execGREP(Computer&);
 
 int main(){
    
@@ -129,6 +130,7 @@ int main(){
       execMKDIR,
       execPWD,
       execCLEAR,
+      execGREP,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -140,6 +142,7 @@ int main(){
       "mkdir",
       "pwd",
       "clear",
+      "grep",
    };
    
    
@@ -309,6 +312,15 @@ bool execPWD(Computer& inComp){
 bool execCLEAR(Computer& inComp){
    for(int i=0; i<1000; i++)
       cout << '\n' << flush;   
+   return true;
+}
+
+bool execGREP(Computer& inComp){
+   fasttalk(inComp.on, inComp.parser.returnCommandT(0)+'\n');   
+   fasttalk(inComp.on, inComp.parser.returnCommandT(1)+'\n');   
+   fasttalk(inComp.on, inComp.parser.returnCommandT(2)+'\n');   
+   
+   
    return true;
 }
 
