@@ -4,6 +4,7 @@
 
    sources used:
    https://www.delftstack.com/howto/cpp/how-to-convert-int-to-char-array-in-cpp/
+   https://en.cppreference.com/w/cpp/utility/to_chars
    
 */
 #ifndef q
@@ -104,9 +105,11 @@ Text randomTextNumbers(int size){
 }
 
 
-
 Text intToText(int in){
    char outputChar[13];
+   //it leaves of a U (stands for unsigned perhaps) for some; should fix in the future
+   //sometimes random characters as well... its for the "very old computer" esthetic
    to_chars(outputChar, outputChar+12, in);
    return Text(outputChar);
 }
+

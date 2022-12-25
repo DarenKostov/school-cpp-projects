@@ -339,8 +339,9 @@ bool execGREP(Computer& inComp){
          if(cmpr!=nullptr)
             fasttalk(inComp.on, intToText(lineNumber)+": "+currentLine);
 
-         //clear the current line, we are goig to the necxr line
+         //clear the current line, we are goig to the next line
          currentLine="";
+         lineNumber++;
       }
       //are we at the end of the file?
       if(i==file->cont().len()-1){
