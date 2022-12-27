@@ -66,3 +66,6 @@ class Node{
     //what are we storing?
     T* value;
 };
+
+
+#include "./node.tpp"

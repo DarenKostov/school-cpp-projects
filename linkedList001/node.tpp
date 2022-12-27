@@ -2,7 +2,6 @@
   Daren Kostov
 */
 
-#include "./node.h"
 
 template<class T>
 Node<T>::Node(T* arg){
