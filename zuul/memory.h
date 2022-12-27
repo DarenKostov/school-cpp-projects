@@ -42,12 +42,16 @@ class Memory{
     //gives you how much of the memory isnt used
     long getFree();
   
-    // long long unsigned capacity; //how much bytes does the memory store, max is 16384 PB
-    long unsigned capacity; //how much bytes does the memory store, max is 4 GB
   
   private:
     std::vector<File> files;
-    // std::vector<Folder> folders
+    //how much bytes does the memory store, max is 16384 PB
+    // long long unsigned capacity; 
+  
+    //how much bytes does the memory store, max is 4 GB
+    long unsigned capacity;
+
+    //how mush of the memory is used
     long usage;
   
 };

@@ -57,7 +57,7 @@ class Computer{
     //get a copy of a folder with name or path
     Folder getFolder(Text);
   
-    //=currentFolder
+    //=navigation
     
     //gives you a copy of the current folder
     Folder getCurrentFolder();
@@ -65,12 +65,33 @@ class Computer{
     //changes your current folder to from name or path
     bool goTo(Text);
     
-  
     //gives you the user's name
     Text getUser();
     //gives you the host's name
     Text getHost();
+
+    //=ram
+
+    //gives you how mych of the ram us used
+    long getRamUsage();
+
+    //gives you how much of the ram isnt used
+    long getRamFree();
+
+    //gives you the total amount of Ram
+    long getRamTotal();
+
+    //copies a FILE (given path)(folders are not supporet yet) to the ram
+    bool copyToRam(Text);
   
+    //pastes a file from Ram given its id to given path
+    bool pasteFromRam(int, Text);
+
+    //prints at most 10 items that are in the ram with their coresponding id
+    void printItemsInRam(); 
+
+
+    
     //the parser manages itself, no need to be private
     //command parser
     Parser parser;  
