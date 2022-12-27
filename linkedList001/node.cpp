@@ -19,26 +19,24 @@ Node<T>::~Node(){
   // delete this;
 }
 
+//=getters
+
 template<class T>
-Node<T>* Node<T>::getNext(){
+Node<T>* Node<T>::getNext() const{
   return next;
 }
 
 template<class T>
-Node<T>* Node<T>::getPrev(){
+Node<T>* Node<T>::getPrev() const{
   return previous;
 }
 
-
 template<class T>
-T* Node<T>::val(){
+T* Node<T>::val() const{
   return value;
 }
 
-template<class T>
-T* Node<T>::getValue(){
-  return val();
-}
+//=setters
 
 template<class T>
 void Node<T>::setNext(Node* arg){
@@ -49,6 +47,8 @@ template<class T>
 void Node<T>::setPrev(Node* arg){
   previous=arg;
 }
+
+//=adders
 
 template<class T>
 void Node<T>::addNext(Node* in){
@@ -62,15 +62,21 @@ void Node<T>::addNext(Node* in){
   Node* three=next;
   
   
-  //set the 3s prev to be the 2
-  three->setPrev(two);
-  //set the 2s prev to be the 1
-  two->setPrev(one);
+  if(one!=nullptr)
+    //set the 1s next to be the 2
+    one->setNext(two);
   
-  //set the 1s next to be the 2
-  one->setNext(two);
-  //set the 2s next to be the 3
-  two->setNext(three);
+  //why would we add a nullptr anyway? who does this
+  if(two!=nullptr){
+    //set the 2s prev to be the 1
+    two->setPrev(one);
+    //set the 2s next to be the 3
+    two->setNext(three);
+  }
+    
+  if(three!=nullptr)
+    //set the 3s prev to be the 2
+    three->setPrev(two);
   
 }
 
@@ -86,42 +92,74 @@ void Node<T>::addPrev(Node* in){
   Node* two=in;
   Node* one=this;
   
-  //set the 3s next to be the 2
-  three->setNext(two);
-  //set the 2s next to be the 1
-  two->setNext(one);
+  if(three!=nullptr)
+    //set the 3s next to be the 2
+    three->setNext(two);
   
-  //set the 1s prev to be the 2
-  one->setPrev(two);
-  //set the 2s prev to be the 3
-  two->setPrev(three);
+  //why would we add a nullptr anyway? who does this
+  if(two!=nullptr){
+    //set the 2s next to be the 1
+    two->setNext(one);
+    //set the 2s prev to be the 3
+    two->setPrev(three);
+  }
+  
+  
+  if(one!=nullptr)
+    //set the 1s prev to be the 2
+    one->setPrev(two);
   
 }
 
+//deleters
 
 template<class T>
-void Node<T>::removeMe(){
+Node<T>* Node<T>::removeMe(){
   //
   //(1)=(3)
   //  
   
+  Node* output=nullptr;
+  
   Node* one=previous;
   Node* three=next;
   
-  //set the 1s next to be the 3
-  one->setNext(three);
-  //set the 3s prev to be the 1
-  three->setPrev(one);
+  
+  //we are not HEAD
+  if(one!=nullptr)
+    //set the 1s next to be the 3
+    one->setNext(three);
+  //we are HEAD
+  else
+    output=three;
+  
+  
+  //we are not TAIL
+  if(three!=nullptr)
+    //set the 3s prev to be the 1
+    three->setPrev(one);
+  //we are TAIL and HEAD
+  else if(one==nullptr)
+    output=nullptr;
+  //we are TAIL
+  else
+    output=one;
   
   //evolke deconstructor
   delete this;  
   
+  return output;
 }
 
 //=aliases
 
 template<class T>
-Node<T>* Node<T>::getPrevious(){
+T* Node<T>::getValue() const{
+  return val();
+}
+
+template<class T>
+Node<T>* Node<T>::getPrevious() const{
   return getPrev();
 }
 
@@ -148,7 +186,7 @@ void Node<T>::addPrevious(Node* in){
 }
 
 template<class T>
-void Node<T>::deleteMe(){
-  removeMe();
+Node<T>* Node<T>::deleteMe(){
+  return removeMe();
 }
 

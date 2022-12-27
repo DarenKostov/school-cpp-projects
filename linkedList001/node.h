@@ -21,15 +21,15 @@ class Node{
     //=getters
   
     //gives you the next Node in the linked list
-    Node* getNext();
+    Node* getNext()const;
     
     //gives you the previous Node in the linked list
-    Node* getPrev();
-    Node* getPrevious();  
+    Node* getPrev()const;
+    Node* getPrevious()const;  
 
     //gives you the value stored i this Node;
-    T* getValue();
-    T* val();
+    T* getValue()const;
+    T* val()const;
 
     //=setters | WARNING these will break the linked list, dont use unless you know what you are doing, use the adders instead
     
@@ -54,9 +54,9 @@ class Node{
   
     //=deleters
     
-    //deletes this Node
-    void removeMe();
-    void deleteMe();
+    //deletes this Node | returns the new HEAD if it was the HEAD, returns the new TAIL if it was the TAIL, returns nullptr if it was neither or both
+    Node* removeMe();
+    Node* deleteMe();
     
     private:
     //what is the next Node?
