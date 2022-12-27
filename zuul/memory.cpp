@@ -57,6 +57,14 @@ Text Memory::AllItems(){
 }
 
 File Memory::getFile(int i){
+  if(files.size()==1)
+    return files[0];
+
+  //black magic, should break the code if envoked (why try to access memory when its empty anyway?)
+  if(files.size()==0)
+    return *(File*)nullptr;
+
+
   //make sure we dont go over the limit
   return files[i%(files.size()-1)];
 }
@@ -70,3 +78,6 @@ long Memory::getFree(){
   return capacity-usage;
 }
 
+bool Memory::isNotEmpty(){
+  return files.size()!=0;
+}
