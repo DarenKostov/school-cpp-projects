@@ -412,10 +412,6 @@ Folder Computer::getFolder(Text name){
     return *output;
 }
 
-
-
-
-
 Text Computer::getUser(){
   return user;
 }
@@ -423,7 +419,43 @@ Text Computer::getHost(){
   return host;
 }
 
+long Computer::getRamUsage(){
+  return memory.getUsage()+100;
+}
 
+long Computer::getRamFree(){
+  return memory.getFree();
+}
+
+long Computer::getRamTotal(){
+  return memory.getUsage()+memory.getFree()+100;
+}
+
+bool Computer::copyToRam(Text path){
+  File* target=getFile(path);
+
+  //wrong input?
+  if(target==nullptr)
+    return false;
+
+  if(!memory.addFile(*target)){
+    error(on, "Not enough space in the ram, proceeding will cause the system to freeze");
+    return false;
+}
+  
+  return true;
+}
+
+bool Computer::pasteFromRam(int id, Text path){
+  File target=memory.getFile(id);
+
+  return createFile(target, path);
+}
+
+
+void Computer::printItemsInRam(){
+  fasttalk(on, memory.AllItems());
+}
 
 
 void Computer::addAllCommands(){
@@ -468,8 +500,8 @@ void Computer::addAllCommands(){
   }{
   //doesnt copy to the buffer, its the buffer thats copied into
     char alias[100][100]={"cb", "copybuffer", "copybank"}, description[100]="Shows you what files you have in the copy buffer.";
-    char args[100][100]={"cmd"}, argsDescription[100]="none";
-    parser.addCommand(Command(3, alias, description, 1, args, argsDescription));
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="[flags]";
+    parser.addCommand(Command(3, alias, description, 2, args, argsDescription));
   }
   {
     char alias[100][100]={"ssh", "secureshell"}, description[100]="Secure Shell";

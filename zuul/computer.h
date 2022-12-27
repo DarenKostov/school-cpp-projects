@@ -84,14 +84,12 @@ class Computer{
     //copies a FILE (given path)(folders are not supporet yet) to the ram
     bool copyToRam(Text);
   
-    //pastes a file from Ram given its id to given path
+    //pastes a file from Ram given its id to given path, the id loops to the beginign if you give one thats not there
     bool pasteFromRam(int, Text);
 
     //prints at most 10 items that are in the ram with their coresponding id
     void printItemsInRam(); 
 
-
-    
     //the parser manages itself, no need to be private
     //command parser
     Parser parser;  
@@ -100,6 +98,10 @@ class Computer{
     bool on;
   
   private:
+  
+    //this must be envoked each time an action is performed, be it sucessfull or unsucessfull
+    void justPerformedATask();
+  
     //the user
     Text user;
     //the host

@@ -39,7 +39,7 @@ class Memory{
     //gives you how much of the memory is used
     long getUsage();
     
-    //gives you how much of the memory isnt used
+    //gives you how much of the memory isnt used | I know the name isnt really gramatically correct
     long getFree();
   
   
