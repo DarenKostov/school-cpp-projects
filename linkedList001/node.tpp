@@ -3,6 +3,7 @@
 */
 
 
+
 template<class T>
 Node<T>::Node(T* arg){
   value=arg;
@@ -50,7 +51,7 @@ void Node<T>::setPrev(Node* arg){
 //=adders
 
 template<class T>
-void Node<T>::addNext(Node* in){
+Node<T>* Node<T>::addNext(Node* in){
   //     |
   //     v
   //(1)=(2)=(3)
@@ -60,7 +61,7 @@ void Node<T>::addNext(Node* in){
   Node* two=in;
   Node* three=next;
   
-  
+  //why would we be a nullptr? how would you even call this function??
   if(one!=nullptr)
     //set the 1s next to be the 2
     one->setNext(two);
@@ -76,24 +77,30 @@ void Node<T>::addNext(Node* in){
   if(three!=nullptr)
     //set the 3s prev to be the 2
     three->setPrev(two);
-  
+  //we were the HEAD
+  else
+    return two;
+  //we are not the HEAD
+  return this;
 }
 
 
 template<class T>
-void Node<T>::addPrev(Node* in){
+Node<T>* Node<T>::addPrev(Node* in){
   //     |
   //     v
   //(3)=(2)=(1)
   //  
   
-  Node* three=previous;
-  Node* two=in;
   Node* one=this;
+  Node* two=in;
+  Node* three=previous;
   
-  if(three!=nullptr)
-    //set the 3s next to be the 2
-    three->setNext(two);
+  //why would we be a nullptr? how would you even call this function??
+  if(one!=nullptr)
+    //set the 1s prev to be the 2
+    one->setPrev(two);
+
   
   //why would we add a nullptr anyway? who does this
   if(two!=nullptr){
@@ -103,11 +110,15 @@ void Node<T>::addPrev(Node* in){
     two->setPrev(three);
   }
   
+  if(three!=nullptr)
+    //set the 3s next to be the 2
+    three->setNext(two);
+  //we were the TAIL
+  else
+    return two;
   
-  if(one!=nullptr)
-    //set the 1s prev to be the 2
-    one->setPrev(two);
-  
+  //we are not the TAIL
+  return this;
 }
 
 //deleters
@@ -163,25 +174,25 @@ Node<T>* Node<T>::getPrevious() const{
 }
 
 template<class T>
-void Node<T>::addForward(Node* in){
-  addNext(in);
+Node<T>* Node<T>::addForward(Node* in){
+  return addNext(in);
 }
 template<class T>
-void Node<T>::addAfter(Node* in){
-  addNext(in);
+Node<T>* Node<T>::addAfter(Node* in){
+  return addNext(in);
 }
 
 template<class T>
-void Node<T>::addBackwards(Node* in){
-  addPrev(in);
+Node<T>* Node<T>::addBackwards(Node* in){
+  return addPrev(in);
 }
 template<class T>
-void Node<T>::addBefore(Node* in){
-  addPrev(in);
+Node<T>* Node<T>::addBefore(Node* in){
+  return addPrev(in);
 }
 template<class T>
-void Node<T>::addPrevious(Node* in){
-  addPrev(in);
+Node<T>* Node<T>::addPrevious(Node* in){
+  return addPrev(in);
 }
 
 template<class T>

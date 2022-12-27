@@ -41,16 +41,16 @@ class Node{
   
     //=adders
   
-    //adds a Node after this Node, returns true for success
-    void addNext(Node*);
-    void addForward(Node*);
-    void addAfter(Node*);
+    //adds a Node after this Node, return the new TAIL if it was the TAIL, returns itself if not
+    Node* addNext(Node*);
+    Node* addForward(Node*);
+    Node* addAfter(Node*);
   
-    //adds a Node before this Node, returns true for success
-    void addPrev(Node*);
-    void addBackwards(Node*);
-    void addBefore(Node*);
-    void addPrevious(Node*);
+    //adds a Node before this Node, returns the new HEAD if it was the HEAD, returns itself if not
+    Node* addPrev(Node*);
+    Node* addBackwards(Node*);
+    Node* addBefore(Node*);
+    Node* addPrevious(Node*);
   
     //=deleters
     
@@ -67,5 +67,5 @@ class Node{
     T* value;
 };
 
-
 #include "./node.tpp"
+
