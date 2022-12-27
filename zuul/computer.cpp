@@ -90,7 +90,7 @@ Computer::Computer(Text User, Text Host){
       
   //files in /tmp for testing 
    
-  tmp->addFile(new File(Path(Text("/tmp/file001")), Text("this is a file\nthat contains multiple\nlines")));
+  tmp->addFile(new File(Path(Text("/tmp/file001")), Text("this is a file\nthat contains multiple\nlines\nand...\nthat's the file\n:/")));
   
   
   

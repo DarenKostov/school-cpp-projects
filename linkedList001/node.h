@@ -1,6 +1,11 @@
 /*
   Daren Kostov
   a Node class- the backbone of a linked list
+
+  Note:
+  you can make a linked list of multiple data types, just like arrays in JS!
+
+
 */
 
 
@@ -10,7 +15,7 @@ class Node{
     //create a Node with a value
     Node(T*);
     
-    //destroy a Node
+    //destroy a Node | WARNING this will break your linked list, dont use it unless you know what youre doing, use the deleteMe() instead
     ~Node();
     
     //=getters
@@ -19,31 +24,39 @@ class Node{
     Node* getNext();
     
     //gives you the previous Node in the linked list
-    Node* getPrevious();  
     Node* getPrev();
+    Node* getPrevious();  
 
     //gives you the value stored i this Node;
     T* getValue();
     T* val();
 
-    //=setters
+    //=setters | WARNING these will break the linked list, dont use unless you know what you are doing, use the adders instead
     
-    //adds a Node after this Node
-    bool addForward(Node*);
-    bool addAfter(Node*);
-    bool addNext(Node*);
+    //sets the next Node
+    void setNext(Node*);
+    
+    //sets the previous Node
+    void setPrev(Node*);
   
-    //adds a Node before this Node
-    bool addBackwards(Node*);
-    bool addBefore(Node*);
-    bool addPrevious(Node*);
-    bool addPrev(Node*);
+    //=adders
+  
+    //adds a Node after this Node, returns true for success
+    void addNext(Node*);
+    void addForward(Node*);
+    void addAfter(Node*);
+  
+    //adds a Node before this Node, returns true for success
+    void addPrev(Node*);
+    void addBackwards(Node*);
+    void addBefore(Node*);
+    void addPrevious(Node*);
   
     //=deleters
     
     //deletes this Node
-    void deleteMe();
     void removeMe();
+    void deleteMe();
     
     private:
     //what is the next Node?
