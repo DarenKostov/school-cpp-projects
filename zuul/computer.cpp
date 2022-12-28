@@ -454,6 +454,8 @@ bool Computer::copyToRam(Text path){
 
 bool Computer::pasteFromRam(int id, Text path){
 
+  cout << "a\n";
+
   if(!memory.isNotEmpty()){
     error(on, "Memory is empty.");
     return false;
@@ -480,11 +482,13 @@ bool Computer::pasteFromRam(int id, Text path){
     cout << "2;\n" << flush;
   }else{
   
+  cout << "b\n";
     //chage the name
     target=File("/a/"+Path("/a/"+path).name(), target.cont());
 
+  cout << "c\n";
     //remove the name from the path
-    path=Path(path).getParent().wholeT();
+    path=Path("/a/"+path).getParent().wholeT();
   }
 
     cout << "3;\n" << flush;

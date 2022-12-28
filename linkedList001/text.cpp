@@ -226,6 +226,9 @@ bool Text::operator==(Text input){
 //function getters
 
 char& Text::operator[](int i) const{
+  if(i>=length || i<0)
+    return text[length];
+
   return text[i%length];
 }
 
