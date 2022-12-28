@@ -120,7 +120,9 @@ bool execPASTE(Computer&);
 bool execCOPYBUFFER(Computer&);
 
 int main(){
-   
+   //change seed
+   srand(time(0));
+
    bool isColorOn=true;
    
    //array of function pointers
@@ -163,8 +165,23 @@ int main(){
    fasttalk(isColorOn, "\n\n  ...I hope...\n\n", Daren_thinking);
    
    
+   // fasttalk(isColorOn, "Before the game begins I want to apologize for this being the most broken \"operating system\" out there.\n", Daren_thinking);
+   // fasttalk(isColorOn, "When do I give the full path? When do I not? You gotta look at the code closely to understand.\n", Daren_thinking);
+   // fasttalk(isColorOn, "And because of this I strongly recomend to go in the folder you have bussiness with and do your actions there.\n", Daren_thinking);
+
+
+   // fasttalk(isColorOn, "Basicaly when wanting to GET or DELETE a file you either put its name (has to be in working directory)", Daren_thinking);
+   // fasttalk(isColorOn, "or give full path to it, you can give path relative to the working directory.", Daren_thinking);
    
-   Computer myComputer= Computer(Text("DAK"), Text("001"));
+   // fasttalk(isColorOn, "But when you CREATE a file you can also use a path relative to the working directory.\n", Daren_thinking);
+   // fasttalk(isColorOn, "...for the most part...\n", Daren_thinking);
+   // fasttalk(isColorOn, "And once again because of that I strongly recomend to go in the folder you have bussiness with and do your actions there.\n", Daren_thinking);
+   // fasttalk(isColorOn, "Oh and btw you cannot chain \"../\" with other stuff, it has to be on its own and only works when changing working directory\n", Daren_thinking);
+   
+   // fasttalk(isColorOn, "Don't worry all zuul functionality works as intended, its just wen you try to use the extra functionality.\n", Daren_thinking);
+
+   //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
+   Computer myComputer= Computer(Text("DAK"), Text("bos"+randomTextNumbers(3)));
    myComputer.on=true;
      
    

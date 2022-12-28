@@ -454,7 +454,11 @@ bool Computer::copyToRam(Text path){
 
 bool Computer::pasteFromRam(int id, Text path){
 
-  cout << "a\n";
+  //things to keep in mind
+  //when creating a file the File's name will be the name
+  //when creating a file, the path (Text) we provide will be its parent
+  //all of the "/a/" are just in case someonbe decides to not input something
+
 
   if(!memory.isNotEmpty()){
     error(on, "Memory is empty.");
@@ -462,36 +466,34 @@ bool Computer::pasteFromRam(int id, Text path){
   }
 
   File target=memory.getFile(id);
-      
-  //what if someone gave us a file that doesnt have a path
+    //====gave up on this===== might and most likely will not try to fix/finish this
+
   
-  //remake the path given if we are provided new file name or not
-  if(path[path.len()-1]=='/'){
-    //we are not renaming
+  // //remake the path given if we are provided new file name or not
+  // if(path[path.len()-1]=='/'){
+  //   //we are not renaming
 
 
-    //this is pointless but might protect if the path is empty for some reason
-    target=File("/a/"+target.name(), target.cont());
+  //   target=File("/a/"+target.name(), target.cont());
 
-    //remove the / at the end of the path
-    Text tmp=path;
-    path="";
-    cout << "1;\n" << flush;
-    for(int i=0; i<tmp.len()-1; i++)
-      path+=tmp[i];
-    cout << "2;\n" << flush;
-  }else{
+  //   //remove the / at the end of the path
+  //   Text tmp=path;
+  //   path="";
+  //   for(int i=0; i<tmp.len()-1; i++)
+  //     path+=tmp[i];
+
+  // }else{
   
-  cout << "b\n";
-    //chage the name
-    target=File("/a/"+Path("/a/"+path).name(), target.cont());
+  //   //chage the name
+  //   target=File("/a/"+Path("/a/"+path).name(), target.cont());
 
-  cout << "c\n";
-    //remove the name from the path
-    path=Path("/a/"+path).getParent().wholeT();
-  }
+  //   //remove the name from the path
+  //   path=Path("/a/"+path).getParent().wholeT();
+  // }
 
-    cout << "3;\n" << flush;
+  cout << path << '\n' << flush;
+  cout << target.path.wholeT() << '\n' << flush;
+    
   return createFile(target, path);
 }
 
@@ -513,12 +515,13 @@ void Computer::addAllCommands(){
     parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
   }{
     char alias[100][100]={"paste", "p"}, description[100]="pastes all files from ram. OR pastes a specifc file";
-    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<destination path> [file id]";
+    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<file id> [destination path]";
+    char extraDescrption[]="You can ommit the destination path and the file will be p[asted in the current directory\nExamples of the command:\nc 2 /opt/myfolder/\nc 4";
     parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
   }{
     //cp actually stands for just "copy"
     char alias[100][100]={"cp", "copypaste"}, description[100]="copies a file into memory and pastes it.";
-    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<source path> <destination path>";
+    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<source path> [destination path]";
     parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
   }{
     char alias[100][100]={"rm", "remove"}, description[100]="Deletes a file or a folder";

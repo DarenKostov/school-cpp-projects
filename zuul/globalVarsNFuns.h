@@ -63,7 +63,7 @@ void uSlep();
 //generates random Text with certain size
 Text randomText(int);
 //like randomText but limited to only numbers
-Text randomText(int);
+Text randomTextNumbers(int);
 
 Text intToText(int);
 
