@@ -32,10 +32,13 @@
 
 class File{
   public:
-    File(); //makes a file nowhere with nothing inside it
+    
+
+    File(); //makes a file nowhere with nothing inside it    
+    File(Text); //makes a file without path 
+
     File(Path, Text); //makes a file with all of its information; Path
     File(int, Text); //makes a file with all of its information; ID
-    File(Text); //makes a file without path 
     File(Path); //makes an empty file at Path X
     File(int); //makes an empty file at ID X
     void operator=(File); //sets the contents of the File to another File

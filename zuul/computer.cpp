@@ -92,12 +92,18 @@ Computer::Computer(Text User, Text Host){
    
   tmp->addFile(new File(Path(Text("/tmp/file001")), Text("this is a file\nthat contains multiple\nlines\nand...\nthat's the file\n:/")));
   
+
+  //=dev
+  Folder* dev=new Folder(Path(Text("/dev")));
   
+  //null is not a folder normally but acts similarly here, a black hole
+  dev->addFolder(new Folder(Path("/dev/null")));
+
   
   root=new Folder(Path(Text("")));
   root->addFolder(bin);
   root->addFolder(new Folder(Path(Text("/boot"))));
-  root->addFolder(new Folder(Path(Text("/dev"))));
+  root->addFolder(dev);
   root->addFolder(new Folder(Path(Text("/etc"))));
   root->addFolder(new Folder(Path(Text("/home"))));
   root->addFolder(new Folder(Path(Text("/lib"))));
@@ -439,7 +445,7 @@ bool Computer::copyToRam(Text path){
     return false;
 
   if(!memory.addFile(*target)){
-    error(on, "Not enough space in the ram, proceeding will cause the system to freeze");
+    error(on, "Not enough space in the ram, proceeding will cause the system to freeze.");
     return false;
 }
   
@@ -447,8 +453,41 @@ bool Computer::copyToRam(Text path){
 }
 
 bool Computer::pasteFromRam(int id, Text path){
-  File target=memory.getFile(id);
 
+  if(!memory.isNotEmpty()){
+    error(on, "Memory is empty.");
+    return false;
+  }
+
+  File target=memory.getFile(id);
+      
+  //what if someone gave us a file that doesnt have a path
+  
+  //remake the path given if we are provided new file name or not
+  if(path[path.len()-1]=='/'){
+    //we are not renaming
+
+
+    //this is pointless but might protect if the path is empty for some reason
+    target=File("/a/"+target.name(), target.cont());
+
+    //remove the / at the end of the path
+    Text tmp=path;
+    path="";
+    cout << "1;\n" << flush;
+    for(int i=0; i<tmp.len()-1; i++)
+      path+=tmp[i];
+    cout << "2;\n" << flush;
+  }else{
+  
+    //chage the name
+    target=File("/a/"+Path("/a/"+path).name(), target.cont());
+
+    //remove the name from the path
+    path=Path(path).getParent().wholeT();
+  }
+
+    cout << "3;\n" << flush;
   return createFile(target, path);
 }
 
@@ -471,8 +510,9 @@ void Computer::addAllCommands(){
   }{
     char alias[100][100]={"paste", "p"}, description[100]="pastes all files from ram. OR pastes a specifc file";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<destination path> [file id]";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
   }{
+    //cp actually stands for just "copy"
     char alias[100][100]={"cp", "copypaste"}, description[100]="copies a file into memory and pastes it.";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<source path> <destination path>";
     parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
@@ -499,9 +539,9 @@ void Computer::addAllCommands(){
     parser.addCommand(Command(3, alias, description, 1, args, argsDescription));
   }{
   //doesnt copy to the buffer, its the buffer thats copied into
-    char alias[100][100]={"cb", "copybuffer", "copybank"}, description[100]="Shows you what files you have in the copy buffer.";
-    char args[100][100]={"cmd", "txt"}, argsDescription[100]="[flags]";
-    parser.addCommand(Command(3, alias, description, 2, args, argsDescription));
+    char alias[100][100]={"copybuffer", "cb", "copybank"}, description[100]="Shows you what files you have in the copy buffer.";
+    char args[100][100]={"cmd"}, argsDescription[100]="none";
+    parser.addCommand(Command(3, alias, description, 1, args, argsDescription));
   }
   {
     char alias[100][100]={"ssh", "secureshell"}, description[100]="Secure Shell";

@@ -115,6 +115,9 @@ bool execMKDIR(Computer&);
 bool execPWD(Computer&);
 bool execCLEAR(Computer&);
 bool execGREP(Computer&);
+bool execCOPY(Computer&);
+bool execPASTE(Computer&);
+bool execCOPYBUFFER(Computer&);
 
 int main(){
    
@@ -131,6 +134,9 @@ int main(){
       execPWD,
       execCLEAR,
       execGREP,
+      execCOPY,
+      execPASTE,
+      execCOPYBUFFER,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -143,6 +149,9 @@ int main(){
       "pwd",
       "clear",
       "grep",
+      "copy",
+      "paste",
+      "copybuffer",
    };
    
    
@@ -362,3 +371,15 @@ bool execGREP(Computer& inComp){
    return true;
 }
 
+bool execCOPY(Computer& inComp){
+   return inComp.copyToRam(inComp.parser.returnCommandT(1));
+}
+
+bool execPASTE(Computer& inComp){   
+   return inComp.pasteFromRam(inComp.parser.returnCommandT(1)[0]-'0',inComp.parser.returnCommandT(2));
+}
+
+bool execCOPYBUFFER(Computer& inComp){
+   inComp.printItemsInRam();
+   return true;
+}

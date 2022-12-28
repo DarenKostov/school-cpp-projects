@@ -144,7 +144,7 @@ void Parser::readLn(){
 
 Text Parser::returnCommandT(int i){
   if(i>=commandLength)
-    return Text('\0');
+    return Text("");
   return commandText[i];
 }
 
