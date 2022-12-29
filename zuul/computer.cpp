@@ -620,12 +620,12 @@ void Computer::addAllCommands(){
     char alias[100][100]={"neovim", "nvim"}, description[100]="The modern Vim- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
     char extraDescrption[]="Vim but faster, smaller, more versitile and with a better config/plugin system.\n(Vim is still a very good option for writing code)\nExamples of the command:\nneovim myfile.txt";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    // parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
   }{
     char alias[100][100]={"helix", "hx"}, description[100]="Post modern Vim- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
     char extraDescrption[]="\"If Neovim is the modern Vim, then Helix is post-modern.\"\nIn may words this is an IDE but in the terminal.\n(I also wrote this project with it)\nExamples of the command:\nhelix myfile.txt";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
   }{
     char alias[100][100]={"emacs"}, description[100]="Editor MACroS- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
@@ -645,7 +645,12 @@ void Computer::addAllCommands(){
     char alias[100][100]={"editor", "e"}, description[100]="text editor";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<editor> <file path>";
     char extraDescrption[]="For when you use an editor I havent made a specific command for\n(or when you wanna exploit this feature and run whatever you want)\nExamples of the command:\neditor eclipse myfile.txt #hahaha CLI is no more\neditor rm myfile.txt #hahaha broke this game";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    parser.addCommand(Command(1, alias, description, 3, args, argsDescription));
+  }{
+    char alias[100][100]={"cat << EOF > myfile", "cat > myfile << EOF"}, description[100]="a text editor?";
+    char args[100][100]={"cmd", "txt", "txt", "txt", "txt"}, argsDescription[100]="EOF is with what you end the file, myfile is the filepath";
+    char extraDescrption[]="Thats how a Unix Haxer edits files\nExamples of the command:\n cat << :wq > myfile.txt\ncat > myfile << :x";
+    parser.addCommand(Command(2, alias, description, 5, args, argsDescription));
   }
   
 }

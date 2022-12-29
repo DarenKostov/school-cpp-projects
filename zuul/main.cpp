@@ -12,6 +12,10 @@ https://stackoverflow.com/questions/4000358/is-possible-to-get-automatic-cast-fr
 https://en.cppreference.com/w/cpp/chrono/c/time
 https://cplusplus.com/forum/beginner/4639/
 https://www.geeksforgeeks.org/typedef-in-cpp/
+https://cplusplus.com/doc/tutorial/files/
+https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
+      
+
 
 https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-ansi-codes
 
@@ -21,6 +25,7 @@ https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-a
 #include <cstring>
 #include <unistd.h>
 #include <stdlib.h>
+#include <fstream>
 
 // #include "./parser.h"
 
@@ -217,7 +222,6 @@ int main(){
    //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
    Computer myComputer= Computer(Text("DAK"), Text("bos"+randomTextNumbers(3)));
    myComputer.on=true;
-   system("helix test.txt");  
    
    do{
       
@@ -439,5 +443,26 @@ bool execCOPYBUFFER(Computer& inComp){
 
 
 bool execHELIX(Computer& inComp){
+   File* virtFile=inComp.getFile(inComp.parser.returnCommandT(1));
+   if(virtFile==nullptr)
+      return false;
+
+
+   //=edit file
+   //open the file, emptying it in the process
+   ofstream realFileW;
+   realFileW.open("temp", ios::out | ios::trunc);
+   realFileW << virtFile->cont();
+   realFileW.close();
+   system("helix temp");   
+
+   //=read file 
+   ifstream realFileR ("temp");
+   virtFile->cont()="";
+   while(realFileR.peek()!=EOF){
+      virtFile->cont()+=(char)realFileR.get();
+   }
+   realFileR.close();
+   
    return true;
 }
