@@ -76,6 +76,11 @@ class Folder{
   
   //searches for a File in any of its children given the path, recursive
   Folder* findFolderInChildren(Path);
+
+
+  //prints its contents as a tree
+  void printTree(bool);
+
   
   // erases everything from this folder, no questions asked
   void emptyMe();
@@ -93,6 +98,8 @@ class Folder{
   std::vector<File*> files;
   std::vector<Folder*> folders;
   void updatePaths();
+  //you can specify the indent here
+  void printTree(bool, int);
   std::time_t date;
   
 };

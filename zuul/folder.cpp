@@ -6,6 +6,7 @@
 #ifndef q
 #define q
 #include "./text.h"
+#include "./globalVarsNFuns.h"
 #include "./path.h"
 #include "./file.h"
 #include "./folder.h"
@@ -209,6 +210,35 @@ Folder* Folder::getFolder(Text name){
   //file is not found
   return nullptr;
 }
+
+
+void Folder::printTree(bool color){
+  printTree(color, 0);
+}
+
+void Folder::printTree(bool color, int level){
+  if(path.len()==0)
+    fasttalk(color, "/\n");
+  else
+    fasttalk(color, name()+'\n');
+
+  
+  for(auto i=files.begin(); i!=files.end(); i++){
+    for(int j=0; j<level; j++)
+      cout << "  " << flush;
+    fasttalk(color, "├─"+(**i).name()+'\n');
+  }
+  
+  for(auto i=folders.begin(); i!=folders.end(); i++){
+    for(int j=0; j<level; j++)
+      cout << "  " << flush;
+    fasttalk(color, "├─");
+    (**i).printTree(color, level+1);
+  }
+  
+}
+
+
 
 void Folder::emptyMe(){
   //delete all files

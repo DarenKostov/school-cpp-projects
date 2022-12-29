@@ -99,6 +99,9 @@ Computer::Computer(Text User, Text Host){
   //null is not a folder normally but acts similarly here, a black hole
   dev->addFolder(new Folder(Path("/dev/null")));
 
+
+  
+
   
   root=new Folder(Path(Text("")));
   root->addFolder(bin);

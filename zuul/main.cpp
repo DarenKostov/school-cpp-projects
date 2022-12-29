@@ -14,8 +14,7 @@ https://cplusplus.com/forum/beginner/4639/
 https://www.geeksforgeeks.org/typedef-in-cpp/
 https://cplusplus.com/doc/tutorial/files/
 https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
-      
-
+https://stackoverflow.com/questions/20193464/how-to-get-the-exit-code-of-program-invoked-by-system-call
 
 https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-ansi-codes
 
@@ -136,9 +135,33 @@ bool execEMACS(Computer&);
 bool execNANO(Computer&);
 bool execMICRO(Computer&);
 bool execEDITOR(Computer&);
+bool execFREE(Computer&);
+bool execTREE(Computer&);
+bool execSSH(Computer&);
+bool execEXIT(Computer&);
 
 
-int main(){
+int main(int argc, char *argv[]){
+
+   //storing this because on windows its exe, on linux is elf, and for macos.... idk
+   Text thisFile = argv[0];
+
+   //is this an ssh
+
+   bool isThisAnSSH=false;
+   if(argc>1){
+      if(Text(argv[1])=="yes")
+         isThisAnSSH = true;
+   }
+   
+   // if(isThisAnSSH)
+   //    exit(34);
+
+   // int a=system((thisFile+" yes").val());
+
+   // if(WEXITSTATUS(a)==34)
+   //    cout << "works\n";
+   
    //change seed
    srand(time(0));
 
@@ -166,6 +189,9 @@ int main(){
       execNANO,
       execMICRO,
       execEDITOR,
+      execFREE,
+      execTREE,
+      execSSH,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -189,8 +215,10 @@ int main(){
       "nano",
       "micro",
       "editor",
+      "free",
+      "tree",
+      "ssh",
    };
-   
    
    
    slowtalk(isColorOn, "Welcome to Zuul", Daren_talking);
@@ -246,9 +274,10 @@ int main(){
    // fasttalk(isColorOn, "this will execte "bash temp" and temp is a shell scripts that executes bash\n", Daren_thinking);
    // fasttalk(isColorOn, "congrats now you have a shell\n", Daren_thinking);
 
+
    //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
    Computer myComputer= Computer(Text("DAK"), Text("bos"+randomTextNumbers(3)));
-   myComputer.on=true;
+   myComputer.on=isColorOn;
    
    do{
       
@@ -287,6 +316,8 @@ int main(){
       
    }while(true);
    
+   
+   system(thisFile.val());
    
    cout << "END\n";
    return 0;
@@ -519,4 +550,15 @@ bool execMICRO(Computer& inComp){
 }
 bool execEDITOR(Computer& inComp){
    return editFile(inComp.parser.returnCommandT(1), inComp.getFile(inComp.parser.returnCommandT(2)));
+}
+bool execFREE(Computer& inComp){
+   return true;
+}
+bool execTREE(Computer& inComp){
+   inComp.getCurrentFolder().printTree(inComp.on);
+   
+   return true;
+}
+bool execSSH(Computer& inComp){
+   return true;
 }
