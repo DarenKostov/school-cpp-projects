@@ -90,6 +90,8 @@ class Computer{
     //prints at most 10 items that are in the ram with their coresponding id
     void printItemsInRam(); 
 
+    bool clearRam();
+
     //the parser manages itself, no need to be private
     //command parser
     Parser parser;  

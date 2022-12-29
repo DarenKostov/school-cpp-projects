@@ -445,7 +445,7 @@ bool Computer::copyToRam(Text path){
     return false;
 
   if(!memory.addFile(*target)){
-    error(on, "Not enough space in the ram, proceeding will cause the system to freeze.");
+    warning(on, "Not enough space in the ram, proceeding will cause the system to freeze.");
     return false;
 }
   
@@ -500,6 +500,18 @@ bool Computer::pasteFromRam(int id, Text path){
 
 void Computer::printItemsInRam(){
   fasttalk(on, memory.AllItems());
+}
+
+
+bool Computer::clearRam(){
+  if(!memory.isNotEmpty()){
+    error(on, "Memory is already empty.");
+    return false;
+  }
+  while(memory.isNotEmpty())
+    memory.removeFile(0);
+
+  return false;
 }
 
 

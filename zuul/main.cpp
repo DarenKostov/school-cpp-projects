@@ -118,6 +118,7 @@ bool execGREP(Computer&);
 bool execCOPY(Computer&);
 bool execPASTE(Computer&);
 bool execCOPYBUFFER(Computer&);
+bool execHELIX(Computer&);
 
 int main(){
    //change seed
@@ -139,6 +140,7 @@ int main(){
       execCOPY,
       execPASTE,
       execCOPYBUFFER,
+      execHELIX,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -154,6 +156,7 @@ int main(){
       "copy",
       "paste",
       "copybuffer",
+      "helix",
    };
    
    
@@ -195,6 +198,21 @@ int main(){
    // fasttalk(isColorOn, "item = file\n", Daren_thinking);
    // fasttalk(isColorOn, "inventory = ram\n", Daren_thinking);
    // fasttalk(isColorOn, "\n", Daren_thinking);
+   
+   // fasttalk(isColorOn, "Also when editing files can you not exploit the ability to open a shell in vim (idk if you can do that emacs) to break the game\n", Daren_thinking);
+   // fasttalk(isColorOn, "And also please don't expoit the ability to open ANY program with the "editor" command\n", Daren_thinking);
+   
+
+   // fasttalk(isColorOn, "... hey kid wanna know how to get a shell using the "editor" command\n", Daren_thinking);
+   // fasttalk(isColorOn, "I am assuming youre using bash but you can use dash or zsh as well, or even python\n", Daren_thinking);
+   // fasttalk(isColorOn, "first make a new file and write the following:\n", Daren_thinking);
+   // fasttalk(isColorOn, "#!/bin/sh\n", Daren_thinking);
+   // fasttalk(isColorOn, "bash\n", Daren_thinking);
+   // fasttalk(isColorOn, "\n", Daren_thinking);
+   // fasttalk(isColorOn, "Then run this command:\n", Daren_thinking);
+   // fasttalk(isColorOn, "editor bash <the file you just wrote>\n", Daren_thinking);
+   // fasttalk(isColorOn, "this will execte "bash temp" and temp is a shell scripts that executes bash\n", Daren_thinking);
+   // fasttalk(isColorOn, "congrats now you have a shell\n", Daren_thinking);
 
    //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
    Computer myComputer= Computer(Text("DAK"), Text("bos"+randomTextNumbers(3)));
@@ -413,7 +431,13 @@ bool execPASTE(Computer& inComp){
 }
 
 bool execCOPYBUFFER(Computer& inComp){
-   
+   if(inComp.parser.returnCommandT(1)=="clear")
+      return inComp.clearRam();
    inComp.printItemsInRam();
+   return true;
+}
+
+
+bool execHELIX(Computer& inComp){
    return true;
 }
