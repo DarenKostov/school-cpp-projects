@@ -143,7 +143,7 @@ bool execEXIT(Computer&);
 
 int main(int argc, char *argv[]){
 
-   //storing this because on windows its exe, on linux is elf, and for macos.... idk
+   //storing this because on windows its .exe, on linux is .elf, and for macos.... idk
    Text thisFile = argv[0];
 
    //is this an ssh

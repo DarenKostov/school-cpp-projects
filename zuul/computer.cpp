@@ -101,6 +101,18 @@ Computer::Computer(Text User, Text Host){
 
 
   
+  Folder* home=new Folder(Path(Text("/home")));
+  Folder* home_desktop=new Folder(Path(Text("/home/Desktop")));
+  Folder* home_desktop_memes=new Folder(Path(Text("/home/Desktop/memes")));
+  
+  home_desktop_memes->addFile(new File(Path(Text("/home/Desktop/memes/among.txt")), Text("amongus is sus")));
+  home_desktop_memes->addFile(new File(Path(Text("/home/Desktop/memes/who.txt")), Text("who asked")));
+  home_desktop_memes->addFile(new File(Path(Text("/home/Desktop/memes/void-poiters???.txt")), Text("void* any=malloc(99999)\n\nfor (*(int*)any = 0; *(int*)any <= 58; ++*(int*)any){\n*(1 + (float*)any) += (float)(*(int*)any);\n}\n\nfree(any);")));
+
+  home_desktop->addFolder(home_desktop_memes);
+  home->addFolder(home_desktop);
+  
+
 
   
   root=new Folder(Path(Text("")));
@@ -108,7 +120,7 @@ Computer::Computer(Text User, Text Host){
   root->addFolder(new Folder(Path(Text("/boot"))));
   root->addFolder(dev);
   root->addFolder(new Folder(Path(Text("/etc"))));
-  root->addFolder(new Folder(Path(Text("/home"))));
+  root->addFolder(home);
   root->addFolder(new Folder(Path(Text("/lib"))));
   root->addFolder(new Folder(Path(Text("/mnt"))));
   root->addFolder(new Folder(Path(Text("/opt"))));
