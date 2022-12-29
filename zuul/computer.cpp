@@ -620,7 +620,7 @@ void Computer::addAllCommands(){
     char alias[100][100]={"neovim", "nvim"}, description[100]="The modern Vim- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
     char extraDescrption[]="Vim but faster, smaller, more versitile and with a better config/plugin system.\n(Vim is still a very good option for writing code)\nExamples of the command:\nneovim myfile.txt";
-    // parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
   }{
     char alias[100][100]={"helix", "hx"}, description[100]="Post modern Vim- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";

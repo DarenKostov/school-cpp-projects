@@ -105,6 +105,11 @@ const Text Admin_thinking="\033[91m";
 using namespace std;
 
 
+
+//edits a file with the editor given, returns false when unsucessfull
+bool editFile(Text, File);
+
+
 //commands from user
 
 //typedef function pointer 
@@ -123,7 +128,15 @@ bool execGREP(Computer&);
 bool execCOPY(Computer&);
 bool execPASTE(Computer&);
 bool execCOPYBUFFER(Computer&);
+bool execVI(Computer&);
+bool execVIM(Computer&);
+bool execNEOVIM(Computer&);
 bool execHELIX(Computer&);
+bool execEMACS(Computer&);
+bool execNANO(Computer&);
+bool execMICRO(Computer&);
+bool execEDITOR(Computer&);
+
 
 int main(){
    //change seed
@@ -145,7 +158,14 @@ int main(){
       execCOPY,
       execPASTE,
       execCOPYBUFFER,
+      execVI,
+      execVIM,
+      execNEOVIM,
       execHELIX,
+      execEMACS,
+      execNANO,
+      execMICRO,
+      execEDITOR,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -161,7 +181,14 @@ int main(){
       "copy",
       "paste",
       "copybuffer",
+      "vi",
+      "vim",
+      "neovim",
       "helix",
+      "emacs",
+      "nano",
+      "micro",
+      "editor",
    };
    
    
@@ -265,6 +292,32 @@ int main(){
    return 0;
 }
 
+
+
+bool editFile(Text editor, File* virtFile){
+
+   if(virtFile==nullptr)
+      return false;
+
+
+   //=edit file
+   //open the file, emptying it in the process
+   ofstream realFileW;
+   realFileW.open("temp", ios::out | ios::trunc);
+   realFileW << virtFile->cont();
+   realFileW.close();
+   system((editor+" temp").val());   
+
+   //=read file 
+   ifstream realFileR ("temp");
+   virtFile->cont()="";
+   while(realFileR.peek()!=EOF){
+      virtFile->cont()+=(char)realFileR.get();
+   }
+   realFileR.close();
+   
+   return true;
+}
 
 
 //==commands from user
@@ -442,27 +495,28 @@ bool execCOPYBUFFER(Computer& inComp){
 }
 
 
+bool execVI(Computer& inComp){
+   return editFile("vi", inComp.getFile(inComp.parser.returnCommandT(1)));
+}
+bool execVIM(Computer& inComp){
+   return editFile("vim", inComp.getFile(inComp.parser.returnCommandT(1)));
+}
+bool execNEOVIM(Computer& inComp){
+   return editFile("nvim", inComp.getFile(inComp.parser.returnCommandT(1)));
+}
 bool execHELIX(Computer& inComp){
-   File* virtFile=inComp.getFile(inComp.parser.returnCommandT(1));
-   if(virtFile==nullptr)
-      return false;
-
-
-   //=edit file
-   //open the file, emptying it in the process
-   ofstream realFileW;
-   realFileW.open("temp", ios::out | ios::trunc);
-   realFileW << virtFile->cont();
-   realFileW.close();
-   system("helix temp");   
-
-   //=read file 
-   ifstream realFileR ("temp");
-   virtFile->cont()="";
-   while(realFileR.peek()!=EOF){
-      virtFile->cont()+=(char)realFileR.get();
-   }
-   realFileR.close();
-   
-   return true;
+   return editFile("helix", inComp.getFile(inComp.parser.returnCommandT(1)));
+}
+bool execEMACS(Computer& inComp){
+   //open CLI emacs, not GUI
+   return editFile("emacs -nw", inComp.getFile(inComp.parser.returnCommandT(1)));
+}
+bool execNANO(Computer& inComp){
+   return editFile("nano", inComp.getFile(inComp.parser.returnCommandT(1)));
+}
+bool execMICRO(Computer& inComp){
+   return editFile("micro", inComp.getFile(inComp.parser.returnCommandT(1)));
+}
+bool execEDITOR(Computer& inComp){
+   return editFile(inComp.parser.returnCommandT(1), inComp.getFile(inComp.parser.returnCommandT(2)));
 }
