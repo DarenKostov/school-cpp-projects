@@ -178,12 +178,28 @@ int main(){
    // fasttalk(isColorOn, "And once again because of that I strongly recomend to go in the folder you have bussiness with and do your actions there.\n", Daren_thinking);
    // fasttalk(isColorOn, "Oh and btw you cannot chain \"../\" with other stuff, it has to be on its own and only works when changing working directory\n", Daren_thinking);
    
-   // fasttalk(isColorOn, "Don't worry all zuul functionality works as intended, its just wen you try to use the extra functionality.\n", Daren_thinking);
+   // fasttalk(isColorOn, "Don't worry all basic zuul functionality works as intended, its just wen you try to use the extra functionality.\n", Daren_thinking);
+
+
+   // fasttalk(isColorOn, "What from zuul is what here:\n", Daren_thinking);
+   // fasttalk(isColorOn, "(keep in mind not everything is 1 to 1)\n", Daren_thinking);
+   // fasttalk(isColorOn, "=Commands:\n", Daren_thinking);
+   // fasttalk(isColorOn, "go = cd\n", Daren_thinking);
+   // fasttalk(isColorOn, "lookaround/(describe the room) = ls, du\n", Daren_thinking);
+   // fasttalk(isColorOn, "take = copy\n", Daren_thinking);
+   // fasttalk(isColorOn, "drop = paste\n", Daren_thinking);
+   // fasttalk(isColorOn, "use = grep/cat/...\n", Daren_thinking);
+   // fasttalk(isColorOn, "inventory = free, copybuffer, top\n", Daren_thinking);
+   // fasttalk(isColorOn, "=Objects\n", Daren_thinking);
+   // fasttalk(isColorOn, "room = folder\n", Daren_thinking);
+   // fasttalk(isColorOn, "item = file\n", Daren_thinking);
+   // fasttalk(isColorOn, "inventory = ram\n", Daren_thinking);
+   // fasttalk(isColorOn, "\n", Daren_thinking);
 
    //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
    Computer myComputer= Computer(Text("DAK"), Text("bos"+randomTextNumbers(3)));
    myComputer.on=true;
-     
+   system("helix test.txt");  
    
    do{
       
@@ -397,6 +413,7 @@ bool execPASTE(Computer& inComp){
 }
 
 bool execCOPYBUFFER(Computer& inComp){
+   
    inComp.printItemsInRam();
    return true;
 }

@@ -547,8 +547,8 @@ void Computer::addAllCommands(){
   }{
   //doesnt copy to the buffer, its the buffer thats copied into
     char alias[100][100]={"copybuffer", "cb", "copybank"}, description[100]="Shows you what files you have in the copy buffer.";
-    char args[100][100]={"cmd"}, argsDescription[100]="none";
-    parser.addCommand(Command(3, alias, description, 1, args, argsDescription));
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="[clear]";
+    parser.addCommand(Command(3, alias, description, 2, args, argsDescription));
   }
   {
     char alias[100][100]={"ssh", "secureshell"}, description[100]="Secure Shell";
@@ -594,6 +594,46 @@ void Computer::addAllCommands(){
     char alias[100][100]={"clear", "cl"}, description[100]="Clears the screen, unlike other commands this is instant.";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
     parser.addCommand(Command(2, alias, description, 1, args, argsDescription));
+  }{
+    char alias[100][100]={"vi"}, description[100]="Visual Instrument- text editor";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char extraDescrption[]="The default editor for Unix-based systems\nExamples of the command:\nvi myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"vim"}, description[100]="Vi IMproved- text editor";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char extraDescrption[]="Vi but with more features\nExamples of the command:\nvim myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"neovim", "nvim"}, description[100]="The modern Vim- text editor";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char extraDescrption[]="Vim but faster, smaller, more versitile and with a better config/plugin system.\n(Vim is still a very good option for writing code)\nExamples of the command:\nneovim myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"helix", "hx"}, description[100]="Post modern Vim- text editor";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char extraDescrption[]="\"If Neovim is the modern Vim, then Helix is post-modern.\"\nIn may words this is an IDE but in the terminal.\n(I also wrote this project with it)\nExamples of the command:\nhelix myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"emacs"}, description[100]="Editor MACroS- text editor";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char extraDescrption[]="A text editor with a lot of macros.\n(This is also the editor most students use at school)\nExamples of the command:\nemacs myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"nano"}, description[100]="Nano’s ANOther editor- text editor";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char extraDescrption[]="A friendly editor, for people who just want to edit a file, without the harsh learning curve.\nExamples of the command:\nnano myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"micro"}, description[100]="Terminal-based text editor- text editor";
+    char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
+    char extraDescrption[]="I don't actually know a lot about this editor except that people say its good.\nExamples of the command:\nmacro myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+  }{
+    char alias[100][100]={"editor", "e"}, description[100]="text editor";
+    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<editor> <file path>";
+    char extraDescrption[]="For when you use an editor I havent made a specific command for\n(or when you wanna exploit this feature and run whatever you want)\nExamples of the command:\neditor eclipse myfile.txt #hahaha CLI is no more\neditor rm myfile.txt #hahaha broke this game";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
   }
   
 }
