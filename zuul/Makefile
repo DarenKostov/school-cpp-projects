@@ -3,7 +3,7 @@
 CC= g++
 CFLAGS= -g -std=c++17
 
-output: computer.o file.o folder.o globalVarsNFuns.o main.o memory.o parser.o path.o text.o
+output: computer.o file.o folder.o globalVarsNFuns.o main.o memory.o parser.o path.o text.o ipadress.o
 	$(CC) $(CFLAGS) *.o -o main.elf
 
 computer.o: computer.cpp computer.h text.o globalVarsNFuns.o command.h parser.o path.o file.o memory.o folder.o
@@ -30,6 +30,9 @@ parser.o: parser.cpp parser.h text.o command.h
 path.o: path.cpp path.h text.o
 	$(CC) $(CFLAGS) -c path.cpp
 	
+ipadress.o: ipadress.cpp ipadress.h 
+	$(CC) $(CFLAGS) -c ipadress.cpp
+
 text.o: text.cpp text.h 
 	$(CC) $(CFLAGS) -c text.cpp
 	
