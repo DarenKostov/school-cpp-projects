@@ -1,8 +1,6 @@
 /*
   Daren Kostov
 
-  Note:
-    do not `delete` files/folders here, the folder class manages that 
 
 
 */

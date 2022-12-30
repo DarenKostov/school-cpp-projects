@@ -47,7 +47,7 @@ https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-a
 #include "./computer.h"
 
 //location 2
-// #include "./ipadress.h"
+#include "./ipadress.h"
 
 //street adress of a building
 // #include "./localipadress.h"
@@ -220,6 +220,7 @@ int main(int argc, char *argv[]){
       "ssh",
    };
    
+
    
    slowtalk(isColorOn, "Welcome to Zuul", Daren_talking);
    fasttalk(isColorOn, "\n\n  This project is not ready", Daren_thinking);

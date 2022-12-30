@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cmath>
 #include "./text.h"
 
 
@@ -47,7 +48,7 @@ Text::Text(const char* initText){
 Text::Text(const Text &initText){
   length=initText.len();
   text= new char[length+1];
-  strcpy(text, initText.getCharArr());
+  strcpy(text, initText.val());
   id=rand();
 }
 
@@ -57,6 +58,25 @@ Text::~Text(){
   
 }
 
+
+//Text from int
+Text::Text(int initInt){
+
+  //might not be the most efficient formula
+  length=floor(log10(initInt))+1;
+  
+  text=new char[length+1];
+
+  for(int i=0; i<length; i++){
+    text[(length-i)-1]=initInt%10+'0';
+    initInt/=10;
+  }
+
+  text[length]='\0';
+
+  id=rand();
+  
+}
 
 //== EQUALS OPERATOR==\\
 
@@ -97,9 +117,16 @@ Text& Text::operator=(const char* setTo){
 
 //set text from another Text
 Text& Text::operator=(Text setTo){
-  //use the + operator for char*
-  *this=setTo.getCharArr(); 
+  //use the = operator for char*
+  *this=setTo.val(); 
   
+  return *this;
+}
+
+//set text from int
+Text& Text::operator=(int setTo){
+  //use the = operator for Text
+  *this=Text(setTo); 
   return *this;
 }
 
@@ -156,15 +183,26 @@ Text Text::operator+(const char* input){
 
 
 Text Text::operator+(Text input){
-  // make an output Text from out text
-  Text output(getCharArr()); 
+  // make an output Text from our text
+  Text output(text); 
 
   //use the + operator for char*
-  output=output+input.getCharArr();
+  output=output+input.val();
 
   // use the += operator for Text that uses the operator + for Text, that uses the += operator for Text...
   // output+=text;
   
+  return output;
+  
+}
+
+Text Text::operator+(int input){
+  // make an output Text from our text
+  Text output(text); 
+
+  //use the + operator for Text
+  output=output+Text(input);
+
   return output;
   
 }
@@ -187,7 +225,6 @@ Text& Text::operator+=(const char* input){
   *this=*this+input;
   
   return *this;
-  
 }
 
 Text& Text::operator+=(Text input){
@@ -197,8 +234,17 @@ Text& Text::operator+=(Text input){
   *this=*this+input;
   
   return *this;
-  
 }
+
+Text& Text::operator+=(int input){
+  
+  //use the = for Text
+  //use the + operator for int
+  *this=*this+input;
+  
+  return *this;
+}
+
 
 //==EQUALS EQUALS OPERATOR==\\
 
@@ -302,6 +348,11 @@ Text operator+(const char* left, Text right){
 } 
 Text operator+(char left, Text right){
   //use char constructor and Text+Text concatenation
+  return Text(left)+right;
+}
+
+Text operator+(int left, Text right){
+  //use int constructor and Text+Text concatenation
   return Text(left)+right;
 }
 

@@ -24,10 +24,20 @@ class IPAdress{
     int getOctet(int);
 
     //compare 2 ip adresses
+    int& operator[](int);
+  
+    //compare 2 ip adresses
     bool operator==(IPAdress);
 
 
   private:
     //stores the ip adress
     int octet[4];
+    //invalid value
+    int invalid;
+    //randomizes the ip adress
+    void randomize();
+    void randomize(std::vector<IPAdress>);
+
+  
 };
