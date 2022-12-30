@@ -13,7 +13,7 @@ using namespace std;
 
 //constructor
 Parser::Parser(){
-  commandText=new Text[0];
+  commandText=new Text[1];
   
   char alias[100][100]={""};
   char description[100]="";
@@ -83,8 +83,13 @@ void Parser::readLn(){
   char output[99][99];
   
   cin.getline(input, 99);
-  
-  
+
+  //if we press up key dont chage the comand inputed (as if you retyped it)
+  //                ^[[A
+  if(strcmp(input, "\e[A")==0)
+    return;
+
+    
   int j=0;
   int word=0;
   
