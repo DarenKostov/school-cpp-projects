@@ -664,6 +664,11 @@ void Computer::addAllCommands(){
     char args[100][100]={"cmd", "txt", "txt", "txt", "txt"}, argsDescription[100]="EOF is with what you end the file, myfile is the filepath";
     char extraDescrption[]="Thats how a Unix Haxer edits files\nExamples of the command:\n cat << :wq > myfile.txt\ncat > myfile << :x";
     parser.addCommand(Command(2, alias, description, 5, args, argsDescription));
+  }{
+    char alias[100][100]={"help", "h"}, description[100]="this help";
+    char args[100][100]={"cmd"}, argsDescription[100]="none";
+    char extraDescrption[]="";
+    parser.addCommand(Command(2, alias, description, 5, args, argsDescription));
   }
   
 }

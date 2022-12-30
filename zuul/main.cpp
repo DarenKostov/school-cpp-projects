@@ -139,6 +139,7 @@ bool execFREE(Computer&);
 bool execTREE(Computer&);
 bool execSSH(Computer&);
 bool execEXIT(Computer&);
+bool execHELP(Computer&);
 
 
 int main(int argc, char *argv[]){
@@ -192,6 +193,7 @@ int main(int argc, char *argv[]){
       execFREE,
       execTREE,
       execSSH,
+      execHELP,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -218,6 +220,7 @@ int main(int argc, char *argv[]){
       "free",
       "tree",
       "ssh",
+      "help",
    };
    
 
@@ -561,5 +564,18 @@ bool execTREE(Computer& inComp){
    return true;
 }
 bool execSSH(Computer& inComp){
+   return true;
+}
+
+bool execHELP(Computer& inComp){
+   auto output=inComp.parser.getAllCommands();
+
+   for(auto i=output.begin(); i!=output.end(); i++){
+      fasttalk(inComp.on, "\n============\n", Warning);
+      fasttalk(inComp.on, i->aliases[0]+'\n', folderColor);
+      fasttalk(inComp.on, i->description);
+   }
+      fasttalk(inComp.on, "\n============\n\n", Warning);
+   
    return true;
 }

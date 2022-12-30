@@ -94,7 +94,7 @@ class Text{
     Text& operator+=(Text);
    
     // Concatenates the int given to this text, returns the result
-    // Text& operator+=(int);     
+    Text& operator+=(int);     
   
     //=equals equals operator
   
