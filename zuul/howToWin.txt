@@ -1,0 +1,69 @@
+How do you win?
+
+when I put something in {} on a new line I want you to perform an action
+
+write as is,
+a colon is a colon key press,
+a period is a period key press,
+a "k" is a k key press, 
+a "K" is Shift and a k key press
+
+...with the xception of
+dont press Enter on a new line
+when I put something in `` I want you to press a key or key combination
+when I put something in () on a new line I want you to perfom an action DO NOT PRESS ENTER IN THAT CASE
+
+Also be aware I use vim in this guide, you can use emacs, but the key strokes would be different
+
+===================== starts now:
+`Enter`
+`Enter`
+`Enter`
+`Enter`
+`Enter`
+`Enter`
+`Enter`
+`Enter`
+`Enter`
+`Enter`
+
+c /root/cd`Enter`
+p 0 /bin/`Enter`
+cd tmp`Enter`
+cat 5$|D-7Xt`Enter`
+(select the output, should look like something like "Network53515056")
+cd /etc`Enter`
+mkdir netman`Enter`
+cd netman`Enter`
+mkdir connections`Enter`
+cd connections`Enter`
+touch `Shift+Insert`.conf`Enter`
+vim `Shift+Insert`.conf`Enter`
+i[connection]`Enter`
+id=`Shift+Insert``Enter`
+`Enter`
+[security]`Enter`
+pass=`Esc`:wq`Enter`
+cat /home/Desktop/memes/password-meme.txt`Enter`
+vim `Shift+Insert`.conf
+(select the string between "network might be " and " but I" from the previous command output, should be something like "}i*b75^+T,<T`ebmoEr1")
+`Enter`
+i`Left Arrow``Shift+Insert``Esc`:wq`Enter`
+cat /etc/con.conf`Enter`
+(select the line after "[Internal Computers]", without including the end line, shoud look like "tg8,q;`d")
+grep '`Shift+Insert`' /sys/connections/list1.txt`Enter`
+(go to line 62 of this guide if any out put)
+grep '`Shift+Insert`' /sys/connections/list2.txt`Enter`
+(go to line 62 of this guide if any out put)
+grep '`Shift+Insert`' /sys/connections/list3.txt`Enter`
+(go to line 62 of this guide if any out put)
+grep '`Shift+Insert`' /sys/connections/list4.txt`Enter`
+(select the ip adress that is after ": ", should look like "75.189.233.215")
+ssh `Shift+Insert``Enter`
+vim /opt/code.code`Enter`
+7dw`End`5dbd`Space`:wq`Enter
+=================== end now
+
+You won
+You can still keep playing, make files, folders, fill your ram!`
+
