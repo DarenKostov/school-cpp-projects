@@ -6,7 +6,6 @@
 #include <iostream>
 #include "./text.h"
 #include "./node.h"
-#include "./student.h"
 
 
 template class Node<Text>;
