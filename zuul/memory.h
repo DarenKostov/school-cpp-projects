@@ -37,10 +37,10 @@ class Memory{
     File getFile(int);
     
     //gives you how much of the memory is used
-    long getUsage();
+    unsigned long getUsage();
     
     //gives you how much of the memory isnt used | I know the name isnt really gramatically correct
-    long getFree();
+    unsigned long getFree();
 
     //returns weather there is anything in the memory
     bool isNotEmpty();

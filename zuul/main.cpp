@@ -843,6 +843,9 @@ bool execEDITOR(Computer& inComp){
    return editFile(inComp.parser.returnCommandT(1), inComp.getFile(inComp.parser.returnCommandT(2)));
 }
 bool execFREE(Computer& inComp){
+   fasttalk(inComp.on, "total: "+Text(inComp.getRamTotal())+"\n");
+   fasttalk(inComp.on, "free: "+Text(inComp.getRamFree())+"\n");
+   fasttalk(inComp.on, "used: "+Text(inComp.getRamUsage())+"\n");
    return true;
 }
 bool execTREE(Computer& inComp){

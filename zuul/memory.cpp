@@ -69,12 +69,12 @@ File Memory::getFile(int i){
   return files[i%(files.size()-1)];
 }
 
-long Memory::getUsage(){
+unsigned long Memory::getUsage(){
   return usage;
 }
 
 
-long Memory::getFree(){
+unsigned long Memory::getFree(){
   return capacity-usage;
 }
 

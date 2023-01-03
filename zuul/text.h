@@ -48,8 +48,9 @@ class Text{
     // make a Text from a Text
     Text(const Text&);
   
-    // make a Text from an int
+    // make a Text from an int, long
     Text(int);   
+    Text(long);   
   
     // deconstructor, makes sure no memory leaks occur
     ~Text();
@@ -65,8 +66,9 @@ class Text{
     // Concatenates the 2 texts into a Text
     Text operator+(Text);     
   
-    // Concatenates the text and an int into a Text
+    // Concatenates the text and an int, long into a Text
     Text operator+(int);     
+    Text operator+(long);     
   
     //=equals operator
   
@@ -79,8 +81,9 @@ class Text{
     // sets our text to the data in the Text input
     Text& operator=(Text);
       
-    // sets our text to an int
+    // sets our text to an int, long
     Text& operator=(int);
+    Text& operator=(long);
 
     //=plus equals operator
   
@@ -93,8 +96,9 @@ class Text{
     // Concatenates the text given to this text, returns the result
     Text& operator+=(Text);
    
-    // Concatenates the int given to this text, returns the result
+    // Concatenates the int, long given to this text, returns the result
     Text& operator+=(int);     
+    Text& operator+=(long);     
   
     //=equals equals operator
   
@@ -197,8 +201,9 @@ Text operator+(const char*, Text);
 //makes char+Text possible, returns Text
 Text operator+(char, Text);
 
-//makes int+Text possible, returns Text
+//makes int,long+Text possible, returns Text
 Text operator+(int, Text);
+Text operator+(long, Text);
 
 #endif
 

@@ -75,6 +75,25 @@ Text::Text(int initInt){
   
 }
 
+//Text from long
+Text::Text(long initInt){
+
+  //might not be the most efficient formula
+  length=floor(log10(std::max((long)1,initInt)))+1;
+  
+  text=new char[length+1];
+
+  for(int i=0; i<length; i++){
+    text[(length-i)-1]=initInt%10+'0';
+    initInt/=10;
+  }
+
+  text[length]='\0';
+
+  id=rand();
+  
+}
+
 //== EQUALS OPERATOR==\\
 
 
@@ -122,6 +141,12 @@ Text& Text::operator=(Text setTo){
 
 //set text from int
 Text& Text::operator=(int setTo){
+  //use the = operator for Text
+  *this=Text(setTo); 
+  return *this;
+}
+//set text from long
+Text& Text::operator=(long setTo){
   //use the = operator for Text
   *this=Text(setTo); 
   return *this;
@@ -203,6 +228,16 @@ Text Text::operator+(int input){
   return output;
   
 }
+Text Text::operator+(long input){
+  // make an output Text from our text
+  Text output(text); 
+
+  //use the + operator for Text
+  output=output+Text(input);
+
+  return output;
+  
+}
 
 //==PLUS EQUALS OPERATOR==\\
 
@@ -234,6 +269,14 @@ Text& Text::operator+=(Text input){
 }
 
 Text& Text::operator+=(int input){
+  
+  //use the = for Text
+  //use the + operator for int
+  *this=*this+input;
+  
+  return *this;
+}
+Text& Text::operator+=(long input){
   
   //use the = for Text
   //use the + operator for int
@@ -349,6 +392,10 @@ Text operator+(char left, Text right){
 }
 
 Text operator+(int left, Text right){
+  //use int constructor and Text+Text concatenation
+  return Text(left)+right;
+}
+Text operator+(long left, Text right){
   //use int constructor and Text+Text concatenation
   return Text(left)+right;
 }
