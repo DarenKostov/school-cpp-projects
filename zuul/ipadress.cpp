@@ -44,7 +44,7 @@ Text IPAdress::getIPAdressText(){
 
   //put all octets with a "." separeting them
   for(int i=0; i<3; i++)
-    output+=octet[i]+='.';
+    output+=Text(octet[i])+'.';
 
   return output+octet[3];
   

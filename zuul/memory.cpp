@@ -52,7 +52,7 @@ Text Memory::AllItems(){
   //shows up to 10 files
   for(int i=0; i<min(10, (int)files.size()); i++)
     // "{index}: {path}\n"
-    output+=(Text('0'+i)+": "+files[i].path.wholeT()+'\n');
+    output+=(Text(i)+": "+files[i].path.wholeT()+'\n');
   return output;
 }
 

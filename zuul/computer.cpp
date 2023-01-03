@@ -306,7 +306,12 @@ bool Computer::createFile(File in, Text name){
 
 }
 
+
 File* Computer::getFile(Text name){
+  return getFile(name, false);
+}
+
+File* Computer::getFile(Text name, bool surpress){
   File* output=nullptr;
   
   //first check if we are giving the name or full path
@@ -317,14 +322,14 @@ File* Computer::getFile(Text name){
     output=findFile(root, Path(name));
     
     //is the path given valid?
-    if(output==nullptr)
+    if(output==nullptr && !surpress)
        unexpectedIO(on, "File or parent folder path non-existant.");
 
     
   }else{
     output=currentFolder->getFile(name);
     
-    if(output==nullptr)
+    if(output==nullptr && !surpress)
        unexpectedIO(on, "File path non-existant.");
   
   }
@@ -438,6 +443,13 @@ Text Computer::getHost(){
   return host;
 }
 
+void Computer::setUser(Text User){
+  user=User;
+}
+void Computer::setHost(Text Host){
+  host=Host;
+}
+
 long Computer::getRamUsage(){
   return memory.getUsage()+100;
 }
@@ -504,8 +516,13 @@ bool Computer::pasteFromRam(int id, Text path){
   //   path=Path("/a/"+path).getParent().wholeT();
   // }
 
-  cout << path << '\n' << flush;
-  cout << target.path.wholeT() << '\n' << flush;
+
+
+
+
+
+  // cout << path << '\n' << flush;
+  // cout << target.path.wholeT() << '\n' << flush;
     
   return createFile(target, path);
 }

@@ -37,9 +37,6 @@ Text::Text(const char* initText){
   strcpy(text, initText);
 
   id=rand();
- char* a;
-  char* b;
-  bool c=a==b; 
 }
 
 
@@ -63,7 +60,7 @@ Text::~Text(){
 Text::Text(int initInt){
 
   //might not be the most efficient formula
-  length=floor(log10(initInt))+1;
+  length=floor(log10(std::max(1,initInt)))+1;
   
   text=new char[length+1];
 

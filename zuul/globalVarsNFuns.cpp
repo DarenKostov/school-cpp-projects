@@ -94,7 +94,7 @@ void unexpectedIO(bool on, Text in){
 Text randomText(int size){
    Text out;
       for(int i=0; i<size; i++)
-         out+=('!'+(rand()%93));
+         out+=(char)('!'+(rand()%93));
    return out;
 }
 Text randomTextNumbers(int size){

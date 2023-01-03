@@ -241,9 +241,9 @@ int main(int argc, char *argv[]){
    
    fasttalk(isColorOn, "\n\nPerhaps Ill never finish it...\nthis is a working demo at least\n\n", Daren_thinking);
    
-   endSegment(isColorOn);
-   
-   fasttalk(false, "\nFirst off, do you see the text above as cyan OR white with some weird \"\\033[36;1m\" at the begining of every line?\n", Daren_thinking);
+   // while(true)
+      endSegment(isColorOn);
+      fasttalk(false, "\nFirst off, do you see the text above as cyan OR white with some weird \"\\033[36;1m\" at the begining of every line?\n", Daren_thinking);
    fasttalk(false, "If you dont see color and are using cygwin you can go over here:\n", Daren_thinking);
    fasttalk(false, "https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-ansi-codes\n", Daren_thinking);
    fasttalk(false, "\n....or you can disable color :(\n", Daren_thinking);
@@ -265,6 +265,9 @@ int main(int argc, char *argv[]){
    endSegment(isColorOn);
    
    fasttalk(isColorOn, "Before the game begins I want to apologize for this being the most broken \"operating system\" out there.\n", Daren_thinking);
+   fasttalk(isColorOn, "Why is this in /sys? Why is this in /etc? That's not how a .conf file looks like!\n", Daren_thinking);
+   fasttalk(isColorOn, "To counter all of this I'm just gonna say that this is an oversimplified system\n\n", Daren_thinking);
+   
    fasttalk(isColorOn, "When do I give the full path? When do I not? You gotta look at the code closely to understand.\n", Daren_thinking);
    fasttalk(isColorOn, "And because of this I strongly recomend to go in the folder you have bussiness with and do your actions there.\n\n", Daren_thinking);
 
@@ -281,7 +284,8 @@ int main(int argc, char *argv[]){
    
    endSegment(isColorOn);
       
-
+   fasttalk(isColorOn, "At the end of the day I tried making something like Unix (more like Linux since I use Linux)\n\n", Daren_thinking);
+   
    fasttalk(isColorOn, "What from zuul is what here:\n", Daren_thinking);
    fasttalk(isColorOn, "(keep in mind not everything is 1 to 1)\n", Daren_thinking);
    fasttalk(isColorOn, "=Commands:\n", Daren_thinking);
@@ -334,15 +338,74 @@ int main(int argc, char *argv[]){
    endSegment(isColorOn);
 
 
+   fasttalk(isColorOn, "Last thing I swear!\n", Daren_thinking);
+   fasttalk(isColorOn, "Daren: People talk like this\n", Daren_talking);
+   fasttalk(isColorOn, "daren: People and think like this\n", Daren_thinking);
+   fasttalk(isColorOn, "Your player cannot see people thinking but only them talking\n", Daren_thinking);
    fasttalk(isColorOn, "..anyway the game starts as soon as you press ENTER.\n", Daren_thinking);
    endSegment(isColorOn);
+
 
    //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
    Computer myComputer= Computer(Text("DAK"), Text("bos"+randomTextNumbers(3)));
    myComputer.on=isColorOn;
 
-   execCLEAR(myComputer);
+   //=some game variables
+   //bools
+   bool informedAboutCD=false;
+   bool hasCD=false;
+   bool voidPointer=false;
+   bool brokenNetworkManager=true;
+   bool hasToSSH=true;
+   bool hasWon=false;
+   
+   //other data types
+   IPAdress targetIP=IPAdress();
+   Text targetIPName=randomText(8);
+   Text ssid="Network"+randomTextNumbers(4);
+   Text password=randomText(20);
+   Text code=randomTextNumbers(7);
 
+
+   //=set up folders and files
+   //cd
+   myComputer.parser.removeCommand("cd");
+   myComputer.createFile(File(Path("/a/cd"), randomText(100)), "/root/cd");
+   myComputer.deleteFile("/bin/cd");
+
+   //CRippled Archaic SHell RC
+   //.crashtc
+   myComputer.createFile(File(Path("/a/.crashrc"), Text("")), "/root/.crashrc");
+   //note the %U is user %H is host and %D is current directory
+
+
+
+   //make the pass and ssid
+   myComputer.createFile(File(Path("/a/password-meme.txt"), Text("the password of the network might be "+password+" but I don't know for sure.")), "/home/Desktop/memes/password-meme.txt");
+   myComputer.createFile(File(Path("/a/5$|D-7Xt"), Text(ssid)), "/tmp/5$|D-7Xt");
+
+
+
+   //clear screen
+   execCLEAR(myComputer);
+   
+   slowtalk(isColorOn, "Boss: Hey you, the new employee... erm.. what was your name...\n", Boss_talking);
+   
+   fasttalk(isColorOn, "Type in your name\n", Daren_thinking);
+
+   {
+      char name[100]; 
+      cin.getline(name, 100);
+      myComputer.setUser(name);
+   }
+
+   slowtalk(isColorOn, "You: "+myComputer.getUser()+" sir.\n", Player_talking);
+   slowtalk(isColorOn, "Boss: Ah yes, "+myComputer.getUser()+" right.\n", Boss_talking);
+   slowtalk(isColorOn, "Anyway. You're tasked with breaching the TOP network system.\n", Boss_talking);
+   slowtalk(isColorOn, "One of our small time hackers managed to find a backdoor in one of their external computers.\n", Boss_talking);
+   slowtalk(isColorOn, "I don't know how usable it it but it'll have to make do.\n", Boss_talking);
+   slowtalk(isColorOn, "Typing \"help\" should give you some info on how to operate\n", Boss_talking);
+   slowtalk(isColorOn, "Good luck!\n", Boss_talking);
 
 
 
@@ -382,6 +445,160 @@ int main(int argc, char *argv[]){
             break;
          }
       }
+
+      if(!informedAboutCD){
+         informedAboutCD=true;
+         fasttalk(isColorOn, "daren: Don't worry I'll help you along the way\n", Daren_thinking);
+         fasttalk(isColorOn, "You don't have the cd program in /bin/\n", Daren_thinking);
+         fasttalk(isColorOn, "But don't worry the binary is in /root/\n", Daren_thinking);
+         fasttalk(isColorOn, "you can do \"copy /root/cd\" to copy it\n", Daren_thinking);
+         fasttalk(isColorOn, "then you can do \"copybuffer\" to see where it is (should be at index 0)\n", Daren_thinking);
+         fasttalk(isColorOn, "And finally you can do \"paste 0 /bin/\" to paste in the bin folder\n", Daren_thinking);
+         fasttalk(isColorOn, "(again pasting the file at index 0)\n", Daren_thinking);
+         fasttalk(isColorOn, "And Tada you can use cd now\n", Daren_thinking);
+         fasttalk(isColorOn, "Dont forget you can use \"man <command>\" to learn more about a specific command\n", Daren_thinking);
+      }else if(!hasCD){
+
+         //did we copy cd?
+         File* cd=myComputer.getFile("/bin/cd", true);
+         if(cd==nullptr)
+            continue;
+         
+         
+         hasCD=true;
+         //add the cd command
+         char alias[100][100]={"cd", "chgdir", "cngdir", "chngdir"}, description[100]="Changes the current directory.";
+         char args[100][100]={"cmd", "txt"}, argsDescription[100]="<directory path>";
+         char extraDescription[300]="Examples of command:\ncd /path/starting/from/root\ncd myFolder\ncd path/to/a/folder/in/this/folder";
+         myComputer.parser.addCommand(Command(4, alias, description, 2, args, argsDescription, extraDescription));
+         
+         fasttalk(isColorOn, "daren: Nice, now you can use cd to go through folders\n\n", Daren_thinking);
+         fasttalk(isColorOn, "Your goal basically is to ssh into an internal computer.\n", Daren_thinking);
+         fasttalk(isColorOn, "But you aren't connected to any networks!\n", Daren_thinking);
+         fasttalk(isColorOn, "Make a file /etc/netman/connections/<name>.conf\n", Daren_thinking);
+         fasttalk(isColorOn, "in it write exactly this (there is an end line at the end):\n", Daren_thinking);
+         fasttalk(isColorOn, "[connection]\n", Daren_thinking);
+         fasttalk(isColorOn, "id=<name>\n", Daren_thinking);
+         fasttalk(isColorOn, "\n", Daren_thinking);
+         fasttalk(isColorOn, "[security]\n", Daren_thinking);
+         fasttalk(isColorOn, "pass=<password>\n", Daren_thinking);
+         fasttalk(isColorOn, "\n", Daren_thinking);
+         fasttalk(isColorOn, "as soon as you write it you'll  be connected\n", Daren_thinking);
+         fasttalk(isColorOn, "Use tree in the root folder to get a map of the file tree\n", Daren_thinking);
+         fasttalk(isColorOn, "Anyway search for a file containing the password and network name, should be in somewhere on this computer\n", Daren_thinking);
+         fasttalk(isColorOn, "(forgot to mention this, I assume you know Unix or GNU/Linux commands)\n", Daren_thinking);
+
+         
+      }else if(brokenNetworkManager){
+         //void pointer
+         if(voidPointer==false && myComputer.getCurrentFolder().path.getDepth()>1 && myComputer.getCurrentFolder().name()=="memes"){
+            voidPointer=true;
+            slowtalk(isColorOn, "you: void pointer? Wait what?\n", Player_thinking);
+         }
+
+
+         //proper file?
+         File* conf=myComputer.getFile("/etc/netman/connections/"+ssid+".conf", true);
+         if(conf==nullptr)
+            continue;
+
+         Text expected;
+         expected+="[connection]\n";
+         expected+="id="+ssid+"\n";
+         expected+="\n";
+         expected+="[security]\n";
+         expected+="pass="+password+"\n";
+
+         if(!(expected==conf->cont())){
+            fasttalk(isColorOn, "daren: Wrong config, yes I will spam this until you fix it\n", Daren_thinking);
+            continue;
+         }
+         brokenNetworkManager=false;
+         //=connecting...
+         //con.conf
+         myComputer.createFile(File(Path("/a/con.conf"), Text("[Internal Computers]\n"+targetIPName+"\n")), "/etc/con.conf");
+
+
+         //ip adress
+         myComputer.createFolder(Folder(Path("/a/connections")), "/sys/connections");
+         {
+            //where will the target ip adress be
+            int targetAdressFile=rand()%4+1;
+            int targetAdressLine=rand()%298;
+
+            vector<IPAdress> allAdresses;
+            allAdresses.push_back(targetIP);
+
+            for(int i=1; i<5; i++){
+               Text contents;
+               for(int j=0; j<298; j++){
+                  //in case its the target ip adress add random ip adresses
+                  if(targetAdressFile==i && targetAdressLine==j){
+                     contents+=targetIPName+": "+targetIP.getIPAdressText()+'\n';
+                  }else{
+                     //add to all adresses so we don't make duplicates
+                     allAdresses.push_back(IPAdress(allAdresses));
+                     //get the adress we just added
+                     contents+=randomText(8)+": "+(allAdresses.end()-1)->getIPAdressText()+'\n';
+                  }
+               }
+               myComputer.createFile(File(Path("/a/list"+Text(i)+".txt"), contents), "/sys/connections/list1.txt");
+
+            }
+         }
+
+         
+       
+         fasttalk(isColorOn, "daren: Nice, you're connected\n", Daren_thinking);
+         fasttalk(isColorOn, "My initial idea was to make you use nmap to find all devices and ssh into them until you found a specific file\n", Daren_thinking);
+         fasttalk(isColorOn, "The real action would've been there where you gotta confuse the Admins of the system... anyway\n", Daren_thinking);
+         fasttalk(isColorOn, "Since I didn't have enough time to code in networks and nmap, all of the \"connections\" are\n", Daren_thinking);
+         fasttalk(isColorOn, "in files on this computer. Your clues are /etc/con.conf and /sys/connections/*\n", Daren_thinking);
+         fasttalk(isColorOn, "you might wanna use grep for the second clue\n", Daren_thinking);
+
+         
+      }else if(hasToSSH){
+         if(myComputer.parser.returnCommandT(0)=="ssh"){
+            //correct ip adress?
+            if(myComputer.parser.returnCommandT(1)==targetIP.getIPAdressText()){
+
+               
+               myComputer.createFile(File(Path("/a/code.code"), "[{0-==;][;[?>?p]p[]=-"+code+"{}[]]][[[[=-+_+_=.,.<>"), "/opt/code.code");
+
+               
+               fasttalk(isColorOn, "daren: Nice, you ssh'd\n", Daren_thinking);
+               fasttalk(isColorOn, "Pretend I coded in ssh and scp and you copied a file into your computer\n", Daren_thinking);
+               fasttalk(isColorOn, "clear it out of all the []\"\"''{}(),.<> with a text editor of your choice and you've won!\n", Daren_thinking);
+               hasToSSH=false;
+            }
+            
+         
+         }
+      }else if(!hasWon){
+
+
+         //un case the player deletes the file
+         File* file=myComputer.getFile("/opt/code.code", true);
+         if(file==nullptr)
+            continue;
+
+         if(file->cont()==code){
+            hasWon=true;
+            slowtalk(isColorOn, "Boss: Good job!\n", Boss_talking);
+            slowtalk(isColorOn, "Now we will have unlimited access to their network with this code!\n", Boss_talking);
+            slowtalk(isColorOn, "Eh, you can go home now we don't need you anymore for today.\n", Boss_talking);
+            slowtalk(isColorOn, "boss: I'll get a promotion for sure now!\n", Boss_thinking);
+            fasttalk(isColorOn, "daren: Maybe if I had a couple of more months I could finish the game...\n", Daren_thinking);
+            fasttalk(isColorOn, "You're free to explore the game, make files, delete folders , etc\n", Daren_thinking);
+            fasttalk(isColorOn, "Daren: you won btw\n", Daren_talking);
+            slowtalk(isColorOn, "You: Who is this talking... and what did I win?\n", Player_talking);
+            slowtalk(isColorOn, "you: Am I starting to hear voices\n", Player_thinking);
+            
+         }
+      
+      }
+
+
       
    }while(true);
    

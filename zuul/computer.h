@@ -43,8 +43,9 @@ class Computer{
     //create a file from name OR path
     bool createFile(File, Text);
   
-    //get adress to file with name or path
+    //get adress to file with name or path (you can surpress the error messages by passing in a "true")
     File* getFile(Text);
+    File* getFile(Text, bool);
     
     //=folders
     
@@ -67,8 +68,15 @@ class Computer{
     
     //gives you the user's name
     Text getUser();
+  
+    //changes the user's name
+    void setUser(Text);
+  
     //gives you the host's name
     Text getHost();
+  
+    //changes the host's name
+    void setHost(Text);
 
     //=ram
 
