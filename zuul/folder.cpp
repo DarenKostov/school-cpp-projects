@@ -218,15 +218,15 @@ void Folder::printTree(bool color){
 
 void Folder::printTree(bool color, int level){
   if(path.len()==0)
-    fasttalk(color, "/\n");
+    fasttalk(color, "/\n", folderColor);
   else
-    fasttalk(color, name()+'\n');
+    fasttalk(color, name()+'\n', folderColor);
 
   
   for(auto i=files.begin(); i!=files.end(); i++){
     for(int j=0; j<level; j++)
       cout << "  " << flush;
-    fasttalk(color, "├─"+(**i).name()+'\n');
+    fasttalk(color, "├─"+(**i).name()+'\n', fileColor);
   }
   
   for(auto i=folders.begin(); i!=folders.end(); i++){
@@ -248,11 +248,11 @@ void Folder::emptyMe(){
   }
 
   //delete all folders, recursevely
-  for(auto i=folders.begin(); i!=folders.end(); i++){
+  while(folders.size()!=0){
     //make sure its empty when deleting it | lets not do that, causes multiple delete sequences | nvm lets actually do this and fix whats actually the problem
-    (*i)->emptyMe();
-    delete *i;
-    folders.erase(i);   
+    (*folders.begin())->emptyMe();
+    delete *folders.begin();
+    folders.erase(folders.begin());   
   }
   
 }
