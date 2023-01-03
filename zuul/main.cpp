@@ -488,7 +488,7 @@ bool execGREP(Computer& inComp){
          
          //does the line match the patters?
          char* cmpr=strstr(currentLine.val(), pattern.val());
-         if(cmpr!=NULL)
+         if(cmpr!=nullptr)
             fasttalk(inComp.on, Text(lineNumber)+": "+currentLine);
 
          //clear the current line, we are goig to the next line
