@@ -533,162 +533,162 @@ void Computer::addAllCommands(){
   {
     char alias[100][100]={"cd", "chgdir", "cngdir", "chngdir"}, description[100]="Changes the current directory.";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<directory path>";
-    char extraDescrption[]="Examples of command:\ncd /path/starting/from/root\ncd myFolder\ncd path/to/a/folder/in/this/folder";
-    parser.addCommand(Command(4, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Examples of command:\ncd /path/starting/from/root\ncd myFolder\ncd path/to/a/folder/in/this/folder";
+    parser.addCommand(Command(4, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"copy", "c"}, description[100]="Copies a file into the ram.";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<source path>";
-    char extraDescrption[]="Note that you can copy the same file more than once\nExample of command:\ncopy my file";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Note that you can copy the same file more than once\nExample of command:\ncopy my file";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"paste", "p"}, description[100]="pastes all files from ram. OR pastes a specifc file";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<file id> [destination path]";
-    char extraDescrption[]="You can ommit the destination path and the file will be p[asted in the current directory\nExamples of the command:\nc 2 /opt/myfolder/\nc 4";
-    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
+    char extraDescription[300]="You can ommit the destination path and the file will be p[asted in the current directory\nExamples of the command:\nc 2 /opt/myfolder/\nc 4";
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
     //cp actually stands for just "copy"
     char alias[100][100]={"cp", "copypaste"}, description[100]="copies a file into memory and pastes it.";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<source path> [destination path]";
-    char extraDescrption[]="Does exactly what copy and paste do, its more of an alias of both of them";
-    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
+    char extraDescription[300]="Does exactly what copy and paste do, its more of an alias of both of them";
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"rm", "remove"}, description[100]="Deletes a file or a folder";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="[flags] <file path>";
-    char extraDescrption[]="Removes a file or a folder, use the -r flag to remove a folder only\n(i know the original doesn't work this way)";
-    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
+    char extraDescription[300]="Removes a file or a folder, use the -r flag to remove a folder only\n(i know the original doesn't work this way)";
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"man", "manual"}, description[100]="Shows detals on how to use a program.";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<program>";
-    char extraDescrption[]="The manual of a program, like help but command specific";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="The manual of a program, like help but command specific";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"free", "fr"}, description[100]="Shows the ram usage.";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<flag>";
-    char extraDescrption[]="Shows you RAM usage, use -h flag for human readable values";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Shows you RAM usage, use -h flag for human readable values";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"mv", "move"}, description[100]="Moves a file.";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<source path> <destination path>";
-    char extraDescrption[]="Works like cp but with rm added, works with files only\n(I know mv doesn't cut but moves files/folders)";
-    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
+    char extraDescription[300]="Works like cp but with rm added, works with files only\n(I know mv doesn't cut but moves files/folders)";
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
   //Table Of Processes, i know it doesn't stand for that, but makes more sense as an alieas than "top CPU consumers"
     char alias[100][100]={"top", "tbloprc", "tbloprs"}, description[100]="Shows process's name, memory usage, and cpu usage";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
-    char extraDescrption[]="Shows you cpu/resources usage\n(on the real top you use the -d0 flag to make it update\nas fast as possible, fully using 1 of your cores/threads)";
-    parser.addCommand(Command(3, alias, description, 1, args, argsDescription));
+    char extraDescription[300]="Shows you cpu/resources usage\n(on the real top you use the -d0 flag to make it update\nas fast as possible, fully using 1 of your cores/threads)";
+    parser.addCommand(Command(3, alias, description, 1, args, argsDescription, extraDescription));
   }{
   //doesnt copy to the buffer, its the buffer thats copied into
     char alias[100][100]={"copybuffer", "cb", "copybank"}, description[100]="Shows you what files you have in the copy buffer.";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="[clear]";
-    char extraDescrption[]="Shows you what's in the copy buffer, shows up to 10 items\nwrite 'clear' after the command to clear the coppu buffer\nExample of command:\ncopybuffer clear";
-    parser.addCommand(Command(3, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Shows you what's in the copy buffer, shows up to 10 items\nwrite 'clear' after the command to clear the coppu buffer\nExample of command:\ncopybuffer clear";
+    parser.addCommand(Command(3, alias, description, 2, args, argsDescription, extraDescription));
   }
   {
     char alias[100][100]={"ssh", "secureshell"}, description[100]="Secure Shell";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<who>@<adress>\n<adress>";
-    char extraDescrption[]="SSH's into another machine, you don't have to specify the username if your current is the same as the targets\n(idk if I'll code that in)";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="SSH's into another machine, you don't have to specify the username if your current is the same as the targets\n(idk if I'll code that in)";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"scp", "securecopy"}, description[100]="Secure, Contain, Protect!\n\nAhem, SSH secure file copy";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<who>@<adress>:<source path> <who>@<adress>:<destination path>";
-    char extraDescrption[]="copies a file from a computer to a computer in a network";
-    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
+    char extraDescription[300]="copies a file from a computer to a computer in a network";
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"cat", "catout"}, description[100]="Concatenate files and print on the standard output. tl;dr Print files into terminal.";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="This one doesnt concatenate files, it just prints a single file to the console\nExample of the commands:\ncat myfile.txt";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="This one doesnt concatenate files, it just prints a single file to the console\nExample of the commands:\ncat myfile.txt";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"grep"}, description[100]="Print lines from a file that match a pattern.";
     char args[100][100]={"cmd", "''", "txt"}, argsDescription[100]="<pattern> <file path>";
-    char extraDescrption[]="You must use '' around the pattern.\na seg fault will be cause if you dont end the quotes, this is intentional as it adds to the \"old and unmaintained system\" esthetic\nExample of command\ngrep 'among us' impostors.txt";
-    parser.addCommand(Command(2, alias, description, 3, args, argsDescription));
+    char extraDescription[300]="You must use '' around the pattern.\na seg fault will be cause if you dont end the quotes, this is intentional as it adds to the \"old and unmaintained system\" esthetic\nExample of command\ngrep 'among us' impostors.txt";
+    parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"tree"}, description[100]="Print a tree of all child folders/files";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
-    char extraDescrption[]="Prints the children of the current folder";
-    parser.addCommand(Command(1, alias, description, 1, args, argsDescription));
+    char extraDescription[300]="Prints the children of the current folder";
+    parser.addCommand(Command(1, alias, description, 1, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"exit", "quit"}, description[100]="Exits the game";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
-    char extraDescrption[]="Exits the current session, if you have ssh'ed youll go back to the previous one.";
-    parser.addCommand(Command(2, alias, description, 1, args, argsDescription));
+    char extraDescription[300]="Exits the current session, if you have ssh'ed youll go back to the previous one.";
+    parser.addCommand(Command(2, alias, description, 1, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"ls", "list"}, description[100]="Lists the items in the current directory";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="flags";
-    char extraDescrption[]="The flags you can use are -1 and -l\n-1 put everything on a new line\n-l gives more details like date\nExamples of command\nls -1\nls -1l";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="The flags you can use are -1 and -l\n-1 put everything on a new line\n-l gives more details like date\nExamples of command\nls -1\nls -1l";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"touch", "tch"}, description[100]="Make an empty file";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="Example of command:\ntouch myfile.txt";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Example of command:\ntouch myfile.txt";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"mkdir", "makedirectory", "mkfold"}, description[100]="Make an empty folder";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<folder path>";
-    char extraDescrption[]="Example of command:\nmkdir myfolder";
-    parser.addCommand(Command(3, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Example of command:\nmkdir myfolder";
+    parser.addCommand(Command(3, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"pwd"}, description[100]="Print working directory";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
-    char extraDescrption[]=":/";
-    parser.addCommand(Command(1, alias, description, 1, args, argsDescription));
+    char extraDescription[300]=":/";
+    parser.addCommand(Command(1, alias, description, 1, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"clear", "cl"}, description[100]="Clears the screen, unlike other commands this is instant.";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
-    char extraDescrption[]="Attempts to clear the screen, this is instant";
-    parser.addCommand(Command(2, alias, description, 1, args, argsDescription));
+    char extraDescription[300]="Attempts to clear the screen, this is instant";
+    parser.addCommand(Command(2, alias, description, 1, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"vi"}, description[100]="Visual Instrument- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="The default editor for Unix-based systems\nExamples of the command:\nvi myfile.txt";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="The default editor for Unix-based systems\nExamples of the command:\nvi myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"vim"}, description[100]="Vi IMproved- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="Vi but with more features\nExamples of the command:\nvim myfile.txt";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Vi but with more features\nExamples of the command:\nvim myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"neovim", "nvim"}, description[100]="The modern Vim- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="Vim but faster, smaller, more versitile and with a better config/plugin system.\n(Vim is still a very good option for writing code)\nExamples of the command:\nneovim myfile.txt";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="Vim but faster, smaller, more versitile and with a better config/plugin system.\n(Vim is still a very good option for writing code)\nExamples of the command:\nneovim myfile.txt";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"helix", "hx"}, description[100]="Post modern Vim- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="\"If Neovim is the modern Vim, then Helix is post-modern.\"\nIn may words this is an IDE but in the terminal.\n(I also wrote this project with it)\nExamples of the command:\nhelix myfile.txt";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="\"If Neovim is the modern Vim, then Helix is post-modern.\"\nIn may words this is an IDE but in the terminal.\n(I also wrote this project with it)\nExamples of the command:\nhelix myfile.txt";
+    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"emacs"}, description[100]="Editor MACroS- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="A text editor with a lot of macros.\n(This is also the editor most students use at school)\nExamples of the command:\nemacs myfile.txt";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="A text editor with a lot of macros.\n(This is also the editor most students use at school)\nExamples of the command:\nemacs myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"nano"}, description[100]="Nano’s ANOther editor- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="A friendly editor, for people who just want to edit a file, without the harsh learning curve.\nExamples of the command:\nnano myfile.txt";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="A friendly editor, for people who just want to edit a file, without the harsh learning curve.\nExamples of the command:\nnano myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"micro"}, description[100]="Terminal-based text editor- text editor";
     char args[100][100]={"cmd", "txt"}, argsDescription[100]="<file path>";
-    char extraDescrption[]="I don't actually know a lot about this editor except that people say its good.\nExamples of the command:\nmacro myfile.txt";
-    parser.addCommand(Command(1, alias, description, 2, args, argsDescription));
+    char extraDescription[300]="I don't actually know a lot about this editor except that people say its good.\nExamples of the command:\nmacro myfile.txt";
+    parser.addCommand(Command(1, alias, description, 2, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"editor", "e"}, description[100]="text editor";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<editor> <file path>";
-    char extraDescrption[]="For when you use an editor I havent made a specific command for\n(or when you wanna exploit this feature and run whatever you want)\nExamples of the command:\neditor eclipse myfile.txt #hahaha CLI is no more\neditor rm myfile.txt #hahaha broke this game";
-    parser.addCommand(Command(1, alias, description, 3, args, argsDescription));
+    char extraDescription[300]="For when you use an editor I havent made a specific command for\n(or when you wanna exploit this feature and run whatever you want)\nExamples of the command:\neditor eclipse myfile.txt #hahaha CLI is no more\neditor rm myfile.txt #hahaha broke this game";
+    parser.addCommand(Command(1, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"cat << EOF > myfile", "cat > myfile << EOF"}, description[100]="a text editor?";
     char args[100][100]={"cmd", "txt", "txt", "txt", "txt"}, argsDescription[100]="EOF is with what you end the file, myfile is the filepath";
-    char extraDescrption[]="Thats how a Unix Haxxer edits files\nExamples of the command:\n cat << :wq > myfile.txt\ncat > myfile << :x";
-    parser.addCommand(Command(2, alias, description, 5, args, argsDescription));
+    char extraDescription[300]="Thats how a Unix Haxxer edits files\nExamples of the command:\n cat << :wq > myfile.txt\ncat > myfile << :x";
+    parser.addCommand(Command(2, alias, description, 5, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"help", "h"}, description[100]="this help";
     char args[100][100]={"cmd"}, argsDescription[100]="none";
-    char extraDescrption[]="not this man";
-    parser.addCommand(Command(2, alias, description, 5, args, argsDescription));
+    char extraDescription[300]="not this man";
+    parser.addCommand(Command(2, alias, description, 5, args, argsDescription, extraDescription));
   }
   
 }

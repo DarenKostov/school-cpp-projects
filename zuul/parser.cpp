@@ -19,7 +19,8 @@ Parser::Parser(){
   char description[100]="";
   char args[100][100]={""};
   char argsDescription[100]="";
-  emptyCommand=Command(1, alias, description, 1, args, argsDescription);
+  char extraDescription[300]="";
+  emptyCommand=Command(1, alias, description, 1, args, argsDescription, extraDescription);
   
   command=malloc(100);
   

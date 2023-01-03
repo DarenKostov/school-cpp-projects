@@ -26,7 +26,7 @@ struct Command{
   int argsAmount; //amount of arguments, self explanatory
   
   template <class arr1, class arr2>
-  Command(int AliasesAmount, arr1 Aliases, char* Description, int ArgsAmount, arr2 Args, char* ArgsDescription){
+  Command(int AliasesAmount, arr1 Aliases, char* Description, int ArgsAmount, arr2 Args, char* ArgsDescription, char* LongDescription){
    
     //command aliases copy over
     aliases= new Text[AliasesAmount];
@@ -49,7 +49,7 @@ struct Command{
     //copy over amounts
     aliasesAmount=AliasesAmount;  
     argsAmount=ArgsAmount;  
-    
+    longDescription=LongDescription;
   }
   
   
@@ -58,6 +58,8 @@ struct Command{
     //copy over descriptions
     description=input.description;
     argsDescription=input.argsDescription;
+    longDescription=input.longDescription;
+    
     
     //copy over amounts
     aliasesAmount=input.aliasesAmount;  
@@ -116,7 +118,8 @@ struct Command{
     
     //copy over amounts
     aliasesAmount=in.aliasesAmount;  
-    argsAmount=in.argsAmount;  
+    argsAmount=in.argsAmount; 
+    longDescription=in.longDescription; 
   }
   
 };
