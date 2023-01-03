@@ -197,6 +197,7 @@ int main(int argc, char *argv[]){
       execFREE,
       execTREE,
       execSSH,
+      execEXIT,
       execHELP,
       execMAN,
    };
@@ -225,6 +226,7 @@ int main(int argc, char *argv[]){
       "free",
       "tree",
       "ssh",
+      "exit",
       "help",
       "man",
    };
@@ -563,7 +565,7 @@ int main(int argc, char *argv[]){
             if(myComputer.parser.returnCommandT(1)==targetIP.getIPAdressText()){
 
                
-               myComputer.createFile(File(Path("/a/code.code"), "[{0-==;][;[?>?p]p[]=-"+code+"{}[]]][[[[=-+_+_=.,.<>"), "/opt/code.code");
+               myComputer.createFile(File(Path("/a/code.code"), "[{0-==;][;[?>?p]p[]=-"+code+"{}[]]][[[[=-+_+_=.,.<>\n"), "/opt/code.code");
 
                
                fasttalk(isColorOn, "daren: Nice, you ssh'd\n", Daren_thinking);
@@ -582,7 +584,7 @@ int main(int argc, char *argv[]){
          if(file==nullptr)
             continue;
 
-         if(file->cont()==code){
+         if(file->cont()==code+"\n"){
             hasWon=true;
             slowtalk(isColorOn, "Boss: Good job!\n", Boss_talking);
             slowtalk(isColorOn, "Now we will have unlimited access to their network with this code!\n", Boss_talking);
@@ -857,6 +859,9 @@ bool execSSH(Computer& inComp){
    return true;
 }
 
+bool execEXIT(Computer&){
+   exit(0);
+}
 bool execHELP(Computer& inComp){
    auto output=inComp.parser.getAllCommands();
 
