@@ -140,6 +140,7 @@ bool execTREE(Computer&);
 bool execSSH(Computer&);
 bool execEXIT(Computer&);
 bool execHELP(Computer&);
+bool execMAN(Computer&);
 
 
 int main(int argc, char *argv[]){
@@ -194,6 +195,7 @@ int main(int argc, char *argv[]){
       execTREE,
       execSSH,
       execHELP,
+      execMAN,
    };
    //an array of what these functions actually are
    Text execDef[]={
@@ -221,6 +223,7 @@ int main(int argc, char *argv[]){
       "tree",
       "ssh",
       "help",
+      "man",
    };
    
 
@@ -577,5 +580,43 @@ bool execHELP(Computer& inComp){
    }
       fasttalk(inComp.on, "\n============\n\n", Warning);
    
+   return true;
+}
+
+
+bool execMAN(Computer& inComp){
+   auto allCommands=inComp.parser.getAllCommands();
+   Command command;
+   Text commandName=inComp.parser.returnCommandT(1);
+   //find our command
+   for(auto i=allCommands.begin(); i!=allCommands.end(); i++){
+      if(commandName==i->aliases[0])
+         command=*i;
+   }
+   //no command?
+   if(command.aliasesAmount==0){
+      unexpectedIO(inComp.on, "man: The command inputted is non existant.");
+      return false;
+   }
+   //=print command info
+   fasttalk(inComp.on, "\n============\n", Warning);
+   fasttalk(inComp.on, command.aliases[0]+" ", folderColor);
+
+   //aliases
+   fasttalk(inComp.on, '(');
+   for(int i=1; i<command.aliasesAmount-1; i++)
+      fasttalk(inComp.on, command.aliases[i]+", ");
+   fasttalk(inComp.on, command.aliases[command.aliasesAmount-1]+")");
+
+   //args
+   fasttalk(inComp.on, "\n============\n", Warning);
+   fasttalk(inComp.on, "arguments:\n");
+   fasttalk(inComp.on, command.argsDescription);
+   fasttalk(inComp.on, "\n============\n", Warning);
+   //description
+   fasttalk(inComp.on, command.description);
+   fasttalk(inComp.on, "\n============\n", Warning);
+   fasttalk(inComp.on, command.longDescription);
+   fasttalk(inComp.on, "\n============\n", Warning);
    return true;
 }
