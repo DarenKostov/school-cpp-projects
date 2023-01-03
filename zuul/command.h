@@ -84,8 +84,6 @@ struct Command{
   Command(){
     aliases= new Text[0];
     args= new Text[0];
-    aliasesAmount=0;
-    argsAmount=0;
   }
   
   //deconstructor, we dont want memory leaks now do we

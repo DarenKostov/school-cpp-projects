@@ -108,6 +108,9 @@ using namespace std;
 //edits a file with the editor given, returns false when unsucessfull
 bool editFile(Text, File);
 
+//prompts the user to press enter to continue
+void endSegment(bool);
+
 
 //commands from user
 
@@ -227,6 +230,7 @@ int main(int argc, char *argv[]){
    };
    
 
+
    
    slowtalk(isColorOn, "Welcome to Zuul", Daren_talking);
    fasttalk(isColorOn, "\n\n  This project is not ready", Daren_thinking);
@@ -235,56 +239,114 @@ int main(int argc, char *argv[]){
    fasttalk(isColorOn, "\n\n  ...I hope...\n\n", Daren_thinking);
    
    
-   // fasttalk(isColorOn, "Before the game begins I want to apologize for this being the most broken \"operating system\" out there.\n", Daren_thinking);
-   // fasttalk(isColorOn, "When do I give the full path? When do I not? You gotta look at the code closely to understand.\n", Daren_thinking);
-   // fasttalk(isColorOn, "And because of this I strongly recomend to go in the folder you have bussiness with and do your actions there.\n", Daren_thinking);
-
-
-   // fasttalk(isColorOn, "Basicaly when wanting to GET or DELETE a file you either put its name (has to be in working directory)", Daren_thinking);
-   // fasttalk(isColorOn, "or give full path to it, you can give path relative to the working directory.", Daren_thinking);
+   fasttalk(isColorOn, "\n\nPerhaps Ill never finish it...\nthis is a working demo at least\n\n", Daren_thinking);
    
-   // fasttalk(isColorOn, "But when you CREATE a file you can also use a path relative to the working directory.\n", Daren_thinking);
-   // fasttalk(isColorOn, "...for the most part...\n", Daren_thinking);
-   // fasttalk(isColorOn, "And once again because of that I strongly recomend to go in the folder you have bussiness with and do your actions there.\n", Daren_thinking);
-   // fasttalk(isColorOn, "Oh and btw you cannot chain \"../\" with other stuff, it has to be on its own and only works when changing working directory\n", Daren_thinking);
+   endSegment(isColorOn);
    
-   // fasttalk(isColorOn, "Don't worry all basic zuul functionality works as intended, its just wen you try to use the extra functionality.\n", Daren_thinking);
+   fasttalk(false, "\nFirst off, do you see the text above as cyan OR white with some weird \"\\033[36;1m\" at the begining of every line?\n", Daren_thinking);
+   fasttalk(false, "If you dont see color and are using cygwin you can go over here:\n", Daren_thinking);
+   fasttalk(false, "https://superuser.com/questions/186520/colors-in-cygwin-being-displayed-as-raw-ansi-codes\n", Daren_thinking);
+   fasttalk(false, "\n....or you can disable color :(\n", Daren_thinking);
+   fasttalk(false, "Disable color? [N/y]", Daren_talking);
 
 
-   // fasttalk(isColorOn, "What from zuul is what here:\n", Daren_thinking);
-   // fasttalk(isColorOn, "(keep in mind not everything is 1 to 1)\n", Daren_thinking);
-   // fasttalk(isColorOn, "=Commands:\n", Daren_thinking);
-   // fasttalk(isColorOn, "go = cd\n", Daren_thinking);
-   // fasttalk(isColorOn, "lookaround/(describe the room) = ls, du\n", Daren_thinking);
-   // fasttalk(isColorOn, "take = copy\n", Daren_thinking);
-   // fasttalk(isColorOn, "drop = paste\n", Daren_thinking);
-   // fasttalk(isColorOn, "use = grep/cat/...\n", Daren_thinking);
-   // fasttalk(isColorOn, "inventory = free, copybuffer, top\n", Daren_thinking);
-   // fasttalk(isColorOn, "=Objects\n", Daren_thinking);
-   // fasttalk(isColorOn, "room = folder\n", Daren_thinking);
-   // fasttalk(isColorOn, "item = file\n", Daren_thinking);
-   // fasttalk(isColorOn, "inventory = ram\n", Daren_thinking);
-   // fasttalk(isColorOn, "\n", Daren_thinking);
+   //disables color if needed  
+   {
+      char color[99];
+      cin.getline(color, 99);
+      switch(color[0])
+         case 'y':
+         case 'Y':
+            isColorOn=false;
+   }
+
+   fasttalk(isColorOn, "\nAlso make sure you're playing full screen or that the text doesnt wrap\n", Daren_thinking);
    
-   // fasttalk(isColorOn, "Also when editing files can you not exploit the ability to open a shell in vim (idk if you can do that emacs) to break the game\n", Daren_thinking);
-   // fasttalk(isColorOn, "And also please don't expoit the ability to open ANY program with the "editor" command\n", Daren_thinking);
+   endSegment(isColorOn);
+   
+   fasttalk(isColorOn, "Before the game begins I want to apologize for this being the most broken \"operating system\" out there.\n", Daren_thinking);
+   fasttalk(isColorOn, "When do I give the full path? When do I not? You gotta look at the code closely to understand.\n", Daren_thinking);
+   fasttalk(isColorOn, "And because of this I strongly recomend to go in the folder you have bussiness with and do your actions there.\n\n", Daren_thinking);
+
+
+   fasttalk(isColorOn, "Basicaly when wanting to GET or DELETE a file you either put its name (has to be in working directory)\n", Daren_thinking);
+   fasttalk(isColorOn, "or give full path to it, you cannot give path relative to the working directory.\n\n", Daren_thinking);
+   
+   fasttalk(isColorOn, "But when you CREATE a file you can also use a path relative to the working directory.\n", Daren_thinking);
+   fasttalk(isColorOn, "...for the most part...\n\n", Daren_thinking);
+   fasttalk(isColorOn, "And once again because of that I strongly recomend to go in the folder you have bussiness with and do your actions there.\n", Daren_thinking);
+   fasttalk(isColorOn, "Oh and btw you cannot chain \"../\" with other stuff, it has to be on its own and only works when changing working directory\n\n", Daren_thinking);
+   
+   fasttalk(isColorOn, "Don't worry all basic zuul functionality works as intended, its just when you try to use the extra functionality.\n", Daren_thinking);
+   
+   endSegment(isColorOn);
+      
+
+   fasttalk(isColorOn, "What from zuul is what here:\n", Daren_thinking);
+   fasttalk(isColorOn, "(keep in mind not everything is 1 to 1)\n", Daren_thinking);
+   fasttalk(isColorOn, "=Commands:\n", Daren_thinking);
+   fasttalk(isColorOn, "go = cd\n", Daren_thinking);
+   fasttalk(isColorOn, "lookaround/(describe the room) = ls, du\n", Daren_thinking);
+   fasttalk(isColorOn, "take = copy\n", Daren_thinking);
+   fasttalk(isColorOn, "drop = paste\n", Daren_thinking);
+   fasttalk(isColorOn, "use = grep/cat/...\n", Daren_thinking);
+   fasttalk(isColorOn, "inventory = free, copybuffer, top\n", Daren_thinking);
+   fasttalk(isColorOn, "=Objects\n", Daren_thinking);
+   fasttalk(isColorOn, "room = folder\n", Daren_thinking);
+   fasttalk(isColorOn, "item = file\n", Daren_thinking);
+   fasttalk(isColorOn, "inventory = ram\n", Daren_thinking);
+   fasttalk(isColorOn, "\n", Daren_thinking);
+   
+   endSegment(isColorOn);
+
+   fasttalk(isColorOn, "Also when editing files can you not exploit the ability to open a shell in vim (idk if you can do that with emacs) to break the game\n", Daren_thinking);
+   fasttalk(isColorOn, "And also please don't expoit the ability to open ANY program with the \"editor\" command\n", Daren_thinking);
    
 
-   // fasttalk(isColorOn, "... hey kid wanna know how to get a shell using the "editor" command\n", Daren_thinking);
-   // fasttalk(isColorOn, "I am assuming youre using bash but you can use dash or zsh as well, or even python\n", Daren_thinking);
-   // fasttalk(isColorOn, "first make a new file and write the following:\n", Daren_thinking);
-   // fasttalk(isColorOn, "#!/bin/sh\n", Daren_thinking);
-   // fasttalk(isColorOn, "bash\n", Daren_thinking);
-   // fasttalk(isColorOn, "\n", Daren_thinking);
-   // fasttalk(isColorOn, "Then run this command:\n", Daren_thinking);
-   // fasttalk(isColorOn, "editor bash <the file you just wrote>\n", Daren_thinking);
-   // fasttalk(isColorOn, "this will execte "bash temp" and temp is a shell scripts that executes bash\n", Daren_thinking);
-   // fasttalk(isColorOn, "congrats now you have a shell\n", Daren_thinking);
+   fasttalk(isColorOn, "\npsst .... hey kid wanna know how to get a shell using the \"editor\" command\n", Daren_thinking);
+   fasttalk(isColorOn, "I am assuming youre using bash but you can use dash or zsh as well, or even stuff like python\n", Daren_thinking);
+   fasttalk(isColorOn, "first make a new file and write the following:\n\n", Daren_thinking);
+   fasttalk(isColorOn, "#!/bin/sh\n", Daren_thinking);
+   fasttalk(isColorOn, "bash\n", Daren_thinking);
+   fasttalk(isColorOn, "\n", Daren_thinking);
+   fasttalk(isColorOn, "Then run this command:\n\n", Daren_thinking);
+   fasttalk(isColorOn, "editor bash <the file you just wrote>\n\n", Daren_thinking);
+   fasttalk(isColorOn, "this will execte \"bash temp\" and temp is a shell scripts that executes bash\n", Daren_thinking);
+   fasttalk(isColorOn, "congrats now you have a shell, go wild and break the game\n", Daren_thinking);
+   
+   endSegment(isColorOn);
 
+   fasttalk(isColorOn, "eh.. heres how to do it with ruby:\n", Daren_thinking);
+
+   fasttalk(isColorOn, "file:\n\n", Daren_thinking);
+   fasttalk(isColorOn, "exec(\"bash\")\n\n", Daren_thinking);
+   fasttalk(isColorOn, "command:\n\n", Daren_thinking);
+   fasttalk(isColorOn, "editor ruby <the file you just wrote>\n\n", Daren_thinking);
+   fasttalk(isColorOn, "\n", Daren_thinking);
+   
+   fasttalk(isColorOn, "and here is also how to it it with python if you where interested:\n", Daren_thinking);
+   fasttalk(isColorOn, "file:\n\n", Daren_thinking);
+   fasttalk(isColorOn, "import os\nos.system(\"bash\")\n\n", Daren_thinking);
+   fasttalk(isColorOn, "command:\n\n", Daren_thinking);
+   fasttalk(isColorOn, "editor python <the file you just wrote>\n\n", Daren_thinking);
+   fasttalk(isColorOn, "\n", Daren_thinking);
+
+   endSegment(isColorOn);
+
+
+   fasttalk(isColorOn, "..anyway the game starts as soon as you press ENTER.\n", Daren_thinking);
+   endSegment(isColorOn);
 
    //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
    Computer myComputer= Computer(Text("DAK"), Text("bos"+randomTextNumbers(3)));
    myComputer.on=isColorOn;
+
+   execCLEAR(myComputer);
+
+
+
+
+
    
    do{
       
@@ -331,6 +393,11 @@ int main(int argc, char *argv[]){
 }
 
 
+void endSegment(bool color){
+   char enter[1];
+   fasttalk(color, "\n[Press Enter]\n", Daren_talking);
+   cin.getline(enter, 99);
+}
 
 bool editFile(Text editor, File* virtFile){
 
