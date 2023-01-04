@@ -1,6 +1,5 @@
 How do you win?
 
-when I put something in {} on a new line I want you to perform an action
 
 write as is,
 a colon is a colon key press,
@@ -52,11 +51,11 @@ i`Left Arrow``Shift+Insert``Esc`:wq`Enter`
 cat /etc/con.conf`Enter`
 (select the line after "[Internal Computers]", without including the end line, shoud look like "tg8,q;`d")
 grep '`Shift+Insert`' /sys/connections/list1.txt`Enter`
-(go to line 62 of this guide if any out put)
+(go to line 61 of this guide if any out put)
 grep '`Shift+Insert`' /sys/connections/list2.txt`Enter`
-(go to line 62 of this guide if any out put)
+(go to line 61 of this guide if any out put)
 grep '`Shift+Insert`' /sys/connections/list3.txt`Enter`
-(go to line 62 of this guide if any out put)
+(go to line 61 of this guide if any out put)
 grep '`Shift+Insert`' /sys/connections/list4.txt`Enter`
 (select the ip adress that is after ": ", should look like "75.189.233.215")
 ssh `Shift+Insert``Enter`
@@ -65,5 +64,63 @@ vim /opt/code.code`Enter`
 =================== end now
 
 You won
-You can still keep playing, make files, folders, fill your ram!`
+You can still keep playing, make files, folders, fill your ram!
+
+Here is how to do it with just the commands, previous rules dont apply here except the () and
+anything in <> is a varibale or information like a password or a name
+
+================== starts now:
+
+c /root/cd
+p 0 /bin/
+cd tmp
+cat 5$|D-7Xt
+(remember the output, that is the name of the network)
+
+cd /etc
+mkdir netman
+cd netman
+mkdir connections
+cd connections
+
+cat /home/Desktop/memes/password-meme.txt
+(remeber the output, the password is somehwer in it)
+
+
+
+touch <the name of the network>.conf
+(I use vim here but you can use emacs, nano, micro, or even something like eclipse (for eclipse you gotta do "editor eclipse <file name>"))
+vim <the file you just created>
+(put this in the file, there is endline at the end, the starts)
+(SOF)
+[connection]
+id=<name of network>
+
+[security]`
+pass=<password of network>
+
+(EOF)
+
+cat /etc/con.conf`Enter`
+(remeber the output it has the name of the devise you want to ssh into)
+
+grep '<name of device>' /sys/connections/list1.txt
+(go to line 62 of this guide if any out put)
+grep '<name of device>' /sys/connections/list2.txt
+(go to line 62 of this guide if any out put)
+grep '<name of device>' /sys/connections/list3.txt
+(go to line 62 of this guide if any out put)
+grep '<name of device>' /sys/connections/list4.txt
+
+(remember the output, it contains the ip adress you want to ssh into)
+
+ssh <ip adress>
+
+(again use whatever editor you want)
+vim /opt/code.code
+(leave only number in the file, it should end with an endline as well)
+
+============== end now
+
+make sure to use "help" and "man" if you don't know how to use a command 
 
