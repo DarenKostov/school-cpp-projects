@@ -197,6 +197,7 @@ int main(int argc, char *argv[]){
       execFREE,
       execTREE,
       execSSH,
+      execEXIT,
       execHELP,
       execMAN,
    };
@@ -225,6 +226,7 @@ int main(int argc, char *argv[]){
       "free",
       "tree",
       "ssh",
+      "exit",
       "help",
       "man",
    };
@@ -563,7 +565,7 @@ int main(int argc, char *argv[]){
             if(myComputer.parser.returnCommandT(1)==targetIP.getIPAdressText()){
 
                
-               myComputer.createFile(File(Path("/a/code.code"), "[{0-==;][;[?>?p]p[]=-"+code+"{}[]]][[[[=-+_+_=.,.<>"), "/opt/code.code");
+               myComputer.createFile(File(Path("/a/code.code"), "[{0-==;][;[?>?p]p[]=-"+code+"{}[]]][[[[=-+_+_=.,.<>\n"), "/opt/code.code");
 
                
                fasttalk(isColorOn, "daren: Nice, you ssh'd\n", Daren_thinking);
@@ -582,7 +584,7 @@ int main(int argc, char *argv[]){
          if(file==nullptr)
             continue;
 
-         if(file->cont()==code){
+         if(file->cont()==code+"\n"){
             hasWon=true;
             slowtalk(isColorOn, "Boss: Good job!\n", Boss_talking);
             slowtalk(isColorOn, "Now we will have unlimited access to their network with this code!\n", Boss_talking);
@@ -694,12 +696,65 @@ bool execLS(Computer& inComp){
 }
    
 bool execCAT(Computer& inComp){
-   File* file=inComp.getFile(inComp.parser.returnCommandT(1));
-   if(file!=nullptr){
-      fasttalk(inComp.on, file->cont()+'\n');
+
+   File* file;
+   Text endOfFile;
+
+   //are we a Unix hecker?
+   bool hecker=false;   
+   if(inComp.parser.returnCommandT(1)=="<<"){
+      if(inComp.parser.returnCommandT(3)==">"){
+         hecker=true;
+         file=inComp.getFile(inComp.parser.returnCommandT(4));
+         endOfFile=inComp.parser.returnCommandT(2);
+      }
+    }else if(inComp.parser.returnCommandT(1)==">"){
+       if(inComp.parser.returnCommandT(3)=="<<"){
+          hecker=true;
+          file=inComp.getFile(inComp.parser.returnCommandT(2));
+          endOfFile=inComp.parser.returnCommandT(4);
+
+       }
+    //we arent a Unix hacker?
+    }else{
+       file=inComp.getFile(inComp.parser.returnCommandT(1));
+    }
+
+   if(file==nullptr)
+      return false;
+
+
+   //doesnt work
+   //gives an error because the shell is closed imidietly and you cant type the EOF string
+   //the error isnt present durring gameplay btw
+   
+   //if we are the unix hecker
+   if(hecker){
+      //=edit file
+      //open the file, emptying it in the process
+      ofstream realFileW;
+      realFileW.open("temp", ios::out | ios::trunc);
+      realFileW << file->cont();
+      realFileW.close();
+      system(("cat > temp << "+endOfFile).val());   
+
+      //=read file 
+      ifstream realFileR ("temp");
+      file->cont()="";
+      while(realFileR.peek()!=EOF){
+         file->cont()+=(char)realFileR.get();
+      }
+      realFileR.close();
+
       return true;
    }
-   return false;
+
+
+
+   //if we just want to print out a file
+   fasttalk(inComp.on, file->cont()+'\n');
+   return true;
+
 }
 
 bool execTOUCH(Computer& inComp){
@@ -870,6 +925,9 @@ bool execHELP(Computer& inComp){
    return true;
 }
 
+bool execEXIT(Computer&){
+   exit(0);
+}
 
 bool execMAN(Computer& inComp){
    auto allCommands=inComp.parser.getAllCommands();

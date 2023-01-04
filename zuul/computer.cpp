@@ -613,13 +613,13 @@ void Computer::addAllCommands(){
     parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"cat", "catout"}, description[100]="Concatenate files and print on the standard output. tl;dr Print files into terminal.";
-    char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<file path>";
+    char args[100][100]={"cmd", "txt", "txt", "txt", "txt"}, argsDescription[100]="<file path>";
     char extraDescription[300]="This one doesnt concatenate files, it just prints a single file to the console\nExample of the commands:\ncat myfile.txt";
-    parser.addCommand(Command(2, alias, description, 2, args, argsDescription, extraDescription));
+    parser.addCommand(Command(2, alias, description, 5, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"grep"}, description[100]="Print lines from a file that match a pattern.";
     char args[100][100]={"cmd", "''", "txt"}, argsDescription[100]="<pattern> <file path>";
-    char extraDescription[300]="You must use '' around the pattern.\na seg fault will be cause if you dont end the quotes, this is intentional as it adds to the \"old and unmaintained system\" esthetic\nExample of command\ngrep 'among us' impostors.txt";
+    char extraDescription[300]="You must use '' around the pattern.\na seg fault will appear  if you dont end the quotes, this is intentional as it adds to the \"old and unmaintained system\" esthetic\nExample of command\ngrep 'among us' impostors.txt";
     parser.addCommand(Command(2, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"tree"}, description[100]="Print a tree of all child folders/files";
@@ -692,10 +692,10 @@ void Computer::addAllCommands(){
     char extraDescription[300]="I don't actually know a lot about this editor except that people say its good.\nExamples of the command:\nmacro myfile.txt";
     parser.addCommand(Command(1, alias, description, 2, args, argsDescription, extraDescription));
   }{
-    char alias[100][100]={"editor", "e"}, description[100]="text editor";
+    char alias[100][100]={"editor", "e", "exec"}, description[100]="text editor";
     char args[100][100]={"cmd", "txt", "txt"}, argsDescription[100]="<editor> <file path>";
     char extraDescription[300]="For when you use an editor I havent made a specific command for\n(or when you wanna exploit this feature and run whatever you want)\nExamples of the command:\neditor eclipse myfile.txt #hahaha CLI is no more\neditor rm myfile.txt #hahaha broke this game";
-    parser.addCommand(Command(1, alias, description, 3, args, argsDescription, extraDescription));
+    parser.addCommand(Command(3, alias, description, 3, args, argsDescription, extraDescription));
   }{
     char alias[100][100]={"cat << EOF > myfile", "cat > myfile << EOF"}, description[100]="a text editor?";
     char args[100][100]={"cmd", "txt", "txt", "txt", "txt"}, argsDescription[100]="EOF is with what you end the file, myfile is the filepath";
