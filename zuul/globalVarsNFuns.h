@@ -50,7 +50,7 @@ void unexpectedIO(bool on, Text in);
 
 // const long printSpeed=10000;
 //the global speed of all custom slep commands
-const long printSpeed=10;
+const long printSpeed=10000;
 
 //SLEeP, shorter than usleep, uses less 0's
 void slep();
