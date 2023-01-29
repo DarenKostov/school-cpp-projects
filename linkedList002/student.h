@@ -1,6 +1,8 @@
 #include "text.h"
 
 
+#ifndef STUDENT
+#define STUDENT
 
 
 class Student{
@@ -24,3 +26,6 @@ class Student{
     int id;
     double gpa;
 };
+
+
+#endif
