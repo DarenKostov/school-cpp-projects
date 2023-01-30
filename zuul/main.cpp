@@ -159,16 +159,18 @@ int main(int argc, char *argv[]){
          isThisAnSSH = true;
    }
    
-   // if(isThisAnSSH)
-   //    exit(34);
+   if(isThisAnSSH)
+      exit(34);
 
-   // int a=system((thisFile+" yes").val());
+   int a=system((thisFile+" yes").val());
 
-   // if(WEXITSTATUS(a)==34)
-   //    cout << "works\n";
+   if(WEXITSTATUS(a)==34)
+      cout << "works\n";
    
    //change seed
    srand(time(0));
+
+
 
    bool isColorOn=true;
    
@@ -346,6 +348,7 @@ int main(int argc, char *argv[]){
    fasttalk(isColorOn, "Your player cannot see people thinking but only them talking\n", Daren_thinking);
    fasttalk(isColorOn, "..anyway the game starts as soon as you press ENTER.\n", Daren_thinking);
    endSegment(isColorOn);
+
 
 
    //bos haha comes from dos but broken haha (its supposed to feel like unix nontheless)
@@ -736,7 +739,7 @@ bool execCAT(Computer& inComp){
       realFileW.open("temp", ios::out | ios::trunc);
       realFileW << file->cont();
       realFileW.close();
-      system(("cat > temp << "+endOfFile).val());   
+      system(("sh -c cat > temp << "+endOfFile).val());   
 
       //=read file 
       ifstream realFileR ("temp");

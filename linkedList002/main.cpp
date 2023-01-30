@@ -21,16 +21,16 @@ void addNode(Node*&);
 void addNode(Node*, Node*, Node*);
 
 //removes a node, return the head|
-//1st arg is head, 2nd is which node (id)
+//1st arg is head, 2nd is previous node, 3rd is which node (id)
 void removeNode(Node*&);
-void removeNode(Node*, int);
+void removeNode(Node*, Node*, int);
 
 //prints all students' info
 void printAll(Node*);
 
 
 int main(){
-  cout << "Welcome to the Student Database\n Avaliable commands are A(DD), P(RINT), A(VERAGE), D(ELETE), Q(UIT)";
+  cout << "Welcome to the Student Database\nAvaliable commands are A(DD), P(RINT), A(VERAGE), D(ELETE), Q(UIT)";
   Node* head= nullptr;
 
   while(true){
@@ -45,6 +45,11 @@ int main(){
     if(input=='A' || input=="ADD"){
       cout << "Adding student...\n";
       addNode(head);
+      continue;
+    }
+    if(input=='R' || input=="REMOVE"){
+      cout << "Removing student...\n";
+      removeNode(head);
       continue;
     }
 
@@ -64,9 +69,9 @@ void addNode(Node*& head){
   double gpa;
 
   cout << "first name:"; cin >> firstName; 
-  cout << "\nlast name:"; cin >> lastName; 
-  cout << "\nid:"; cin >> id; 
-  cout << "\ngpa:"; cin >> gpa; 
+  cout << "last name:"; cin >> lastName; 
+  cout << "id:"; cin >> id; 
+  cout << "gpa:"; cin >> gpa; 
 
   Node* newNode=new Node(new Student(firstName, lastName, id, gpa));
 
@@ -125,16 +130,47 @@ void addNode(Node* current, Node* previous, Node* forAdding){
 
 
 
-// void removeNode(Node*& head){
-//   int id;
-//   cout << "id:"
+void removeNode(Node*& head){
+  int id;
+  cout << "id:"; cin >> id;
 
+  if(head->getStudent()->getId()==id){
+    Text name=head->getStudent()->getName();
+    Node* oldhead=head; 
+    head=head->getNext();
+    delete head;
+    cout << name << " is removed from the Database\n";
+    return;
+  }
 
+  removeNode(head->getNext(), head, id);
 
-// }
-// void removeNode(Node* head, int id){
+}
+
+void removeNode(Node* current, Node* previous, int id){
   
-// }
+  //the id of this node
+  int thisID;
+    
+  //no need to search if we are sure the student isnt in the database
+  if(current==nullptr || (thisID=current->getStudent()->getId()) > id){
+    cout << "The student is nowhere to be found\n";
+    return;
+  }
+
+
+  if(thisID==id){
+    Text name=current->getStudent()->getName();
+    previous->setNext(current->getNext());
+    delete current;
+    cout << name << " is removed from the Database\n";
+    return;
+  }
+
+  
+  removeNode(current->getNext(), current, id);
+  
+}
 
 void printAll(Node* head){
   
@@ -143,7 +179,7 @@ void printAll(Node* head){
     return;
 
   Student student=*head->getStudent();
-  printf("id: %06d, GPA: %.2f, name: %s\n", student.getId(), student.getGpa(), student.getName().val());
+  printf("id: %06d, GPA: %1.2f, name: %s\n", student.getId(), student.getGpa(), student.getName().val());
 
   //print the next node
   printAll(head->getNext());

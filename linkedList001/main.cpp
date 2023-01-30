@@ -29,6 +29,11 @@ void printWithAnyFromStart(Node<T>*);
 
 typedef Node<Text> SNode;
 
+
+void printNext(Node<Text>*);
+
+
+
 int main(){
 
   
@@ -82,7 +87,10 @@ int main(){
   
   std::cout << "\n=print from start with any\n";
   printWithAnyFromStart(head->getNext()->getNext());
-  
+
+
+  std::cout << "=========\n";
+  printNext(head);
 }
 
 
@@ -122,3 +130,14 @@ void printWithAnyFromStart(Node<T>* any){
     printWithTailFromStart(any);
     printWithHeadFromStart(any->getNext());
 }
+
+
+void printNext(Node<Text>* head){
+
+  if(head->getNext()!=nullptr)
+    printNext(head->getNext());
+  std::cout << *head->val() << '\n';
+
+
+}
+

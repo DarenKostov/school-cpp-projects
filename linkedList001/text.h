@@ -29,6 +29,9 @@
 
 #include <iostream>
 
+#ifndef TEXT
+#define TEXT
+
 
 class Text{
   public:
@@ -145,18 +148,6 @@ class Text{
     //returns the text in the form of a char array
     char* charArr()const; 
     
-    /*
-      note:
-      Want to concatinate 2 Texts into a char array? Just do:
-      (text1+text2).val() OR
-      (char*)(text1+text2)
-  
-      what to concatinate 2 char arrays into a char array? just do:
-      (Text(char1)+char2).val() OR
-      (char*)(Text(char1)+char2)
-  
-    */
-  
   
   //=casts
   
@@ -188,12 +179,11 @@ class Text{
 
 //working in reverse, concatenating, setting, etc other things with Text
 
-#ifndef w
-#define w
-
-
 //makes Text automatically work with cout
 std::ostream& operator<<(std::ostream&, Text);
+
+//makes Text automatically work with cin
+std::istream& operator>>(std::istream&, Text&);
 
 //makes char*+Text possible, returns Text
 Text operator+(const char*, Text);
@@ -206,13 +196,5 @@ Text operator+(int, Text);
 Text operator+(long, Text);
 
 #endif
-
-
-
-/*
-  note:
-    want to set a char array to a Text?
-    You cant.
-*/
 
 

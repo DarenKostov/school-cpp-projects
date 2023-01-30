@@ -382,6 +382,18 @@ std::ostream &operator <<(std::ostream &stream, Text right){
     stream << right.val();
     return stream;
 }
+
+std::istream &operator >>(std::istream &stream, Text& right){
+
+    char* input=new char[stream.gcount()]; 
+    stream >> input;
+    right=input;
+    delete[] input;
+          
+    return stream;
+}
+
+
 Text operator+(const char* left, Text right){
   //use char* constructor and Text+Text concatenation
   return Text(left)+right;
