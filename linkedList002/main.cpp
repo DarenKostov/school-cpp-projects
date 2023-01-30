@@ -153,6 +153,7 @@ void removeNode(Node*& head){
   int id;
   cout << "id:"; cin >> id;
 
+  //if its head remove what head's pointing to and set head to the next node
   if(head->getStudent()->getId()==id){
     Text name=head->getStudent()->getName();
     Node* oldhead=head; 
@@ -177,7 +178,7 @@ void removeNode(Node* current, Node* previous, int id){
     return;
   }
 
-
+  //remove the node and stitch up the connections
   if(thisID==id){
     Text name=current->getStudent()->getName();
     previous->setNext(current->getNext());
@@ -198,8 +199,6 @@ void printAverage(Node* head){
 
   //the "max" is so that we don't devide by 0
   double average=(*(double*)((char*)input+sizeof(int))) / max(1, *(int*)(input));
-
-
   
   free(input);
 
@@ -226,8 +225,6 @@ void* sumGpa(Node* current){
 
   //for ease
   Student student= *current->getStudent();
-
-
 
   //sum up the gpa's
   //gotta cast to char* since you cant do void* arethmetic in C++ as opposed to C
