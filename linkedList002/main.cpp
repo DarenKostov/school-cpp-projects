@@ -29,33 +29,52 @@ void removeNode(Node*, Node*, int);
 void printAll(Node*);
 
 
+//Averages all of the student's gpa's and prints it
+void printAverage(Node*);
+
+
+//sums up all of the gpa's and returns it (also returns how many students it has added up)
+void* sumGpa(Node*);
+
 int main(){
-  cout << "Welcome to the Student Database\nAvaliable commands are A(DD), P(RINT), A(VERAGE), D(ELETE), Q(UIT)";
+  cout << "Welcome to the Student Database\nAvaliable commands are A(DD), P(RINT), A(VERAGE), DELETE, Q(UIT)\n";
   Node* head= nullptr;
 
   while(true){
 		Text input;
-		cin >> input;
+		cout << "\nA/P/AV/R/Q:"; cin >> input;
 
     if(input=='P' || input=="PRINT"){
-      cout << "students:\n";
+      cout << "\nPrinting all students:\n";
       printAll(head);
       continue;
     }
     if(input=='A' || input=="ADD"){
-      cout << "Adding student...\n";
+      cout << "\nAdding student...\n";
       addNode(head);
       continue;
     }
-    if(input=='R' || input=="REMOVE"){
-      cout << "Removing student...\n";
+    if(input=='R' || input=="DELETE"){
+      cout << "\nRemoving student...\n";
       removeNode(head);
+      continue;
+    }
+    
+    if(input=="AV" || input=="AVERAGE"){
+      cout << "\nAveraging GPA's...\n";
+      printAverage(head);
       continue;
     }
 
     if(input=='Q' || input=="QUIT"){
+      cout << "\nQuitting...\n";
       return 0;
     }
+
+    cout << "\nWhat command is \"" << input <<"\" supposed to envoke?\n";
+    cout << "The following commands are valid:\n";
+    cout << "A\tP\tAV\tR\tQ\n";
+    cout << "ADD\tPRINT\tAVEARGE\tDELETE\tQUIT\n";
   }
 
 
@@ -171,6 +190,60 @@ void removeNode(Node* current, Node* previous, int id){
   removeNode(current->getNext(), current, id);
   
 }
+
+void printAverage(Node* head){
+
+
+  void* input= sumGpa(head);
+
+  //the "max" is so that we don't devide by 0
+  double average=(*(double*)((char*)input+sizeof(int))) / max(1, *(int*)(input));
+
+
+  
+  free(input);
+
+  printf("GPA average: %1.2f\n", average);
+  
+}
+
+
+void* sumGpa(Node* current){
+
+  //allocate memory for our output
+  void* output=malloc(sizeof(int)+sizeof(double));
+
+  //if we are at the end, return 0's
+  if(current==nullptr){
+    *(int*)(output)=0;
+    *(double*)((char*)output+sizeof(int))=0;
+    return output;  
+  }
+
+  //get the next node's sum
+  void* input= sumGpa(current->getNext());
+
+
+  //for ease
+  Student student= *current->getStudent();
+
+
+
+  //sum up the gpa's
+  //gotta cast to char* since you cant do void* arethmetic in C++ as opposed to C
+  *(int*)(output)=1+*(int*)(input);
+  *(double*)((char*)output+sizeof(int))=student.getGpa()+*(double*)((char*)input+sizeof(int));
+
+
+  //the function previous (rather the next actually) allocated memory for this, we gotta free it
+  free(input);
+
+
+  return output;  
+  
+}
+
+
 
 void printAll(Node* head){
   
