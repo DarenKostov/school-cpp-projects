@@ -377,20 +377,50 @@ Text::operator char(){
 //compatability overloads
 
 
-std::istream& getline (std::istream& is, Text& txt, char separator){
+bool getline (std::istream& is, Text& txt, char separator){
+
+
+  Text test;
+
+  char currentChar=is.peek();
+  
   //add characters until the separator or end of file
-  while(is.peek()!=separator || is.get()!=EOF){
-    txt+=is.get();
+  while(currentChar!=separator && currentChar!=EOF){
+    
+    test+=currentChar;
+    // std::cout << currentChar << std::flush;
+    
+    //without this currentChar is always and infinitely 'F'. I have no idea why
+    is.get();
+    
+    //get next char
+    currentChar=is.peek();
   }
-  return is;
+  std::cout << test;
+  // std::cout << '\n';
+
+  // return false;
+  return !is.eof();
 }
 
 
 std::istream& getline (std::istream& is, Text& txt){
+
+  char currentChar=is.peek();
+  
   //add characters until end of line or file
-  while(is.peek()!='\n' || is.get()!=EOF){
-    txt+=is.get();
+  while(currentChar!='\n' && currentChar!=EOF){
+    
+    txt+=currentChar;
+
+    
+    //without this currentChar is always and infinitely 'F'. I have no idea why
+    is.get();
+    
+    //get next char
+    currentChar=is.peek();
   }
+
   return is;
 }
 

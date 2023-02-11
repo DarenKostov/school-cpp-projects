@@ -26,6 +26,8 @@ SCR::SCR(){
 
   
 int SCR::open(Text path){
+
+  
   file.open(path.val(), ios::in); 
 
   //get the 1st line
@@ -33,7 +35,9 @@ int SCR::open(Text path){
 
   
   getline(file, line);
-  stringstream ss(line.val());
+
+  
+  stringstream ss("test,among");
 
   //populate our columns
   while (getline(ss, word, ',')) {
@@ -45,6 +49,7 @@ int SCR::open(Text path){
   file.seekg(0);
 
   
+  return 1;
   //return 0 if success, 1if failuare
   return 1-(int)(bool)file;
 
