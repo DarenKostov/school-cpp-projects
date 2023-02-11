@@ -6,7 +6,7 @@
   https://github.com/DarenKostov/DAK-cpp-utils
 
   
-  You are free to use it for any purpose, as long as it doesn't violate the GPL3 licence.
+  You are free to use it for any purpose, as long as it doesn't violate the GPLv3 licence.
   (you might want to use this if you don't have access to std::string)
 
   resources used:
@@ -28,6 +28,7 @@
 //"Text" refers to the class, "text" refers to where the the char array is stored
 
 #include <iostream>
+
 
 #ifndef TEXT
 #define TEXT
@@ -160,7 +161,7 @@ class Text{
   //cast it to a single character, if the length is more than 1 itll cast the 1st character, essentally the same as "[0]" BUT you make a copy here
   explicit operator char(); 
   
-  
+
   bool operator<(Text a)const{return true;};     
   
   private:

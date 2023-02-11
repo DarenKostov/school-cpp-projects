@@ -371,6 +371,10 @@ Text::operator char(){
   return (*this)[0];
 }
 
+Text::operator std::string(){
+  return text;
+}
+
 
 
 
