@@ -371,16 +371,28 @@ Text::operator char(){
   return (*this)[0];
 }
 
-Text::operator std::string(){
-  return text;
+
+
+
+//compatability overloads
+
+
+std::istream& getline (std::istream& is, Text& txt, char separator){
+  //add characters until the separator or end of file
+  while(is.peek()!=separator || is.get()!=EOF){
+    txt+=is.get();
+  }
+  return is;
 }
 
 
-
-
-
-//reverse operators
-
+std::istream& getline (std::istream& is, Text& txt){
+  //add characters until end of line or file
+  while(is.peek()!='\n' || is.get()!=EOF){
+    txt+=is.get();
+  }
+  return is;
+}
 
 std::ostream &operator <<(std::ostream &stream, Text right){
     stream << right.val();
@@ -396,6 +408,9 @@ std::istream &operator >>(std::istream &stream, Text& right){
           
     return stream;
 }
+
+
+//reverse operators
 
 
 Text operator+(const char* left, Text right){

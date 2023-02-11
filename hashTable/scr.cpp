@@ -33,7 +33,7 @@ int SCR::open(Text path){
 
   
   getline(file, line);
-  stringstream ss(line);
+  stringstream ss(line.val());
 
   //populate our columns
   while (getline(ss, word, ',')) {
@@ -60,14 +60,14 @@ int SCR::close(){
 
 //read given an idex
 int SCR::read(int column, std::vector<Text>& output){
-  char* line, word;
+  Text line, word;
   getline(file, line);
 
   //loop though every line
   while (file.good()) {
 
       getline(file, line);
-      std::stringstream ss(line);
+      std::stringstream ss(line.val());
       int index=0;
     
       //loop through every value

@@ -14,6 +14,7 @@
   https://stackoverflow.com/questions/56387509/this-argument-to-member-function-select-has-type-const-selectparam-but-fu
   https://stackoverflow.com/questions/39808976/operator-overloading-for-primitive-types-in-c
   https://stackoverflow.com/questions/72142269/how-to-interpret-the-explicit-cast-operator
+  https://www.geeksforgeeks.org/getline-string-c/
 
   http://courses.cms.caltech.edu/cs11/material/cpp/donnie/cpp-ops.html
   https://www.geeksforgeeks.org/difference-between-const-int-const-int-const-and-int-const/
@@ -178,13 +179,19 @@ class Text{
 };
 
 
-//working in reverse, concatenating, setting, etc other things with Text
+//overload functions usualy used with string or char* to work with Text
 
 //makes Text automatically work with cout
 std::ostream& operator<<(std::ostream&, Text);
 
 //makes Text automatically work with cin
 std::istream& operator>>(std::istream&, Text&);
+
+//makes Text work with getline, by default it uses std::string
+std::istream& getline (std::istream&, Text&);
+std::istream& getline (std::istream&, Text&, char);
+
+//working in reverse, concatenating, setting, etc other things with Text
 
 //makes char*+Text possible, returns Text
 Text operator+(const char*, Text);
