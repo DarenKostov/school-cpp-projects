@@ -379,49 +379,30 @@ Text::operator char(){
 
 bool getline (std::istream& is, Text& txt, char separator){
 
+  //empty the word before we work with it
+  txt="";
 
-  Text test;
-
-  char currentChar=is.peek();
+  //we are at the end? tell the user so
+  if(is.eof()){
+    return false;
+  }
   
   //add characters until the separator or end of file
-  while(currentChar!=separator && currentChar!=EOF){
-    
-    test+=currentChar;
-    // std::cout << currentChar << std::flush;
-    
-    //without this currentChar is always and infinitely 'F'. I have no idea why
-    is.get();
-    
-    //get next char
-    currentChar=is.peek();
-  }
-  std::cout << test;
-  // std::cout << '\n';
+  while(is.peek()!=separator && is.peek()!=EOF){
 
-  // return false;
-  return !is.eof();
+    txt+=(char)is.get();
+    
+  }
+  
+  //go past the separator
+  is.get();
+  
+  return true;
 }
 
 
-std::istream& getline (std::istream& is, Text& txt){
-
-  char currentChar=is.peek();
-  
-  //add characters until end of line or file
-  while(currentChar!='\n' && currentChar!=EOF){
-    
-    txt+=currentChar;
-
-    
-    //without this currentChar is always and infinitely 'F'. I have no idea why
-    is.get();
-    
-    //get next char
-    currentChar=is.peek();
-  }
-
-  return is;
+bool getline (std::istream& is, Text& txt){
+  return getline(is, txt, '\n');
 }
 
 std::ostream &operator <<(std::ostream &stream, Text right){

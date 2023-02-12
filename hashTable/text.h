@@ -188,7 +188,7 @@ std::ostream& operator<<(std::ostream&, Text);
 std::istream& operator>>(std::istream&, Text&);
 
 //makes Text work with getline, by default it uses std::string
-std::istream& getline (std::istream&, Text&);
+bool getline (std::istream&, Text&);
 bool getline (std::istream&, Text&, char);
 
 //working in reverse, concatenating, setting, etc other things with Text

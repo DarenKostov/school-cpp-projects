@@ -37,19 +37,20 @@ int SCR::open(Text path){
   getline(file, line);
 
   
-  stringstream ss("test,among");
+  // return 1;
+  stringstream ss(line.val());
 
   //populate our columns
   while (getline(ss, word, ',')) {
     columns.push_back(word);
   }
 
+    // cout << &word << '\n';
   //get back at the top of the file
   file.clear();
   file.seekg(0);
 
   
-  return 1;
   //return 0 if success, 1if failuare
   return 1-(int)(bool)file;
 

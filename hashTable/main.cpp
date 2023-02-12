@@ -22,7 +22,7 @@ int main(){
   }
 
   printf("opened file\n");
-  
+
   std::vector<Text> firstNames;
 
   reader.read(0, firstNames);
