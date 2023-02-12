@@ -31,7 +31,10 @@ class StudentDatabase{
     Student getStudent(int);
     Student locate(int);
     Student find(int);
-    
+
+    //prints all students on the console
+    void printAll();
+     
     //removes a student from the database
     void remove(int);
 

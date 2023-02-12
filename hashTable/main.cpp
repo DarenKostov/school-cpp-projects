@@ -34,7 +34,7 @@ int main(){
     
   promtForRandomStudents(database);
 
-
+  database.printAll();
 
   return 0;
 
@@ -124,15 +124,14 @@ void promtForRandomStudents(StudentDatabase& db){
       }
     //if the user hasn't inputted anything
     }else
-      amountOfRandomStudents=1;
+      amountOfRandomStudents=25;
     delete[] input;  
   }
 
   
   //add the students
   for(int i=0; i<amountOfRandomStudents; i++){
-    cout << firstNames[rand()%firstNames.size()] << ", " << lastNames[rand()%lastNames.size()] << "\n";
-  
+    db.insert(firstNames[rand()%firstNames.size()],lastNames[rand()%lastNames.size()], ((double)rand()/RAND_MAX)*4);
   }
 
 
