@@ -45,7 +45,7 @@ void StudentDatabase::printAll(){
   printf("Z\n");
     for(int j=0; j<tableSize; j++){
   // printf("X\n");
-      std::cout << i->getValue()[j] << "\n";
+      // std::cout << i->getValue()[j] << "\n";
       for(auto k=i->getValue()[j]; k!=nullptr; k=k->getNext()){
   printf("Y\n");
         Student* current=k->getValue();
@@ -63,7 +63,7 @@ void StudentDatabase::printAll(){
 void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
 
   //get the slot where we should add the student ("Z" and "X" axis)
-  Node<Student>* workingSlot=getSlot(bestSlotForANewStudent);
+  Node<Student>*& workingSlot=getSlot(bestSlotForANewStudent);
 
 
   //Now add the student on the "Y" axis
@@ -74,7 +74,7 @@ void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
 }
 
 
-Node<Student>* StudentDatabase::getSlot(int id){
+Node<Student>*& StudentDatabase::getSlot(int id){
 
   int index=hash(id);
 
@@ -88,22 +88,26 @@ Node<Student>* StudentDatabase::getSlot(int id){
     selectedTable=selectedTable->getNext();
   }
 
-  //move to that slot
-  Node<Student>* selectedSlot=selectedTable->getValue()[index];
+  std::cout << &selectedTable->getValue()[index] << "==\n";
 
+  //move to that slot
+  Node<Student>*& selectedSlot=selectedTable->getValue()[index];
+
+  std::cout << &selectedSlot << "]]\n";
   return selectedSlot;
 }
 
 
-void StudentDatabase::addStudent(Node<Student>* whereToAdd, Student* whoToAdd){
+void StudentDatabase::addStudent(Node<Student>*& whereToAdd, Student* whoToAdd){
   // printf("adding\n");
 
   //whereToAdd is a separet pointer, changing it wont chnage the original
   
+  std::cout << &whereToAdd << "--\n";
   //no head?
   if(whereToAdd==nullptr){
     whereToAdd=new Node<Student>(whoToAdd);
-    // std::cout << whereToAdd c
+    // std::cout << whereToAdd << ")))\n";
     return;
   }
 

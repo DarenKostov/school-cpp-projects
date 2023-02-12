@@ -36,7 +36,7 @@ class Node{
     Node* getPrev()const;
     Node* getPrevious()const;  
 
-    //gives you the value stored i this Node;
+    //gives you the value stored in this Node;
     T* getValue()const;
     T* val()const;
 

@@ -50,10 +50,10 @@ class StudentDatabase{
     int ExpandAndRehash();
 
     //returns you the slot where a student should be, given their id
-    Node<Student>* getSlot(int);
+    Node<Student>*& getSlot(int);
 
     //adds a student to a slot (I didn't design my node class very well so it doesn't completly manage it on itself)
-    void addStudent(Node<Student>*, Student*);
+    void addStudent(Node<Student>*&, Student*);
   
     int bestSlotForANewStudent;
     int tableSize;
