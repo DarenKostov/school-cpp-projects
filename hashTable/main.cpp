@@ -7,9 +7,11 @@
 
 
 #include "scr.h"
+#include "studentDatabase.h"
 #include <cmath>
 
-class StudentDatabase{};
+
+
 
 using namespace std;
 
@@ -33,23 +35,6 @@ int main(){
   promtForRandomStudents(database);
 
 
-  SCR reader;
-
-  if(!reader.open("names.csv")){
-
-
-  }
-  
-
-
-  std::vector<Text> firstNames;
-
-  reader.read(0, firstNames);
-
-
-  cout << firstNames[2] << '\n';
-
-  reader.close();
 
   return 0;
 
