@@ -6,6 +6,12 @@
   you can make a linked list of multiple data types, just like arrays in JS!
 
 
+  NOTE:
+  T IS WHAT IS STORED IN THE NODE, DONT SET IT AS A POINTER,
+  PUT WHAT YOU WILL STORE IN IT
+  ..or you can spend hours trying to figure out why you give
+  it an int pointer but it wants a int pointer pointer 
+
 */
 
 
@@ -14,6 +20,9 @@ class Node{
   public:
     //create a Node with a value
     Node(T*);
+  
+    //create a Node without a value
+    Node();
     
     //destroy a Node | WARNING this will break your linked list, dont use it unless you know what youre doing, use the deleteMe() instead
     ~Node();
@@ -38,6 +47,9 @@ class Node{
     
     //sets the previous Node
     void setPrev(Node*);
+  
+    //sets the value
+    void setValue(T*);
   
     //=adders
   

@@ -12,6 +12,13 @@ Node<T>::Node(T* arg){
 }
 
 template<class T>
+Node<T>::Node(){
+  value=nullptr;
+  next=nullptr;
+  previous=nullptr;
+}
+
+template<class T>
 Node<T>::~Node(){
   delete value;
   
@@ -46,6 +53,12 @@ void Node<T>::setNext(Node* arg){
 template<class T>
 void Node<T>::setPrev(Node* arg){
   previous=arg;
+}
+
+
+template<class T>
+void Node<T>::setValue(T* arg){
+  value=arg;
 }
 
 //=adders

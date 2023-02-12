@@ -7,7 +7,7 @@
   The code should be hosted on
   https://github.com/DarenKostov/DAK-cpp-utils
 
-  modified by Daren Kostov to use Text instead of std::string
+  modified by Daren Kostov (me) to use Text instead of std::string
 
 */
 
