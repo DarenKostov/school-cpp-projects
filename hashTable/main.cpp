@@ -7,29 +7,47 @@
 
 
 #include "scr.h"
+#include <cmath>
+
+class StudentDatabase{};
 
 using namespace std;
 
+
+
+
+
+
+void promtForRandomStudents(StudentDatabase&);
+
+
+
+
 int main(){
+
+  StudentDatabase database;
+
+  cout << "Hello! this is the student more efficient Student Database!\n";
+  cout << "Please provide us with a file containing \n";
+    
+  promtForRandomStudents(database);
 
 
   SCR reader;
 
-  if(reader.open("names.csv")==1){
-    // printf("file didnt load\n");
-    return 1;
-  
-  }
+  if(!reader.open("names.csv")){
 
-  printf("opened file\n");
+
+  }
+  
+
 
   std::vector<Text> firstNames;
 
   reader.read(0, firstNames);
 
-  printf("outputting data\n");
 
-  cout << firstNames[0] << '\n';
+  cout << firstNames[2] << '\n';
 
   reader.close();
 
@@ -38,5 +56,92 @@ int main(){
 }
 
 
+void promtForRandomStudents(StudentDatabase& db){
+
+
+  
+  //=add random students?
+
+
+  cout << "Would you like to insert random student for testing purposes?\n";
+  cout << "[Y/n]:";
+
+  {
+    char* input=new char[2];
+    cin.getline(input, 2);
+    switch(input[0]){
+      case '\0':
+      case 'Y':
+      case 'y':
+        break;
+      default:
+        return;
+    }
+    delete[] input;
+   } 
+
+
+  //=from where to add random students?
+  
+  int amountOfRandomStudents=0;
+  char* path=new char[50];
+  SCR reader;
+
+  
+  cout << "\nPlease prove a path to an svg file containing random first and last names\n"; 
+  cout << "(The 1st column should be first names, 2nd should be last names.)\n";
+  cout << "[default is \"names.csv\"]:";
+
+  cin.getline(path, 50);
+  cout << "\n";
+  
+  if(*path=='\0'){
+    cout << "default is chosen (\"names.csv\")\n";
+    strcpy(path,"names.csv");
+  }else
+    cout << path <<" is chosen\n";
+
+  
+  if(reader.open("names.csv")){
+    cout << "There was a problem reading the file.....\n";  
+    cout << "And was too lazy making a while loop for this so you'll have to start over...\n";  
+    cout << "Better luck reading the file next time!\n";
+    exit(1);
+  }
+
+  //=load students
+  vector<Text> firstNames, lastNames;
+
+  reader.read(0, firstNames);
+  reader.read(0, lastNames);
+  
+
+  //=how many random student to add?
+
+  cout << "How may random students should be added?\n";
+  cout << "[default is 25]:";
+  
+  {
+    Text input;
+    cin >> input;
+
+    //only if the user has inputted something
+    if(!(input=="")){
+      //TODO add this to the main Text class
+      for(int i=0; i<input.len(); i++){
+        amountOfRandomStudents+=(input[i]-'0')*pow(10,((input.len()-i)-1));
+      }
+    //if the user hasn't inputted anything
+    }else
+      amountOfRandomStudents=25;  
+  }
+  
+  //add the students
+    
+
+
+  reader.close();
+
+}
 
 
