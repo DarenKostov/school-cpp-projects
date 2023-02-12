@@ -58,6 +58,7 @@ int main(){
 
 void promtForRandomStudents(StudentDatabase& db){
 
+  //I use char* because getline doesnt use Text ¯\_(ツ)_/¯ no real way to fix unless I make my own getline
 
   
   //=add random students?
@@ -77,6 +78,7 @@ void promtForRandomStudents(StudentDatabase& db){
       default:
         return;
     }
+    
     delete[] input;
    } 
 
@@ -95,19 +97,22 @@ void promtForRandomStudents(StudentDatabase& db){
   cin.getline(path, 50);
   cout << "\n";
   
-  if(*path=='\0'){
+  if(path[0]=='\0'){
     cout << "default is chosen (\"names.csv\")\n";
-    strcpy(path,"names.csv");
+    strcpy(path, "names.csv");
   }else
     cout << path <<" is chosen\n";
 
   
-  if(reader.open("names.csv")){
+  if(reader.open(path)){
     cout << "There was a problem reading the file.....\n";  
-    cout << "And was too lazy making a while loop for this so you'll have to start over...\n";  
+    cout << "And I was too lazy making a while loop for this...\n";
+    cout <<"...so you'll have to start over...\n";  
     cout << "Better luck reading the file next time!\n";
     exit(1);
   }
+
+  delete[] path;
 
   //=load students
   vector<Text> firstNames, lastNames;
@@ -120,24 +125,30 @@ void promtForRandomStudents(StudentDatabase& db){
 
   cout << "How may random students should be added?\n";
   cout << "[default is 25]:";
+
   
   {
-    Text input;
-    cin >> input;
+    char* input=new char[7];
+    cin.getline(input, 7); //who would put a number that has more than 7 digits
 
     //only if the user has inputted something
-    if(!(input=="")){
+    if(!(input[0]=='\0')){
       //TODO add this to the main Text class
-      for(int i=0; i<input.len(); i++){
-        amountOfRandomStudents+=(input[i]-'0')*pow(10,((input.len()-i)-1));
+      for(int i=0; i<strlen(input); i++){
+        amountOfRandomStudents+=(input[i]-'0')*pow(10,((strlen(input)-i)-1));
       }
     //if the user hasn't inputted anything
     }else
-      amountOfRandomStudents=25;  
+      amountOfRandomStudents=1;
+    delete[] input;  
   }
+
   
   //add the students
-    
+  for(int i=0; i<amountOfRandomStudents; i++){
+    cout << firstNames[rand()%firstNames.size()] << ", " << lastNames[rand()%lastNames.size()] << "\n";
+  
+  }
 
 
   reader.close();
