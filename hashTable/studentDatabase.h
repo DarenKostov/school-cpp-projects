@@ -47,13 +47,22 @@ class StudentDatabase{
     void recalculateBestNewSpot();
 
     //doubles the tables and rehashes them
-    int ExpandAndRehash();
+    void expandAndRehash();
 
     //returns you the slot where a student should be, given their id
     Node<Student>*& getSlot(int);
 
+
+    //injects a student NODE into tha database | acts like addStudent but with a node 
+    void injectStudent(Node<Student>*&, Node<Student>*);
+
     //adds a student to a slot (I didn't design my node class very well so it doesn't completly manage it on itself)
     void addStudent(Node<Student>*&, Student*);
+  
+  
+    //removes a student (I didn't design my node class very well so it doesn't completly manage it on itself)
+    //THIS REMOVES THE STUDENT, NOT JUST THE NODE, THE STUDENT WILL BE FOREVER LOST
+    void removeStudent(Node<Student>*&);
   
     int bestSlotForANewStudent;
     int tableSize;

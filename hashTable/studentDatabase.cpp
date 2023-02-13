@@ -40,16 +40,17 @@ StudentDatabase::StudentDatabase(int size){
 }
 
 void StudentDatabase::printAll(){
+  int tableCounter=0;
+  
   printf("printing\n");
-  for(auto i=slots; i!=nullptr; i=i->getNext()){
-  printf("Z\n");
+  for(auto i=slots; i!=nullptr; i=i->getNext(), tableCounter++){
+    
     for(int j=0; j<tableSize; j++){
-  // printf("X\n");
-      // std::cout << i->getValue()[j] << "\n";
-      for(auto k=i->getValue()[j]; k!=nullptr; k=k->getNext()){
-  printf("Y\n");
+    
+      int linkedCounter=0;
+      for(auto k=i->getValue()[j]; k!=nullptr; k=k->getNext(), linkedCounter++){
         Student* current=k->getValue();
-        printf("%06d: %.2f, %s\n", current->getId(), current->getGpa(), current->getName().val());
+        printf("%d:%d:%d %06d: %.2f, %s\n",tableCounter, j, linkedCounter, current->getId(), current->getGpa(), current->getName().val());
        }
     }
   }
@@ -62,8 +63,10 @@ void StudentDatabase::printAll(){
 
 void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
 
+
+  
   //get the slot where we should add the student ("Z" and "X" axis)
-  Node<Student>*& workingSlot=getSlot(bestSlotForANewStudent);
+  Node<Student>*& workingSlot=getSlot(bestSlotForANewStudent);//this is the original
 
 
   //Now add the student on the "Y" axis
@@ -88,35 +91,106 @@ Node<Student>*& StudentDatabase::getSlot(int id){
     selectedTable=selectedTable->getNext();
   }
 
-  std::cout << &selectedTable->getValue()[index] << "==\n";
 
   //move to that slot
-  Node<Student>*& selectedSlot=selectedTable->getValue()[index];
+  Node<Student>*& selectedSlot=selectedTable->getValue()[index]; //this is the original, not a copy
 
-  std::cout << &selectedSlot << "]]\n";
   return selectedSlot;
 }
 
 
-void StudentDatabase::addStudent(Node<Student>*& whereToAdd, Student* whoToAdd){
-  // printf("adding\n");
+void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<Student>* whatToAdd){
 
-  //whereToAdd is a separet pointer, changing it wont chnage the original
+  //whereToAdd is the original 
   
-  std::cout << &whereToAdd << "--\n";
   //no head?
   if(whereToAdd==nullptr){
-    whereToAdd=new Node<Student>(whoToAdd);
-    // std::cout << whereToAdd << ")))\n";
+    whereToAdd=whatToAdd;
     return;
   }
 
   //we have head?
-  whereToAdd->addNext(new Node<Student>(whoToAdd));
+  whereToAdd->addNext(whatToAdd);
   return;
 
 }
 
+
+void StudentDatabase::addStudent(Node<Student>*& whereToAdd /*head*/, Student* whoToAdd){
+
+  injectStudent(whereToAdd, new Node<Student>(whoToAdd));
+
+}
+
+
+
+
 int StudentDatabase::hash(int id){
   return id%(tableSize*amountOfTables);
 }
+
+void StudentDatabase::removeStudent(Node<Student>*& whatToRemove){
+
+  //we are the head;
+  if(whatToRemove->getPrev()==nullptr){
+    auto newHead=whatToRemove->getNext();
+    whatToRemove->deleteMe();
+    whatToRemove=newHead;
+    return;
+  }
+
+
+  //we are not head  
+  whatToRemove->deleteMe();
+
+}
+
+
+void StudentDatabase::expandAndRehash(){
+  //student that is currently being re-located
+  int currentlyRelocatingID=0;
+
+  for(int i=0; i<amountOfTables; i++)
+    //see the constructor if you are wondering why and how
+    slots->addAfter(new Node<Node<Student>*>(new Node<Student>*[tableSize]));
+
+    
+  for(auto i=slots; i!=nullptr; i=i->getNext()){   
+    for(int j=0; j<tableSize; j++){    
+      for(auto& k=i->getValue()[j]; k!=nullptr;){//k is original
+        //we are head;
+        if(k->getPrev()==nullptr){
+          auto newHead=k->getNext();
+          k=newHead;
+          //go to next node
+          k=k->getNext();
+          break;
+        }
+
+        //we are not head
+
+
+        //we are bout to detach this, lets keep it so we dont lose it
+        auto& current=k; //this is original
+        
+        //dont break the loop, go to next node
+        k=k->getNext();
+
+        //we are no longer in the database
+        k->detachMe();
+
+
+
+        // addStudent(current,);
+        
+
+
+        
+                  
+      }
+    }
+  }
+
+}
+
+

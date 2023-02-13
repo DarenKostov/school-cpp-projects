@@ -174,6 +174,40 @@ Node<T>* Node<T>::removeMe(){
   return output;
 }
 
+
+template<class T>
+Node<T>* Node<T>::detachMe(){
+  //
+  //(1)=(3)
+  //  
+  
+  Node* output=nullptr;
+  
+  Node* one=previous;
+  Node* three=next;
+
+
+  //=disconnect anyone from us
+  
+  //we are not HEAD
+  if(one!=nullptr)
+    //set the 1s next to be the 3
+    one->setNext(three);
+  
+  
+  //we are not TAIL
+  if(three!=nullptr)
+    //set the 3s prev to be the 1
+    three->setPrev(one);
+
+
+  //disconecct us from anyone
+  next=nullptr;
+  previous=nullptr;
+
+  
+}
+
 //=aliases
 
 template<class T>

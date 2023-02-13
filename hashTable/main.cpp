@@ -124,7 +124,7 @@ void promtForRandomStudents(StudentDatabase& db){
       }
     //if the user hasn't inputted anything
     }else
-      amountOfRandomStudents=7;
+      amountOfRandomStudents=111;
     delete[] input;  
   }
 

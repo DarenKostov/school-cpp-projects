@@ -69,6 +69,11 @@ class Node{
     //deletes this Node | returns the new HEAD if it was the HEAD, returns the new TAIL if it was the TAIL, returns nullptr if it was neither or both
     Node* removeMe();
     Node* deleteMe();
+
+
+    //detaches the node from the other nodes, returns nothing
+    void detachMe();
+
     
     private:
     //what is the next Node?
