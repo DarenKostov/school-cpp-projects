@@ -6,6 +6,8 @@
 */
 
 #include "studentDatabase.h"
+#include <vector>
+
 
 
 StudentDatabase::StudentDatabase(){
@@ -111,6 +113,18 @@ void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<St
 
   //we have head?
   whereToAdd->addNext(whatToAdd);
+
+  short counter=0;
+  for(auto i=whereToAdd; i!=nullptr; i=i->getNext(), counter++){
+    
+  }
+  
+  if(counter>3){
+    printf("\nREHASHING!!!\n")
+  
+  }
+
+  
   return;
 
 }
@@ -150,47 +164,68 @@ void StudentDatabase::expandAndRehash(){
   //student that is currently being re-located
   int currentlyRelocatingID=0;
 
+  int tableCounter=0;
   for(int i=0; i<amountOfTables; i++)
     //see the constructor if you are wondering why and how
     slots->addAfter(new Node<Node<Student>*>(new Node<Student>*[tableSize]));
 
+  std::vector<Student*> alreadyMovedStudents;;
+
+
+
+
+
+  //==start of rehashing;
     
-  for(auto i=slots; i!=nullptr; i=i->getNext()){   
-    for(int j=0; j<tableSize; j++){    
-      for(auto& k=i->getValue()[j]; k!=nullptr;){//k is original
-        //we are head;
+  for(auto i=slots; i!=nullptr; i=i->getNext()){ //TABLES
+    for(int j=0; j<tableSize; j++){ //SLOTS
+
+      //cant have anything but the head a refrence, k=k.next will result the original k to be the next node
+      auto& head=i->getValue()[j];//this is the original
+      
+
+      //students to be moved
+      std::vector<Node<Student>*> forMoving; 
+    
+
+
+      //=eject students from the database
+      for(auto k=i->getValue()[j]; k!=nullptr;){//k is original  //NODES
+       
+        //we are about to detach this, lets keep it so we dont lose it
+        auto current=k; //this is not the original
+        forMoving.push_back(k);
+        
+        //we are head:
         if(k->getPrev()==nullptr){
-          auto newHead=k->getNext();
-          k=newHead;
-          //go to next node
-          k=k->getNext();
-          break;
+          head=nullptr;//this is the original
         }
 
-        //we are not head
-
-
-        //we are bout to detach this, lets keep it so we dont lose it
-        auto& current=k; //this is original
-        
         //dont break the loop, go to next node
         k=k->getNext();
 
         //we are no longer in the database
-        k->detachMe();
+        current->detachMe();
+      }
 
-
-
-        // addStudent(current,);
-        
-
-
-        
+      //=inject the students back into the database
+      for(auto k=forMoving.begin();;k=forMoving.begin()){
+    
+        // *k is our student
                   
+        Node<Student>*& workingSlot=getSlot((*k)->getValue()->getId());//this is the original
+
+        //injected back into the database
+        injectStudent(workingSlot, *k);
+  
+
+        //record that we already moved this student
+        alreadyMovedStudents.push_back((*k)->getValue());
+
+        forMoving.erase(k);
       }
     }
   }
-
 }
 
 

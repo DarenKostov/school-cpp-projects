@@ -176,7 +176,7 @@ Node<T>* Node<T>::removeMe(){
 
 
 template<class T>
-Node<T>* Node<T>::detachMe(){
+void Node<T>::detachMe(){
   //
   //(1)=(3)
   //  
@@ -201,7 +201,7 @@ Node<T>* Node<T>::detachMe(){
     three->setPrev(one);
 
 
-  //disconecct us from anyone
+  //=disconecct us from anyone
   next=nullptr;
   previous=nullptr;
 
