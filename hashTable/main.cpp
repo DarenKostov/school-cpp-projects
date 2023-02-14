@@ -30,11 +30,44 @@ int main(){
   StudentDatabase database;
 
   cout << "Hello! this is the student more efficient Student Database!\n";
-  cout << "Please provide us with a file containing \n";
     
   promtForRandomStudents(database);
 
-  database.printAll();
+  Text input;
+
+  while(input!="QUIT"){
+    printf("[%d/%d %d] >", database.getStudentAmount(), database.getCapacity(), database.getTables());
+    
+    cin >> input;
+  
+    if(input[0]=='a' || input=="ADD"){
+    
+      continue;
+    }    
+    if(input[0]=='p' || input=="PRINT"){
+    
+      database.printAll();
+      continue;
+    }    
+    if(input[0]=='d' || input=="DELETE"){
+    
+      continue;
+    }    
+    if(input[0]=='r' || input=="ADDRANDOM"){
+    
+      continue;
+    }    
+    if(input[0]=='h' || input=="EXPANDANDREHASH"){
+    
+      continue;
+    }    
+    
+    
+    
+  }
+
+    
+
 
   return 0;
 
@@ -43,7 +76,7 @@ int main(){
 
 void promtForRandomStudents(StudentDatabase& db){
 
-  //I use char* because getline doesnt use Text ¯\_(ツ)_/¯ no real way to fix unless I make my own getline
+  //I use char* because cin.getline doesnt use Text ¯\_(ツ)_/¯ no real way to fix unless I make my own cin.getline
 
   
   //=add random students?

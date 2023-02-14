@@ -14,15 +14,19 @@ StudentDatabase::StudentDatabase(){
   tableSize=100;
   bestSlotForANewStudent=0;
   amountOfTables=1;
-
+  amountOfStudents=0;
+  
   /*so....
     1.we make a new linked lists of tables (the head)
     2 we add an array of linked lists to the head, this will be the 1st table
   */
       
   slots=new Node<Node<Student>*>(new Node<Student>*[tableSize]);
-
 }
+
+
+
+
 
 
 
@@ -30,6 +34,7 @@ StudentDatabase::StudentDatabase(int size){
   tableSize=size;
   bestSlotForANewStudent=0;
   amountOfTables=1;
+  amountOfStudents=0;
   
   /*so....
     1.we make a new linked lists of tables (the head)
@@ -120,7 +125,7 @@ void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<St
   }
   
   if(counter>3){
-    printf("\nREHASHING!!!\n")
+    printf("\nREHASHING!!!\n");
   
   }
 
@@ -133,7 +138,8 @@ void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<St
 void StudentDatabase::addStudent(Node<Student>*& whereToAdd /*head*/, Student* whoToAdd){
 
   injectStudent(whereToAdd, new Node<Student>(whoToAdd));
-
+  amountOfStudents++;
+  
 }
 
 
@@ -227,5 +233,30 @@ void StudentDatabase::expandAndRehash(){
     }
   }
 }
+
+
+
+
+//=stats getters
+
+int StudentDatabase::getStudentAmount(){
+  return amountOfStudents;
+}
+
+int StudentDatabase::getCapacity(){
+  return amountOfTables*tableSize*3;
+}
+
+int StudentDatabase::getTables(){
+  return amountOfTables;
+}
+
+int StudentDatabase::getTableSize(){
+  return tableSize;
+}
+
+
+
+
 
 

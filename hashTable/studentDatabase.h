@@ -38,6 +38,23 @@ class StudentDatabase{
     //removes a student from the database
     void remove(int);
 
+
+    //=getters
+
+    //gives you how many students there are in the database
+    int getStudentAmount();
+
+    //gives you how many students there could be in the database before expanding & rehashing
+    int getCapacity();
+
+    //gives you how many table there are in the database
+    int getTables();
+
+    //gives you how many slots there are in the database
+    int getTableSize();
+    
+
+
   private:
 
     //hashes an id  
@@ -67,6 +84,9 @@ class StudentDatabase{
     int bestSlotForANewStudent;
     int tableSize;
     int amountOfTables;
+    int amountOfStudents;
+
+
 
     // A linked list of arrays of linked lists that store students, a 3d array of students if you will
     Node<Node<Student>*>* slots =nullptr;//new Node<Student*>*[100];

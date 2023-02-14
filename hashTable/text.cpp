@@ -308,6 +308,27 @@ bool Text::operator==(Text input){
 }
 
 
+//==NOT EQUALS OPERATOR==\\
+
+bool Text::operator!=(char input){
+  if(text[0]==input && text[1]=='\0')
+    return false;
+  return true;
+}
+
+bool Text::operator!=(const char* input){
+  if(0!=strcmp(text, input))
+    return true;
+  return false;
+}
+
+bool Text::operator!=(Text input){
+  //use the == operator for char*
+  if(input!=text)
+    return true;
+  return false;
+}
+
 
 //function getters
 

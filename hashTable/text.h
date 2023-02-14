@@ -116,6 +116,20 @@ class Text{
     //returns weather the text is equal to a text in a Text
     bool operator==(Text); 
 
+
+    //=not equals operator
+  
+    //returns weather the text is equal to a char
+    bool operator!=(char);
+  
+    //returns weather the text is equal to a char array
+    bool operator!=(const char*); 
+  
+    //returns weather the text is equal to a text in a Text
+    bool operator!=(Text); 
+
+
+
     //=getters and setters
   
     //returns the character at that index; reference
