@@ -25,8 +25,39 @@ StudentDatabase::StudentDatabase(){
 }
 
 
+StudentDatabase::~StudentDatabase(){
+
+  /*
+
+    node --> array --> slots --> nodes
+
+  */
+
+    
+  for(auto i=slots; i!=nullptr;){ //go through each table
+    
+    for(int j=0; j<tableSize; j++){ // go through each slot
+      
+      //delete every node, this deletes students too
+      auto& currentNode=i->getValue()[j];
+      while(currentNode!=nullptr) //go through each node
+        currentNode=currentNode->deleteMe();
+
+      //no more nodes in this slot
+
+    }   
+    
+    auto TableToBeDeleted=i;
+    i=i->getNext();
 
 
+
+    //deletes the value stored (the table) and the node itself
+    TableToBeDeleted->deleteMe();
+    
+  }
+
+}
 
 
 
@@ -190,7 +221,7 @@ void StudentDatabase::expandAndRehash(){
       auto& head=i->getValue()[j];//this is the original
       
 
-      //students to be moved
+      //students to be moved contains 4 nodes at most
       std::vector<Node<Student>*> forMoving; 
     
 

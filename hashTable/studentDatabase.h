@@ -21,6 +21,9 @@ class StudentDatabase{
     //constructor that takes the size of the table as an argument  
     StudentDatabase(int);
 
+    //decosntructor, deletes everything in the database
+    ~StudentDatabase();
+
     //adds a student to the database | first name, last name, gpa
     void insert(Text, Text, double);
 
@@ -39,7 +42,7 @@ class StudentDatabase{
     void remove(int);
 
 
-    //=getters
+    //=stat getters
 
     //gives you how many students there are in the database
     int getStudentAmount();

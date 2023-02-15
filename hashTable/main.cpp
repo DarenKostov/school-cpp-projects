@@ -21,21 +21,58 @@ using namespace std;
 
 
 void promtForRandomStudents(StudentDatabase&);
+void printHelp();
+
+void addStudent();
+void appendStudent();
+void insertStudent();
+void deleteStudent();
+void addRandom();
+void expandAndRehash();
 
 
 
+
+// void add
 
 int main(){
 
-  StudentDatabase database;
-
   cout << "Hello! this is the student more efficient Student Database!\n";
+
+
+  cout << "How big should the student databse be?\n[default is 100]:";
+  int databaseSize;
+
+
+  {
+    char* input=new char[7];
+    cin.getline(input, 7); //who would put a number that has more than 7 digits
+
+    //only if the user has inputted something
+    if(!(input[0]=='\0')){
+      //TODO add this to the main Text class
+      for(int i=0; i<strlen(input); i++){
+        databaseSize+=(input[i]-'0')*pow(10,((strlen(input)-i)-1));
+      }
+    //if the user hasn't inputted anything
+    }else
+      databaseSize=100;
+    delete[] input;  
+  }
+  
+
+  
+  StudentDatabase database(databaseSize);
+
     
   promtForRandomStudents(database);
 
+  printHelp();
+
+
   Text input;
 
-  while(input!="QUIT"){
+  while(input!="QUIT" && input[0]!='q'){
     printf("[%d/%d %d] >", database.getStudentAmount(), database.getCapacity(), database.getTables());
     
     cin >> input;
@@ -44,9 +81,24 @@ int main(){
     
       continue;
     }    
-    if(input[0]=='p' || input=="PRINT"){
+    if((input[0]=='a' && input=='p') || input=="APPEND"){
     
+      continue;
+    }    
+    if(input[0]=='i' || input=="INSERT"){
+    
+      continue;
+    }    
+    if(input[0]=='h' || input=="HELP"){
+    
+      continue;
+    }    
+    if((input[0]=='p' && input[1]=='a') || input=="PRINTALL"){
       database.printAll();
+      continue;
+    }    
+    if(input[0]=='p' || input=="PRINT"){
+
       continue;
     }    
     if(input[0]=='d' || input=="DELETE"){
@@ -54,11 +106,11 @@ int main(){
       continue;
     }    
     if(input[0]=='r' || input=="ADDRANDOM"){
+      promtForRandomStudents(database);
     
       continue;
     }    
-    if(input[0]=='h' || input=="EXPANDANDREHASH"){
-    
+    if(input[0]=='e' || input=="EXPANDANDREHASH"){
       continue;
     }    
     
@@ -82,7 +134,7 @@ void promtForRandomStudents(StudentDatabase& db){
   //=add random students?
 
 
-  cout << "Would you like to insert random student for testing purposes?\n";
+  cout << "Would you like to insert random students for testing purposes?\n";
   cout << "[Y/n]:";
 
   {
@@ -108,7 +160,7 @@ void promtForRandomStudents(StudentDatabase& db){
   SCR reader;
 
   
-  cout << "\nPlease prove a path to an svg file containing random first and last names\n"; 
+  cout << "\nPlease provide a path to an svg file containing random first and last names\n"; 
   cout << "(The 1st column should be first names, 2nd should be last names.)\n";
   cout << "[default is \"names.csv\"]:";
 
@@ -157,7 +209,7 @@ void promtForRandomStudents(StudentDatabase& db){
       }
     //if the user hasn't inputted anything
     }else
-      amountOfRandomStudents=111;
+      amountOfRandomStudents=25;
     delete[] input;  
   }
 
@@ -170,6 +222,37 @@ void promtForRandomStudents(StudentDatabase& db){
 
   reader.close();
 
+}
+
+
+void printHelp(){
+  
+  cout << "Commands:\n";
+  
+  cout << "HELP (h): This help.\n";
+  
+  cout << "ADD (a): Adds a student to the database, automatic ID.\n";
+  
+  cout << "APPEND (ap): Adds a student to the database, at the first unused id.\n";
+  
+  cout << "INSERT (i): Same as ADD but you specify the ID, can cause duplicates\n";
+  cout << "but that's what the computer sould do, what you tell it to.\n";
+  
+  cout << "PRINTALL (pa): Prints every student to the console.\n";
+  
+  cout << "PRINT (p): Prints a single student.\n";
+  
+  cout << "DELETE (d): Removes a student from the database.\n";
+  
+  cout << "ADDRANDOM (r): ADDs random students to the database.\n";
+  
+  cout << "EXPANDANDREHASH (e): Force the database hashtable to double and rehash all students.\n";
+
+  cout << "QUIT (q): Quits the program.\n";
+
+  cout << "\n[{Students}/{Current Capacity} {Slices/Tables}] >\n";
+
+  
 }
 
 

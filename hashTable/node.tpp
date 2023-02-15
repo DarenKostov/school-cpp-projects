@@ -20,7 +20,13 @@ Node<T>::Node(){
 
 template<class T>
 Node<T>::~Node(){
-  delete value;
+
+
+  
+  if(std::is_array<T>::value)
+    delete[] value;
+  else
+    delete value;
   
   // //evokes the deconstuctor, which in turn envokes the deconstructor....
   // delete this;
