@@ -139,7 +139,7 @@ void StudentDatabase::printAll(){
 
 void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
 
-
+  printf("%d\n", bestSlotForANewStudent);
   
   //get the slot where we should add the student ("Z" and "X" axis)
   Node<Student>*& workingSlot=getSlot(bestSlotForANewStudent);//this is the original
@@ -148,7 +148,9 @@ void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
   //Now add the student on the "Y" axis
   addStudent(workingSlot, new Student(firstName, lastName, bestSlotForANewStudent, gpa));
 
-  bestSlotForANewStudent++;
+  recalculateBestNewSpot();
+
+  // bestSlotForANewStudent++;
   
 }
 
@@ -353,38 +355,61 @@ void StudentDatabase::printSorted(){
 
 void StudentDatabase::recalculateBestNewSpot(){
 
-  int previous=0;
+  int previous=-1;
 
-  
-  //loop through the entire hashmap in order
+  //too lazy to make a formula for this
+  int positions[]={0, 3, 2, 1};
+
   for(int k=0; k<4; k++){ //go through each node
     for(auto i=slots; i!=nullptr; i=i->getNext()){//go through each table
       for(int j=0; j<tableSize; j++){ //go through each slot
 
-        //does the node exist?
+        //does the node not exist?
         bool doesNotExist=false;
 
 
-        //get the node we want
+        //=get the node we want
         auto current=i->getValue()[j];
-        for(int l=0; l<k; l++){
+
+        //node exists right?
+        if(current==nullptr)
+          continue;
+        
+        for(int l=0; l<positions[k]; l++){
           current=current->getNext();
           if(current==nullptr){
             doesNotExist=true;
             break;
           }
         }
-
+        
+        //node doesnt exist?
         if(doesNotExist)
           continue;
 
+        //=find a gap        
+        auto student=current->getValue();
 
+        if(previous+1!=student->getId()){
+        //we found a gap!        
+          bestSlotForANewStudent=previous+1;
+      
+          //our work here is done
+          return;
 
-  
-        
+                    
+        }else{
+        //we didnt find a gap :/
+          previous++;
+        }
+
+          
       }
     }
   }
+
+  //no gaps at all? set it to the very end then
+  bestSlotForANewStudent=previous+1;
 
 }
 
