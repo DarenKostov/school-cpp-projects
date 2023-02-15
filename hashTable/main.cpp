@@ -41,7 +41,7 @@ int main(){
 
 
   cout << "How big should the student databse be?\n[default is 100]:";
-  int databaseSize;
+  int databaseSize=0;
 
 
   {
@@ -49,10 +49,11 @@ int main(){
     cin.getline(input, 7); //who would put a number that has more than 7 digits
 
     //only if the user has inputted something
-    if(!(input[0]=='\0')){
+    if(input[0]!='\0'){
       //TODO add this to the main Text class
       for(int i=0; i<strlen(input); i++){
         databaseSize+=(input[i]-'0')*pow(10,((strlen(input)-i)-1));
+        cout << (input[i]-'0')*pow(10,((strlen(input)-i)-1))<< "\n";
       }
     //if the user hasn't inputted anything
     }else
@@ -81,27 +82,35 @@ int main(){
     
       continue;
     }    
-    if((input[0]=='a' && input=='p') || input=="APPEND"){
-    
+    if((input[0]=='a' && input[1]=='p') || input=="APPEND"){
+      cout << "Yet to be implemented\n";
       continue;
     }    
     if(input[0]=='i' || input=="INSERT"){
+      cout << "Yet to be implemented\n";
     
       continue;
     }    
     if(input[0]=='h' || input=="HELP"){
-    
+      printHelp();
       continue;
     }    
     if((input[0]=='p' && input[1]=='a') || input=="PRINTALL"){
       database.printAll();
       continue;
     }    
+    if((input[0]=='p' && input[1]=='s') || input=="PRINTSORTED"){
+      database.printSorted();
+
+      continue;
+    }    
     if(input[0]=='p' || input=="PRINT"){
+      cout << "Yet to be implemented\n";
 
       continue;
     }    
     if(input[0]=='d' || input=="DELETE"){
+      cout << "Yet to be implemented\n";
     
       continue;
     }    
@@ -111,6 +120,7 @@ int main(){
       continue;
     }    
     if(input[0]=='e' || input=="EXPANDANDREHASH"){
+      cout << "Yet to be implemented\n";
       continue;
     }    
     
@@ -216,7 +226,11 @@ void promtForRandomStudents(StudentDatabase& db){
   
   //add the students
   for(int i=0; i<amountOfRandomStudents; i++){
-    db.insert(firstNames[rand()%firstNames.size()],lastNames[rand()%lastNames.size()], ((double)rand()/RAND_MAX)*4);
+
+    //aint no one failing
+    double gpa=((double)rand()/RAND_MAX)*1.5+2.5;
+      
+    db.insert(firstNames[rand()%firstNames.size()],lastNames[rand()%lastNames.size()], gpa);
   }
 
 
@@ -239,6 +253,8 @@ void printHelp(){
   cout << "but that's what the computer sould do, what you tell it to.\n";
   
   cout << "PRINTALL (pa): Prints every student to the console.\n";
+  
+  cout << "PRINTSORTED (ps): Prints every student to the console in a sorted fashion.\n";
   
   cout << "PRINT (p): Prints a single student.\n";
   

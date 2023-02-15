@@ -55,7 +55,9 @@ class StudentDatabase{
 
     //gives you how many slots there are in the database
     int getTableSize();
-    
+
+
+    void printSorted();
 
 
   private:

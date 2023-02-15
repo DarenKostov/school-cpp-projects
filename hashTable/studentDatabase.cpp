@@ -5,8 +5,43 @@
   
 */
 
+
+/*
+
+  //loop through the entire hashmap
+  for(auto i=slots; i!=nullptr; i=i->getNext()){//go through each table
+    for(int j=0; j<tableSize; j++){ //go through each slot
+      for(auto k=i->getValue()[j]; k!=nullptr; k=k->getNext()){ //go through each node
+        
+      }
+    }
+  }
+
+
+  //loop through the entire hashmap in order
+  for(auto k=i->getValue()[j]; k!=nullptr; k=k->getNext()){ //go through each node
+    for(auto i=slots; i!=nullptr; i=i->getNext()){//go through each table
+      for(int j=0; j<tableSize; j++){ //go through each slot
+        i->getValue()[j]
+      }
+    }
+  }
+
+
+
+*/
+
+
+
+
+
 #include "studentDatabase.h"
 #include <vector>
+
+
+
+
+
 
 
 
@@ -66,12 +101,15 @@ StudentDatabase::StudentDatabase(int size){
   bestSlotForANewStudent=0;
   amountOfTables=1;
   amountOfStudents=0;
+
+
   
   /*so....
     1.we make a new linked lists of tables (the head)
     2 we add an array of linked lists to the head, this will be the 1st table
   */
-      
+  
+   
   slots=new Node<Node<Student>*>(new Node<Student>*[tableSize]);
 
   bestSlotForANewStudent=0;
@@ -88,7 +126,7 @@ void StudentDatabase::printAll(){
       int linkedCounter=0;
       for(auto k=i->getValue()[j]; k!=nullptr; k=k->getNext(), linkedCounter++){
         Student* current=k->getValue();
-        printf("%d:%d:%d %06d: %.2f, %s\n",tableCounter, j, linkedCounter, current->getId(), current->getGpa(), current->getName().val());
+        printf("%02d:%03d:%d %06d: %.2f, %s\n",tableCounter, j, linkedCounter, current->getId(), current->getGpa(), current->getName().val());
        }
     }
   }
@@ -265,6 +303,90 @@ void StudentDatabase::expandAndRehash(){
   }
 }
 
+
+void StudentDatabase::printSorted(){
+
+
+  //too lazy to make a formula for this
+  int positions[]={0, 3, 2, 1};
+
+  for(int k=0; k<4; k++){ //go through each node
+    for(auto i=slots; i!=nullptr; i=i->getNext()){//go through each table
+      for(int j=0; j<tableSize; j++){ //go through each slot
+
+        //does the node not exist?
+        bool doesNotExist=false;
+
+
+        //=get the node we want
+        auto current=i->getValue()[j];
+
+        //node exists right?
+        if(current==nullptr)
+          continue;
+        
+        for(int l=0; l<positions[k]; l++){
+          current=current->getNext();
+          if(current==nullptr){
+            doesNotExist=true;
+            break;
+          }
+        }
+        
+        //node doesnt exist?
+        if(doesNotExist)
+          continue;
+
+        
+
+        auto student=current->getValue();
+        
+        printf("%d %06d: %.2f, %s\n",positions[k], student->getId(), student->getGpa(), student->getName().val());
+        
+      }
+    }
+  }
+
+}
+
+
+
+void StudentDatabase::recalculateBestNewSpot(){
+
+  int previous=0;
+
+  
+  //loop through the entire hashmap in order
+  for(int k=0; k<4; k++){ //go through each node
+    for(auto i=slots; i!=nullptr; i=i->getNext()){//go through each table
+      for(int j=0; j<tableSize; j++){ //go through each slot
+
+        //does the node exist?
+        bool doesNotExist=false;
+
+
+        //get the node we want
+        auto current=i->getValue()[j];
+        for(int l=0; l<k; l++){
+          current=current->getNext();
+          if(current==nullptr){
+            doesNotExist=true;
+            break;
+          }
+        }
+
+        if(doesNotExist)
+          continue;
+
+
+
+  
+        
+      }
+    }
+  }
+
+}
 
 
 
