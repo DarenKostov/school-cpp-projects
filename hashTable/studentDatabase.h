@@ -30,10 +30,16 @@ class StudentDatabase{
     //adds a student by a direct Student pointer. Don't use this, might cause duplicates or fragmentation. 
     void insert(Student*);
 
-    //gives a student based on their id. No access to change it, just read/view it.
-    Student getStudent(int);
-    Student locate(int);
-    Student find(int);
+
+    //THIS REMOVES THE STUDENT, NOT JUST THE NODE, THE STUDENT WILL BE FOREVER LOST
+    void removeStudent(int);
+
+
+
+    //gives a student based on their id.
+    Student* getStudent(int);
+    Student* locate(int);
+    Student* find(int);
 
     //prints all students on the console
     void printAll();
@@ -75,6 +81,10 @@ class StudentDatabase{
     Node<Student>*& getSlot(int);
 
 
+    //gives you the node where a student is stored, if the student doesn't exist it'll give you nullptr
+    Node<Student>* getNodeStudent(int);
+
+
     //injects a student NODE into tha database | acts like addStudent but with a node 
     void injectStudent(Node<Student>*&, Node<Student>*);
 
@@ -82,9 +92,6 @@ class StudentDatabase{
     void addStudent(Node<Student>*&, Student*);
   
   
-    //removes a student (I didn't design my node class very well so it doesn't completly manage it on itself)
-    //THIS REMOVES THE STUDENT, NOT JUST THE NODE, THE STUDENT WILL BE FOREVER LOST
-    void removeStudent(Node<Student>*&);
   
     int bestSlotForANewStudent;
     int tableSize;

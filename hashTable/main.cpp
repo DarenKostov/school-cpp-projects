@@ -22,13 +22,12 @@ using namespace std;
 
 void promtForRandomStudents(StudentDatabase&);
 void printHelp();
-
-void addStudent();
-void appendStudent();
-void insertStudent();
-void deleteStudent();
-void addRandom();
-void expandAndRehash();
+void printSingle(StudentDatabase&);
+void addStudent(StudentDatabase&);
+void appendStudent(StudentDatabase&);
+void insertStudent(StudentDatabase&);
+void deleteStudent(StudentDatabase&);
+void expandAndRehash(StudentDatabase&);
 
 
 
@@ -79,7 +78,7 @@ int main(){
     cin >> input;
   
     if(input[0]=='a' || input=="ADD"){
-    
+      cout << "Yet to be implemented\n";
       continue;
     }    
     if((input[0]=='a' && input[1]=='p') || input=="APPEND"){
@@ -88,7 +87,6 @@ int main(){
     }    
     if(input[0]=='i' || input=="INSERT"){
       cout << "Yet to be implemented\n";
-    
       continue;
     }    
     if(input[0]=='h' || input=="HELP"){
@@ -101,22 +99,18 @@ int main(){
     }    
     if((input[0]=='p' && input[1]=='s') || input=="PRINTSORTED"){
       database.printSorted();
-
       continue;
     }    
-    if(input[0]=='p' || input=="PRINT"){
-      cout << "Yet to be implemented\n";
-
+    if(input[0]=='p' || input=="PRINT" || input=="PRINTSINGLE"){
+      printSingle(database);
       continue;
     }    
     if(input[0]=='d' || input=="DELETE"){
       cout << "Yet to be implemented\n";
-    
       continue;
     }    
     if(input[0]=='r' || input=="ADDRANDOM"){
       promtForRandomStudents(database);
-    
       continue;
     }    
     if(input[0]=='e' || input=="EXPANDANDREHASH"){
@@ -134,6 +128,24 @@ int main(){
   return 0;
 
 }
+
+
+void printSingle(StudentDatabase& db){
+  cout << "id?:";
+  int id=0;
+  cin >> id;
+  
+  Student* student=db.locate(id);
+
+  if(student==nullptr){
+    cout << "\nUnable to locate student... perhaps you inoutted the wrong id?\n";
+    return;
+  }
+
+  printf("\n%06d: %.2f, %s\n", student->getId(), student->getGpa(), student->getName().val());
+
+}
+
 
 
 void promtForRandomStudents(StudentDatabase& db){
@@ -256,7 +268,7 @@ void printHelp(){
   
   cout << "PRINTSORTED (ps): Prints every student to the console in a sorted fashion.\n";
   
-  cout << "PRINT (p): Prints a single student.\n";
+  cout << "PRINT (p)(PRINTSINGLE): Prints a single student.\n";
   
   cout << "DELETE (d): Removes a student from the database.\n";
   

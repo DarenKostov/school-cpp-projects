@@ -177,6 +177,24 @@ Node<Student>*& StudentDatabase::getSlot(int id){
 }
 
 
+Node<Student>* StudentDatabase::getNodeStudent(int id){
+  
+  
+  auto head=getSlot(id);
+
+
+  for(auto i=head; i!=nullptr; i=i->getNext()){
+    if(i->getValue()->getId()==id){
+      return i;
+    }
+  }
+
+  return nullptr;
+    
+
+}
+
+
 void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<Student>* whatToAdd){
 
   //whereToAdd is the original 
@@ -220,19 +238,32 @@ int StudentDatabase::hash(int id){
   return id%(tableSize*amountOfTables);
 }
 
-void StudentDatabase::removeStudent(Node<Student>*& whatToRemove){
+void StudentDatabase::removeStudent(int id){
+
+
+  auto& head=getSlot(id);
+
 
   //we are the head;
-  if(whatToRemove->getPrev()==nullptr){
-    auto newHead=whatToRemove->getNext();
-    whatToRemove->deleteMe();
-    whatToRemove=newHead;
+  if(head->getValue()->getId()==id){
+    auto newHead=head->getNext();
+    head->deleteMe();
+    head=newHead;
     return;
   }
 
 
+
   //we are not head  
-  whatToRemove->deleteMe();
+  for(auto i=head->getNext(); i!=nullptr; i=i->getNext()){
+    if(i->getValue()->getId()==id){
+      i->deleteMe();
+      return;
+    }
+  }
+
+  //we dont know what we are
+  printf("Student with id %d does not exist.\n", id);
 
 }
 
@@ -411,6 +442,17 @@ void StudentDatabase::recalculateBestNewSpot(){
   //no gaps at all? set it to the very end then
   bestSlotForANewStudent=previous+1;
 
+}
+
+
+Student* StudentDatabase::getStudent(int id){
+  return getNodeStudent(id)->getValue();
+}
+Student* StudentDatabase::locate(int id){
+  return getStudent(id);;
+}
+Student* StudentDatabase::find(int id){
+  return getStudent(id);
 }
 
 
