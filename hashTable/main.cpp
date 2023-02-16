@@ -210,7 +210,7 @@ void promtForRandomStudents(StudentDatabase& db){
   vector<Text> firstNames, lastNames;
 
   reader.read(0, firstNames);
-  reader.read(0, lastNames);
+  reader.read(1, lastNames);
   
 
   //=how many random student to add?
