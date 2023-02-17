@@ -20,6 +20,7 @@ using namespace std;
 
 
 
+int promtForId();
 void promtForRandomStudents(StudentDatabase&);
 void printHelp();
 void printSingle(StudentDatabase&);
@@ -78,7 +79,7 @@ int main(){
     cin >> input;
   
     if(input[0]=='a' || input=="ADD"){
-      cout << "Yet to be implemented\n";
+      addStudent(database);
       continue;
     }    
     if((input[0]=='a' && input[1]=='p') || input=="APPEND"){
@@ -86,7 +87,7 @@ int main(){
       continue;
     }    
     if(input[0]=='i' || input=="INSERT"){
-      cout << "Yet to be implemented\n";
+      insertStudent(database);
       continue;
     }    
     if(input[0]=='h' || input=="HELP"){
@@ -129,6 +130,65 @@ int main(){
 
 }
 
+void addStudent(StudentDatabase& db){
+  cin.ignore(99999,'\n');
+  cin.clear();
+
+  char* firstName=new char[100];
+  char* lastName=new char[100];
+  double gpa=0;
+
+  cout << "\nAdding a new student...\n";
+
+  cout <<"first name:";
+  cin.getline(firstName, 100);
+  cout <<"last name:";
+  cin.getline(lastName, 100);
+  cin.clear();
+  cout <<"gpa:";
+  cin >> gpa;
+  
+  db.insert(firstName, lastName, gpa);
+  
+  printf("Student %s %s added to the database\n", firstName, lastName);
+
+  delete[] firstName;
+  delete[] lastName;
+
+}
+
+void insertStudent(StudentDatabase& db){
+  cin.ignore(99999,'\n');
+  cin.clear();
+  
+  char* firstName=new char[100];
+  char* lastName=new char[100];
+  int id=0;
+  double gpa=0;
+
+  cout << "\nAdding a new student...\n";
+
+  cout <<"first name:";
+  cin.getline(firstName, 100);
+  cout <<"last name:";
+  cin.getline(lastName, 100);
+  cin.clear();
+  cout <<"id:";
+  cin >> id;
+  cout <<"gpa:";
+  cin >> gpa;
+
+
+
+  db.insert(new Student(firstName, lastName, id, gpa));
+  
+  printf("Student %s %s added to the database\n", firstName, lastName);
+
+  delete[] firstName;
+  delete[] lastName;
+
+
+}
 
 void printSingle(StudentDatabase& db){
   cout << "id?:";
@@ -137,16 +197,25 @@ void printSingle(StudentDatabase& db){
   
   Student* student=db.locate(id);
 
+  //where student? nowhere?
   if(student==nullptr){
     cout << "\nUnable to locate student... perhaps you inoutted the wrong id?\n";
     return;
   }
 
   printf("\n%06d: %.2f, %s\n", student->getId(), student->getGpa(), student->getName().val());
-
 }
 
 
+
+void deleteStudent(StudentDatabase&){
+
+  cout << "id?:";
+  int id=0;
+  cin >> id;
+
+
+}
 
 void promtForRandomStudents(StudentDatabase& db){
 

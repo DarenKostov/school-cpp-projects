@@ -139,7 +139,10 @@ void StudentDatabase::printAll(){
 
 void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
 
-  printf("%d\n", bestSlotForANewStudent);
+
+  recalculateBestNewSpot();
+
+  printf("id: %d\n", bestSlotForANewStudent);
   
   //get the slot where we should add the student ("Z" and "X" axis)
   Node<Student>*& workingSlot=getSlot(bestSlotForANewStudent);//this is the original
@@ -148,12 +151,21 @@ void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
   //Now add the student on the "Y" axis
   addStudent(workingSlot, new Student(firstName, lastName, bestSlotForANewStudent, gpa));
 
-  recalculateBestNewSpot();
 
-  // bestSlotForANewStudent++;
   
 }
 
+void StudentDatabase::insert(Student* student){
+
+  
+  //get the slot where we should add the student ("Z" and "X" axis)
+  Node<Student>*& workingSlot=getSlot(student->getId());//this is the original
+
+
+  //Now add the student on the "Y" axis
+  addStudent(workingSlot, student);
+  
+}
 
 Node<Student>*& StudentDatabase::getSlot(int id){
 
@@ -215,7 +227,8 @@ void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<St
   
   if(counter>3){
     printf("\nREHASHING!!!\n");
-  
+    expandAndRehash();
+    printf("\ndone rehashing\n");
   }
 
   
@@ -225,9 +238,15 @@ void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<St
 
 
 void StudentDatabase::addStudent(Node<Student>*& whereToAdd /*head*/, Student* whoToAdd){
-
   injectStudent(whereToAdd, new Node<Student>(whoToAdd));
-  amountOfStudents++;
+
+  //more than halfway full
+  if(++amountOfStudents>(amountOfTables*tableSize*3)/2+1){
+    printf("\nREHASHING!!!\n");
+    expandAndRehash();
+    printf("\ndone rehashing\n");
+  
+  }
   
 }
 
@@ -249,6 +268,7 @@ void StudentDatabase::removeStudent(int id){
     auto newHead=head->getNext();
     head->deleteMe();
     head=newHead;
+    amountOfStudents--;
     return;
   }
 
@@ -258,6 +278,7 @@ void StudentDatabase::removeStudent(int id){
   for(auto i=head->getNext(); i!=nullptr; i=i->getNext()){
     if(i->getValue()->getId()==id){
       i->deleteMe();
+    amountOfStudents--;
       return;
     }
   }
