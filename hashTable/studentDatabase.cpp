@@ -57,6 +57,12 @@ StudentDatabase::StudentDatabase(){
   */
       
   slots=new Node<Node<Student>*>(new Node<Student>*[tableSize]);
+
+  
+  //starts off with normal values, not random data from memory
+  for(int j=0; j<tableSize; j++){
+    slots->getValue()[j]=nullptr;
+  }
 }
 
 
@@ -113,6 +119,11 @@ StudentDatabase::StudentDatabase(int size){
   slots=new Node<Node<Student>*>(new Node<Student>*[tableSize]);
 
   bestSlotForANewStudent=0;
+
+  //starts off with normal values, not random data from memory
+  for(int j=0; j<tableSize; j++){
+    slots->getValue()[j]=nullptr;
+  }
 }
 
 void StudentDatabase::printAll(){
@@ -144,6 +155,7 @@ void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
 
   printf("id: %d\n", bestSlotForANewStudent);
   
+  printf("real seg fault??\n");
   //get the slot where we should add the student ("Z" and "X" axis)
   Node<Student>*& workingSlot=getSlot(bestSlotForANewStudent);//this is the original
 
@@ -241,7 +253,7 @@ void StudentDatabase::addStudent(Node<Student>*& whereToAdd /*head*/, Student* w
   injectStudent(whereToAdd, new Node<Student>(whoToAdd));
 
   //more than halfway full
-  if(++amountOfStudents>(amountOfTables*tableSize*3)/2+1){
+  if(++amountOfStudents>(amountOfTables*tableSize*3)/2){
     printf("\nREHASHING!!!\n");
     expandAndRehash();
     printf("\ndone rehashing\n");
@@ -294,9 +306,19 @@ void StudentDatabase::expandAndRehash(){
   int currentlyRelocatingID=0;
 
   int tableCounter=0;
-  for(int i=0; i<amountOfTables; i++)
+  for(int i=0; i<amountOfTables; i++){
     //see the constructor if you are wondering why and how
     slots->addAfter(new Node<Node<Student>*>(new Node<Student>*[tableSize]));
+
+
+    //fixes segfault?
+    for(int j=0; j<tableSize; j++){
+      slots->getNext()->getValue()[j]=nullptr;
+    }
+    
+  }
+
+  amountOfTables*=2;
 
   std::vector<Student*> alreadyMovedStudents;;
 
@@ -306,7 +328,7 @@ void StudentDatabase::expandAndRehash(){
 
   //==start of rehashing;
     
-  for(auto i=slots; i!=nullptr && tableCounter<amountOfTables; i=i->getNext(), tableCounter++){ //TABLES
+  for(auto i=slots; i!=nullptr; i=i->getNext()){ //TABLES
     for(int j=0; j<tableSize; j++){ //SLOTS
 
       //cant have anything but the head a refrence, k=k.next will result the original k to be the next node
@@ -417,13 +439,14 @@ void StudentDatabase::printSorted(){
 
 void StudentDatabase::recalculateBestNewSpot(){
 
+  int tableCount=0;
+
   int previous=-1;
 
-  //too lazy to make a formula for this
   int positions[]={0, 3, 2, 1};
 
   for(int k=0; k<4; k++){ //go through each node
-    for(auto i=slots; i!=nullptr; i=i->getNext()){//go through each table
+    for(auto i=slots; i!=nullptr; i=i->getNext(), tableCount++){//go through each table
       for(int j=0; j<tableSize; j++){ //go through each slot
 
         //does the node not exist?
@@ -449,6 +472,11 @@ void StudentDatabase::recalculateBestNewSpot(){
         if(doesNotExist)
           continue;
 
+        printf("seg fault?\?== %d\n", tableCount);
+
+        printf("iadress: %p\n", current->getNext());
+
+        
         //=find a gap        
         auto student=current->getValue();
 
