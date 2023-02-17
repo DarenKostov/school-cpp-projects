@@ -306,7 +306,7 @@ void StudentDatabase::expandAndRehash(){
 
   //==start of rehashing;
     
-  for(auto i=slots; i!=nullptr; i=i->getNext()){ //TABLES
+  for(auto i=slots; i!=nullptr && tableCounter<amountOfTables; i=i->getNext(), tableCounter++){ //TABLES
     for(int j=0; j<tableSize; j++){ //SLOTS
 
       //cant have anything but the head a refrence, k=k.next will result the original k to be the next node
@@ -320,6 +320,7 @@ void StudentDatabase::expandAndRehash(){
 
       //=eject students from the database
       for(auto k=i->getValue()[j]; k!=nullptr;){//k is original  //NODES
+        printf("%p, %d=== injecting\n", k, forMoving.size());
        
         //we are about to detach this, lets keep it so we dont lose it
         auto current=k; //this is not the original
@@ -338,8 +339,9 @@ void StudentDatabase::expandAndRehash(){
       }
 
       //=inject the students back into the database
-      for(auto k=forMoving.begin();;k=forMoving.begin()){
+      for(auto k=forMoving.begin(); k!=forMoving.end(); k=forMoving.begin()){
     
+        printf("%p, %d ejecting\n", *k, forMoving.size());
         // *k is our student
                   
         Node<Student>*& workingSlot=getSlot((*k)->getValue()->getId());//this is the original
@@ -355,6 +357,14 @@ void StudentDatabase::expandAndRehash(){
       }
     }
   }
+
+
+  //we have double the tables now
+  tableCounter*=2;
+  
+
+
+  
 }
 
 

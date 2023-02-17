@@ -308,10 +308,12 @@ void promtForRandomStudents(StudentDatabase& db){
   //add the students
   for(int i=0; i<amountOfRandomStudents; i++){
 
+    printf("seg fault??\n");
     //aint no one failing
     double gpa=((double)rand()/RAND_MAX)*1.5+2.5;
       
     db.insert(firstNames[rand()%firstNames.size()],lastNames[rand()%lastNames.size()], gpa);
+    // printf("seg fault??\n");
   }
 
 
