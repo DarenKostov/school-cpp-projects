@@ -129,7 +129,6 @@ StudentDatabase::StudentDatabase(int size){
 void StudentDatabase::printAll(){
   int tableCounter=0;
   
-  printf("printing\n");
   for(auto i=slots; i!=nullptr; i=i->getNext(), tableCounter++){
     
     for(int j=0; j<tableSize; j++){
@@ -155,7 +154,6 @@ void StudentDatabase::insert(Text firstName, Text lastName, double gpa){
 
   printf("id: %d\n", bestSlotForANewStudent);
   
-  printf("real seg fault??\n");
   //get the slot where we should add the student ("Z" and "X" axis)
   Node<Student>*& workingSlot=getSlot(bestSlotForANewStudent);//this is the original
 
@@ -238,9 +236,7 @@ void StudentDatabase::injectStudent(Node<Student>*& whereToAdd /*head*/, Node<St
   }
   
   if(counter>3){
-    printf("\nREHASHING!!!\n");
     expandAndRehash();
-    printf("\ndone rehashing\n");
   }
 
   
@@ -254,9 +250,7 @@ void StudentDatabase::addStudent(Node<Student>*& whereToAdd /*head*/, Student* w
 
   //more than halfway full
   if(++amountOfStudents>(amountOfTables*tableSize*3)/2){
-    printf("\nREHASHING!!!\n");
     expandAndRehash();
-    printf("\ndone rehashing\n");
   
   }
   
@@ -342,7 +336,6 @@ void StudentDatabase::expandAndRehash(){
 
       //=eject students from the database
       for(auto k=i->getValue()[j]; k!=nullptr;){//k is original  //NODES
-        printf("%p, %d=== injecting\n", k, forMoving.size());
        
         //we are about to detach this, lets keep it so we dont lose it
         auto current=k; //this is not the original
@@ -363,7 +356,6 @@ void StudentDatabase::expandAndRehash(){
       //=inject the students back into the database
       for(auto k=forMoving.begin(); k!=forMoving.end(); k=forMoving.begin()){
     
-        printf("%p, %d ejecting\n", *k, forMoving.size());
         // *k is our student
                   
         Node<Student>*& workingSlot=getSlot((*k)->getValue()->getId());//this is the original
@@ -472,9 +464,6 @@ void StudentDatabase::recalculateBestNewSpot(){
         if(doesNotExist)
           continue;
 
-        printf("seg fault?\?== %d\n", tableCount);
-
-        printf("iadress: %p\n", current->getNext());
 
         
         //=find a gap        

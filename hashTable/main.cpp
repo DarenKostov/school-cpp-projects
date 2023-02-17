@@ -107,7 +107,7 @@ int main(){
       continue;
     }    
     if(input[0]=='d' || input=="DELETE"){
-      cout << "Yet to be implemented\n";
+      deleteStudent(database);
       continue;
     }    
     if(input[0]=='r' || input=="ADDRANDOM"){
@@ -130,6 +130,47 @@ int main(){
 
 }
 
+void deleteStudent(StudentDatabase& db){
+  cin.ignore(99999,'\n');
+  cin.clear();
+  
+  int id=0;
+  cout <<"id: ";
+  cin >>id;
+
+
+  Student student=*db.locate(id);
+
+
+  printf("Are you sure you want to delete student %s?\n[Y/n]: ", student.getName().val());
+
+   
+  {
+    char* input=new char[2];
+    cin.getline(input, 2);
+    switch(input[0]){
+      case '\0':
+      case 'Y':
+      case 'y':
+        break;
+      default:
+        return;
+    }
+    delete[] input;
+  } 
+
+  printf("Deleting %s.\n", student.getName().val());
+
+
+  db.removeStudent(id);
+
+
+  printf("Deleted %s.\n", student.getName().val());
+
+
+}
+
+
 void addStudent(StudentDatabase& db){
   cin.ignore(99999,'\n');
   cin.clear();
@@ -140,12 +181,12 @@ void addStudent(StudentDatabase& db){
 
   cout << "\nAdding a new student...\n";
 
-  cout <<"first name:";
+  cout <<"first name: ";
   cin.getline(firstName, 100);
-  cout <<"last name:";
+  cout <<"last name: ";
   cin.getline(lastName, 100);
   cin.clear();
-  cout <<"gpa:";
+  cout <<"gpa: ";
   cin >> gpa;
   
   db.insert(firstName, lastName, gpa);
@@ -168,14 +209,14 @@ void insertStudent(StudentDatabase& db){
 
   cout << "\nAdding a new student...\n";
 
-  cout <<"first name:";
+  cout <<"first name: ";
   cin.getline(firstName, 100);
-  cout <<"last name:";
+  cout <<"last name: ";
   cin.getline(lastName, 100);
   cin.clear();
-  cout <<"id:";
+  cout <<"id: ";
   cin >> id;
-  cout <<"gpa:";
+  cout <<"gpa: ";
   cin >> gpa;
 
 
@@ -208,14 +249,6 @@ void printSingle(StudentDatabase& db){
 
 
 
-void deleteStudent(StudentDatabase&){
-
-  cout << "id?:";
-  int id=0;
-  cin >> id;
-
-
-}
 
 void promtForRandomStudents(StudentDatabase& db){
 
@@ -328,12 +361,12 @@ void printHelp(){
   
   cout << "HELP (h): This help.\n";
   
-  cout << "ADD (a): Adds a student to the database, automatic ID.\n";
+  cout << "ADD (a): Adds a student to the database, automatic ID. Works... most of the time.\n";
   
-  cout << "APPEND (ap): Adds a student to the database, at the first unused id.\n";
+  cout << "APPEND (ap): Adds a student to the database, at the first never used id.\n";
   
   cout << "INSERT (i): Same as ADD but you specify the ID, can cause duplicates\n";
-  cout << "but that's what the computer sould do, what you tell it to.\n";
+  cout << "but that's what the computer should do, what you tell it to.\n";
   
   cout << "PRINTALL (pa): Prints every student to the console.\n";
   
