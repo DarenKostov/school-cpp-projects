@@ -6,6 +6,9 @@
 
 */
 
+#ifndef HEAP
+#define HEAP
+
 #include "text.h"
 
 template<class T>
@@ -42,12 +45,13 @@ class Heap{
   int getRightChild(int);
   
   //gets the left child of parent int
-  int gerLeftChild(int);
+  int getLeftChild(int);
 
   //gets the parent of child int
   int getParent(int);
 
-
-
 };
+
+#endif
+
 
