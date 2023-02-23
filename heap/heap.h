@@ -18,6 +18,9 @@ class Heap{
 
     //empty constructor, make sure the type can be be compared with the operator <
     Heap();
+
+    //deconstructor
+    ~Heap();
   
     //adds an element to the heap
     void add(T);

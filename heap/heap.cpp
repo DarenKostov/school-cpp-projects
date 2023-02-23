@@ -20,7 +20,17 @@ Heap<T>::Heap(){
   }
 
   newSpot=0;
+}
 
+template<class T>
+Heap<T>::~Heap(){
+
+  for(int i=0; i<100; i++){
+    if(data[i]!=NULL)
+    delete data[i];
+  }
+  
+  delete[] data;
 }
 
 
