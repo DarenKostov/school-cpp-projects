@@ -53,10 +53,11 @@ class Heap{
   //determines weather this elemtn exists or not
   bool doesItExist(int);
 
-  //displayes the children of a given index also specify at which level that index is
-  //and weather we are displaying the right(1) or left(0) branch
-  void display(int, int, bool, Text);
-  void display(int, int);
+  //displays the right branch, give it index and prefix
+  void displayRight(int, Text);
+  
+  //displays the left branch, give it index and prefix
+  void displayLeft(int, Text);
   
 };
 

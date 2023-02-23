@@ -13,23 +13,13 @@ int main(){
 
   Heap<int> myHeap;
 
-  myHeap.add(1);
-  myHeap.add(2);
-  myHeap.add(3);
-  
-  myHeap.add(4);
-  myHeap.add(5);
-  myHeap.add(6);
-  myHeap.add(7);
-  myHeap.add(8);
-  myHeap.add(9);
-  myHeap.add(10);
-  myHeap.add(11);
-  myHeap.add(12);
-  myHeap.add(13);
 
+  for(int i=1; i<80; i++){
+    myHeap.add(i);
+  }
+  
   myHeap.display();
 
-
+  myHeap.removeAll();
   
 }

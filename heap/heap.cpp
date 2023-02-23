@@ -1,3 +1,12 @@
+/*
+  Daren Kostov
+
+  note:
+  the "<" operator was exclusively used on purpose
+
+*/
+
+
 
 
 #include "heap.h"
@@ -25,20 +34,18 @@ void Heap<T>::add(T childValue){
   data[childIndex]=new T(childValue);
 
 
-  //swap us with our parents until our parents don't have lower value than us
+  //swap the child with its parent until the parent doesnt have a lower value than the child
   while(true){
     int parentIndex=getParent(childIndex);
     
     if(*data[parentIndex]<*data[childIndex]){
       
-      std::cout <<  *data[parentIndex] << "<" << *data[childIndex] << "\n";
       
       //swap child & parent
       T* temp=data[parentIndex];
       data[parentIndex]=data[childIndex];
       data[childIndex]=temp;
       childIndex=parentIndex;
-      // std::cout <<  *data[parentIndex] << ">" << *data[childIndex] << "\n";
 
       
     }else
@@ -53,34 +60,81 @@ void Heap<T>::add(T childValue){
 template<class T>
 void Heap<T>::removeRoot(){
 
+  //the last index that holds any value
+  int lastIndex=newSpot--;
+
+  //swap the root with the last element, deleteing the root in the process (thats not really what is happening, but its happening in spirit)
+  delete data[0];
+  data[0]=data[lastIndex];
+  data[lastIndex]=NULL;
+
+
+
+  int parentIndex=0;
+
+  //swap the parent with its highest value child until it has no more children
+
+  while(true){
+    int leftChildIndex=getLeftChild(parentIndex);
+    int rightChildIndex=getRightChild(parentIndex);
+
+
+    //left child doesnt exist? the only possible configuration that allows for this is when we don't have any children
+    if(!doesItExist(leftChildIndex))
+      break;
+    
+    //no right child? no problem, just swap with the left one
+    else if(!doesItExist(rightChildIndex)){
+      
+      T* temp=data[parentIndex];
+      data[parentIndex]=data[leftChildIndex];
+      data[leftChildIndex]=temp;
+      parentIndex=leftChildIndex;
+
+    //both children exist? compare them and decide with which one to swap
+    }else{
+
+      //The right child has a higher value (or the same)? swap with it
+      if(*data[leftChildIndex]<*data[rightChildIndex]){
+      
+        T* temp=data[parentIndex];
+        data[parentIndex]=data[rightChildIndex];
+        data[rightChildIndex]=temp;
+        parentIndex=rightChildIndex;
+      
+      }else{
+
+        T* temp=data[parentIndex];
+        data[parentIndex]=data[leftChildIndex];
+        data[leftChildIndex]=temp;
+        parentIndex=leftChildIndex;
+            
+      }
+    }
+  }
 }
+
+
 
 template<class T>
 void Heap<T>::removeAll(){
+
+  while(data[0]!=NULL){
+    std::cout << *data[0] << "\n";
+    removeRoot();
+  
+  }
+
+
 
 }
 
 template<class T>
 void Heap<T>::display(){
 
-  for(int i=0; i<100; i++){
-    
-    if(data[i]!=NULL)
-      std::cout << "[" << i << "]" << *data[i] << ", ";
-    
-  }
-
-    std::cout << "\n\n";
-
-
-
-  display(0, 0);
-
-  // printf("├──");
-  
-  
-  // for(int i; 0)
-
+  std::cout << "x" << *data[0] << "\n";
+  displayLeft(getLeftChild(0), "");
+  displayRight(getRightChild(0), "");
 
 }
 
@@ -116,18 +170,17 @@ bool Heap<T>::doesItExist(int i){
 
 
 template<class T>
-void Heap<T>::display(int index, int level, bool right, Text inheritance){
+void Heap<T>::displayRight(int index, Text inheritance){
 
 
   //we arent in the heap? dont display us
   if(!doesItExist(index))
     return;
 
-  Text myInheritance;
 
+  Text myInheritance;
   for(int i=0; i<inheritance.len(); i++){
     myInheritance+=inheritance[i];
-    // std::cout<< inheritance[i]<< "\n";
   }
 
 
@@ -135,53 +188,29 @@ void Heap<T>::display(int index, int level, bool right, Text inheritance){
   std::cout << myInheritance;
 
 
-  if(!right){
-  
-    // for(int i=0; i<level-1; i++)
-    //   std::cout << "│ ";
-
-    //are we the only child
-    if(!doesItExist(getRightChild(getParent(index)))){
-      std::cout << "└─";
-      inheritance+="  ";
-    }else{
-      std::cout << "├─";
-      inheritance+="│ ";
-    }
-  
-
-  }else{
-  
-    // for(int i=0; i<level-1; i++)
-    //   std::cout << "│ ";
-  
-    std::cout << "└─";
-      inheritance+="  ";
-  }
+  //adjust position
+  std::cout << "└─";
+  inheritance+="  ";
 
 
     
 
-  if(right)
-    std::cout << "r";
-  else
-    std::cout << "l";
-
+  //print our value
+  std::cout << "r";
   std::cout << *data[index] << "\n";
 
   
     
   
-  display(getLeftChild(index), level+1, 0, inheritance);
-  display(getRightChild(index), level+1, 1, inheritance);
+  displayLeft(getLeftChild(index), inheritance);
+  displayRight(getRightChild(index), inheritance);
 
   
 
 }
 
-
 template<class T>
-void Heap<T>::display(int index, int level){
+void Heap<T>::displayLeft(int index, Text inheritance){
 
 
   //we arent in the heap? dont display us
@@ -190,15 +219,42 @@ void Heap<T>::display(int index, int level){
 
 
 
+  Text myInheritance;
+  for(int i=0; i<inheritance.len(); i++){
+    myInheritance+=inheritance[i];
+  }
+
+
+
+  std::cout << myInheritance;
+
+
+  
+
+  //if are we the only child
+  if(!doesItExist(getRightChild(getParent(index)))){
+    std::cout << "└─";
+    inheritance+="  ";
+  }else{
+    std::cout << "├─";
+    inheritance+="│ ";
+  }
+  
+
+
+  //print our value
+  std::cout << "l";
   std::cout << *data[index] << "\n";
 
   
     
   
-  display(getLeftChild(index), level+1, 0, "");
-  display(getRightChild(index), level+1, 1, "");
+  displayLeft(getLeftChild(index),  inheritance);
+  displayRight(getRightChild(index), inheritance);
 
   
 
 }
+
+
 template class Heap<int>;
