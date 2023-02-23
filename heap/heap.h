@@ -50,6 +50,9 @@ class Heap{
   //gets the parent of child int
   int getParent(int);
 
+  //determines weather this elemtn exists or not
+  bool doesItExist(int);
+  
 };
 
 #endif

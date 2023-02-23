@@ -25,7 +25,7 @@ void Heap<T>::add(T childValue){
   data[childIndex]=new T(childValue);
 
 
-  //swap us with our parents until our children have lower value tha us
+  //swap us with our parents until our parents don't have lower value than us
   while(true){
     int parentIndex=getParent(childIndex);
     
@@ -37,10 +37,13 @@ void Heap<T>::add(T childValue){
       T* temp=data[parentIndex];
       data[parentIndex]=data[childIndex];
       data[childIndex]=temp;
+      childIndex=parentIndex;
+      // std::cout <<  *data[parentIndex] << ">" << *data[childIndex] << "\n";
+
       
     }else
       break;
-        
+  
   }
   
     
@@ -69,33 +72,45 @@ void Heap<T>::display(){
 
     std::cout << "\n";
 
+
+  int pointer=0;
+
+  printf("├──");
+  
+  
+  for(int i; 0)
+
+
 }
 
 
 template<class T>
 int Heap<T>::getRightChild(int i){
-
   //array starts at 0, not 1, gotta account for that
   return (++i*2+1)-1;
-  
-  
 }
 
 template<class T>
 int Heap<T>::getLeftChild(int i){
-
   //array starts at 0, not 1, gotta account for that
   return (++i*2)-1;
-
 }
 
 template<class T>
 int Heap<T>::getParent(int i){
-
-
   //array starts at 0, not 1, gotta account for that
-
   return (--i/2);
+}
+
+template<class T>
+bool Heap<T>::doesItExist(int i){
+  if(i>99)
+    return false;
+
+  if(data[i]==NULL)
+    return false;
+
+  return true;
 }
 
 template class Heap<int>;
