@@ -70,15 +70,16 @@ void Heap<T>::display(){
     
   }
 
-    std::cout << "\n";
+    std::cout << "\n\n";
 
 
-  int pointer=0;
 
-  printf("├──");
+  display(0, 0);
+
+  // printf("├──");
   
   
-  for(int i; 0)
+  // for(int i; 0)
 
 
 }
@@ -113,4 +114,91 @@ bool Heap<T>::doesItExist(int i){
   return true;
 }
 
+
+template<class T>
+void Heap<T>::display(int index, int level, bool right, Text inheritance){
+
+
+  //we arent in the heap? dont display us
+  if(!doesItExist(index))
+    return;
+
+  Text myInheritance;
+
+  for(int i=0; i<inheritance.len(); i++){
+    myInheritance+=inheritance[i];
+    // std::cout<< inheritance[i]<< "\n";
+  }
+
+
+
+  std::cout << myInheritance;
+
+
+  if(!right){
+  
+    // for(int i=0; i<level-1; i++)
+    //   std::cout << "│ ";
+
+    //are we the only child
+    if(!doesItExist(getRightChild(getParent(index)))){
+      std::cout << "└─";
+      inheritance+="  ";
+    }else{
+      std::cout << "├─";
+      inheritance+="│ ";
+    }
+  
+
+  }else{
+  
+    // for(int i=0; i<level-1; i++)
+    //   std::cout << "│ ";
+  
+    std::cout << "└─";
+      inheritance+="  ";
+  }
+
+
+    
+
+  if(right)
+    std::cout << "r";
+  else
+    std::cout << "l";
+
+  std::cout << *data[index] << "\n";
+
+  
+    
+  
+  display(getLeftChild(index), level+1, 0, inheritance);
+  display(getRightChild(index), level+1, 1, inheritance);
+
+  
+
+}
+
+
+template<class T>
+void Heap<T>::display(int index, int level){
+
+
+  //we arent in the heap? dont display us
+  if(!doesItExist(index))
+    return;
+
+
+
+  std::cout << *data[index] << "\n";
+
+  
+    
+  
+  display(getLeftChild(index), level+1, 0, "");
+  display(getRightChild(index), level+1, 1, "");
+
+  
+
+}
 template class Heap<int>;

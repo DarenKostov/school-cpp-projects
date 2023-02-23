@@ -28,6 +28,7 @@ class Heap{
     //removes every element
     void removeAll();
 
+    //displayes the entire heap
     void display();
 
   
@@ -40,18 +41,22 @@ class Heap{
   //where should we add an elemnt if we were to add an element
   int newSpot=0;
 
-
-  //gets the right child of parent int
+  //gets the right child of parent index
   int getRightChild(int);
   
-  //gets the left child of parent int
+  //gets the left child of parent index
   int getLeftChild(int);
 
-  //gets the parent of child int
+  //gets the parent of child index
   int getParent(int);
 
   //determines weather this elemtn exists or not
   bool doesItExist(int);
+
+  //displayes the children of a given index also specify at which level that index is
+  //and weather we are displaying the right(1) or left(0) branch
+  void display(int, int, bool, Text);
+  void display(int, int);
   
 };
 
