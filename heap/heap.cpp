@@ -132,6 +132,10 @@ void Heap<T>::removeAll(){
 template<class T>
 void Heap<T>::display(){
 
+  //lets save us a seg fault
+  if(data[0]==NULL)
+    return;
+
   std::cout << "x" << *data[0] << "\n";
   displayLeft(getLeftChild(0), "");
   displayRight(getRightChild(0), "");
