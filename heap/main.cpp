@@ -1,6 +1,9 @@
 /*
-  Daren KOstov
+  Daren Kostov
   Heap project
+
+  sources:
+  https://github.com/kddnewton/tree/
 
 */
 
