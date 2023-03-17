@@ -25,7 +25,7 @@ class Stack{
     void push(T);
 
     //return the top T
-    T peak();
+    T peek();
 
     //return the top T and removes it
     T pop();

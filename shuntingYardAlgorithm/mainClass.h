@@ -14,10 +14,8 @@ class MainClass{
 
   private:
     //variables:
-    // Stack<char>* myStack;
-    // Queue<char>* myQueue;
-    Stack<char> myStack;
-    Queue<char> myQueue;
+    Stack<char> operatorStack;
+    Queue<char> ioQueue;
   
   public:
 

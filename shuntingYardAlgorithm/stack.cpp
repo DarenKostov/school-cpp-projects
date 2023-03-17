@@ -38,7 +38,7 @@ void Stack<T>::push(T in){
 }
 
 template<class T>
-T Stack<T>::peak(){
+T Stack<T>::peek(){
 
   if(head==nullptr)
     return T('X');
