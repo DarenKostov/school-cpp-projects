@@ -64,11 +64,6 @@ void MainClass::startProgram(){
   constructBinaryTree(binaryTree, ioQueue);
 
 
-  // Node<char>* a=nullptr;
-
-  // std::cout << a << "\n";
-
-
   std::cout<< "Infix:\n";
   printInfix(binaryTree.peek());
   std::cout<< "\n\nPostfix:\n";
@@ -76,6 +71,7 @@ void MainClass::startProgram(){
   std::cout<< "\n\nPrefix\n";
   printPrefix(binaryTree.peek());
   std::cout<< "\n";
+
 
 }
 

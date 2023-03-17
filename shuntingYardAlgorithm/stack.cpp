@@ -63,8 +63,9 @@ T Stack<T>::pop(){
   
   head=head->getNext();
 
-  //works delete the derefrenced pointer pointer; delete *&var
+  //works delete the derefrenced pointer pointer, and then delete the 1st pointer
   deleteIfPointer(*oldHead);
+  deleteIfPointer(oldHead);
 
   return output;
   
