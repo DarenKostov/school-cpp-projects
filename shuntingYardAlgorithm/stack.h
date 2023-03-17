@@ -15,9 +15,12 @@ class Stack{
 
   public:
 
-    //empty stack
+    //empty (noun) stack
     Stack();
 
+    //empty (verb) stack
+    ~Stack();
+  
     //puts a T on the top
     void push(T);
 

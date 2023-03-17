@@ -13,6 +13,14 @@ Queue<T>::Queue(){
   tail=nullptr;
 }
 
+template<class T>
+Queue<T>::~Queue(){
+
+  while(head!=nullptr){
+    dequeue();
+  }
+  
+}
 
 template<class T>
 void Queue<T>::enqueue(T in){

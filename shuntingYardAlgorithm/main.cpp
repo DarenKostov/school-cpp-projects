@@ -57,15 +57,10 @@ int main(){
   signal(SIGINT, signal_handler);
 
 
-  MainClass* var=new MainClass();
+  MainClass* mainInstance=new MainClass();
+  atExitFree(mainInstance);
 
-  
-  
-    // delete var;
-  atExitFree(var);
-
-  
-
+  mainInstance->startProgram();
   
 
 }

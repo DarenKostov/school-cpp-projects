@@ -7,19 +7,22 @@
   
 */
 
-
+#include "stack.h"
+#include "queue.h"
 
 class MainClass{
 
   private:
     //variables:
-
+    Stack<char>* myStack;
+    Queue<char>* myQueue;
   
   public:
 
-    //constructor
+    //constructor, like a atSTartUp function
     MainClass();
-  
+
+    //deconstror
     ~MainClass();
 
     //the function that does all the logic, basically the main function

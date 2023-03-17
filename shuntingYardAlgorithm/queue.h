@@ -15,12 +15,12 @@ class Queue{
 
   public:
 
-    //empty stack
+    //empty (noun) stack
     Queue();
 
   
-    // //empty stack
-    // ~Queue();
+    //empty (verb) stack
+    ~Queue();
 
     //puts a T on tail
     void enqueue(T);

@@ -10,6 +10,12 @@ Stack<T>::Stack(){
   head=nullptr;
 }
 
+template<class T>
+Stack<T>::~Stack(){
+  if(head!=nullptr){
+    pop();
+  }
+}
 
 template<class T>
 void Stack<T>::push(T in){
@@ -23,7 +29,7 @@ void Stack<T>::push(T in){
 
 
   Node<T>* newHead=new Node<T>(in);
-  newHead->setNext(new Node<T>(in));
+  newHead->setNext(head);
   head=newHead;
 
   
