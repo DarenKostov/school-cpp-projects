@@ -5,6 +5,7 @@
 
 #include "stack.h"
 #include "binode.h"
+#include "deleteIfPointer.cpp"
 
 template<class T>
 Stack<T>::Stack(){
@@ -61,7 +62,9 @@ T Stack<T>::pop(){
   auto oldHead=head;
   
   head=head->getNext();
-  delete oldHead;
+
+  //works delete the derefrenced pointer pointer; delete *&var
+  deleteIfPointer(*oldHead);
 
   return output;
   

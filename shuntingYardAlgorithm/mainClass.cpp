@@ -63,10 +63,17 @@ void MainClass::startProgram(){
 
   constructBinaryTree(binaryTree, ioQueue);
 
+
+  // Node<char>* a=nullptr;
+
+  // std::cout << a << "\n";
+
+
+  std::cout<< "Infix:\n";
   printInfix(binaryTree.peek());
-  std::cout<< "\n";
+  std::cout<< "\n\nPostfix:\n";
   printPostfix(binaryTree.peek());
-  std::cout<< "\n";
+  std::cout<< "\n\nPrefix\n";
   printPrefix(binaryTree.peek());
   std::cout<< "\n";
 
@@ -175,18 +182,18 @@ void constructBinaryTree(Stack<BinNode<char>*>& output, Queue<char>& input){
 void printInfix(BinNode<char>* tree){
   if (tree==nullptr)
     return;
-  // std::cout << "q" << std::flush;
+
   
   if(!std::isdigit(tree->getValue())){
-    std::cout << "("; 
+    std::cout << "(" << std::flush; 
   }
 
   printInfix(tree->getRight());
-  std::cout << tree->getValue() << "\0"; 
+  std::cout << tree->getValue(); 
   printInfix(tree->getLeft());
 
   if(!std::isdigit(tree->getValue())){
-    std::cout << ")"; 
+    std::cout << ")" << std::flush; 
   }
 
 }
@@ -194,8 +201,8 @@ void printPostfix(BinNode<char>* tree){
   if (tree==nullptr)
     return;
   
-  printInfix(tree->getRight());
-  printInfix(tree->getLeft());
+  printPostfix(tree->getRight());
+  printPostfix(tree->getLeft());
   std::cout << tree->getValue(); 
 
 }
@@ -204,8 +211,8 @@ void printPrefix(BinNode<char>* tree){
     return;
   
   std::cout << tree->getValue(); 
-  printInfix(tree->getRight());
-  printInfix(tree->getLeft());
+  printPrefix(tree->getRight());
+  printPrefix(tree->getLeft());
 
 }
 
