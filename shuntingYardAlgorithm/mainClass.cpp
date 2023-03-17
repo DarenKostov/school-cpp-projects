@@ -29,6 +29,16 @@ int precedence(char);
 //determine if an operator is right associative
 bool rightAssociative(char);
 
+//give it a stack and itll make you a binary tree from a queue
+void constructBinaryTree(Stack<BinNode<char>*>&, Queue<char>&);
+
+
+void printInfix(BinNode<char>*);
+void printPostfix(BinNode<char>*);
+void printPrefix(BinNode<char>*);
+
+
+
 void MainClass::startProgram(){
   
   //make the cin stream not ignore newlines or spaces
@@ -51,12 +61,16 @@ void MainClass::startProgram(){
 
   shuntingYardAlgorithm(ioQueue, operatorStack);
 
-  std::cout << "Queue output:\n";
-  while(ioQueue.getSize()!=0){
-    std::cout << ioQueue.dequeue() << " ";
-  }
-  std::cout << "\n";
-  
+  constructBinaryTree(binaryTree, ioQueue);
+
+
+  printInfix(binaryTree.peek());
+  std::cout<< "\n";
+  printPostfix(binaryTree.peek());
+  std::cout<< "\n";
+  printPrefix(binaryTree.peek());
+  std::cout<< "\n";
+
 }
 
 
@@ -64,9 +78,7 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
   //initial size of the queue
   int initSize=ioQueue.getSize();
 
-    std::cout << initSize <<"\n";
   for(int i=0; i<initSize; i++){
-    std::cout << i <<"\n";
     char currentElement=ioQueue.dequeue();
 
     //if a number, add it to the output
@@ -132,6 +144,59 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
 
   
 }
+
+
+
+void constructBinaryTree(Stack<BinNode<char>*>& output, Queue<char>& input){
+  while(input.getSize()!=0){
+    char currentElement=input.dequeue();
+
+    //if number add to stack
+    if(std::isdigit(currentElement)){
+      output.push(new BinNode<char>(currentElement));
+      continue;
+    }
+
+    
+    // if an operator, take the 2 numbers following it IN THE STACK and make them its children, push the operator afterwards
+
+    BinNode<char>* newNode=new BinNode<char>(currentElement);
+    newNode->setLeft(output.pop());
+    newNode->setRight(output.pop());
+    output.push(newNode);
+
+    continue;//a useless continue
+    
+  }
+  
+
+}
+
+
+void printInfix(BinNode<char>* tree){
+  if (tree!=nullptr){
+      if(!std::isdigit(tree->getValue())){
+        std::cout << "("; 
+      }
+  
+      printInfix(tree->getRight());
+      std::cout << tree->getValue(); 
+      printInfix(tree->getLeft());
+    
+      if(!std::isdigit(tree->getValue())){
+        std::cout << ")"; 
+      }
+  }
+}
+void printPostfix(BinNode<char>*){
+
+}
+void printPrefix(BinNode<char>*){
+
+
+}
+
+
 
 
 int precedence(char in){

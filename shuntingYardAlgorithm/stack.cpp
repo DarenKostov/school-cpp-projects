@@ -4,6 +4,7 @@
 */
 
 #include "stack.h"
+#include "binode.h"
 
 template<class T>
 Stack<T>::Stack(){
@@ -73,3 +74,4 @@ int Stack<T>::getSize(){
 }
 
 template class Stack<char>;
+template class Stack<BinNode<char>*>;

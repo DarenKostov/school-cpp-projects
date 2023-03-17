@@ -5,10 +5,11 @@
 
 */
 
-#include "node.h"
+#ifndef BINNODE
+#define BINNODE
 
 template<class T>
-class BinNode : public Node{
+class BinNode{
 
   public:
 
@@ -17,9 +18,9 @@ class BinNode : public Node{
 
     //deconstrictor
     ~BinNode();
-
-    //initialize a node with a left and right node, as well as a value
-    BinNode(BinNode*, BinNode*, T);
+   
+    //initialize with a value
+    BinNode(T);
   
     //sets the right node
     void setRight(BinNode*);
@@ -48,3 +49,5 @@ class BinNode : public Node{
     T value;
 
 };
+
+#endif

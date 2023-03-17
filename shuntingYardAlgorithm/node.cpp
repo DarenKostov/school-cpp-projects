@@ -3,6 +3,8 @@
 */
 
 #include "node.h" 
+#include "binode.h" 
+#include "deleteIfPointer.cpp" 
 
 
 template<class T>
@@ -22,7 +24,7 @@ Node<T>::Node(T in){
 
 template<class T>
 Node<T>::~Node(){
-  // delete value;
+  deleteIfPointer(value);
 }
 
 template<class T>
@@ -57,6 +59,7 @@ void Node<T>::setValue(T in){
 
 
 template class Node<char>;
+template class Node<BinNode<char>*>;
 
 
 

@@ -9,14 +9,19 @@
 
 #include "stack.h"
 #include "queue.h"
+#include "binode.h"
+
 
 class MainClass{
 
   private:
     //variables:
     Stack<char> operatorStack;
+    Stack<BinNode<char>*> binaryTree;
     Queue<char> ioQueue;
-  
+
+    
+    
   public:
 
     //constructor, like a atSTartUp function
