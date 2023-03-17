@@ -15,9 +15,16 @@
 #include "iostream"
 
 
-MainClass::MainClass(){
-}
+//fully deletes a binay tree
+void deleteBinaryTree(BinNode<char>*);
+
+MainClass::MainClass(){}
 MainClass::~MainClass(){
+
+  //delete the binary node tree
+  if(binaryTree.getSize()!=0){
+    deleteBinaryTree(binaryTree.peek());
+  }
 }
 
 //performs the Shunting yard algorithm, stack is included because I want it to be deleted in the case I stop the program in this particular function
@@ -186,6 +193,15 @@ void constructBinaryTree(Stack<BinNode<char>*>& output, Queue<char>& input){
 
 }
 
+
+void deleteBinaryTree(BinNode<char>* tree){
+  if(tree==nullptr)
+    return;
+  
+  deleteBinaryTree(tree->getLeft());
+  deleteBinaryTree(tree->getRight());
+  delete tree;
+}
 
 void printInfix(BinNode<char>* tree){
   if(tree==nullptr)

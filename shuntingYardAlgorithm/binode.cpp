@@ -21,7 +21,7 @@ BinNode<T>::BinNode(T in){
 
 template<class T>
 BinNode<T>::~BinNode(){
-  deleteIfPointer(value);
+  //do nothing
 }
 
 template<class T>

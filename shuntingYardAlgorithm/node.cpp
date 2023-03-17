@@ -24,7 +24,7 @@ Node<T>::Node(T in){
 
 template<class T>
 Node<T>::~Node(){
-  deleteIfPointer(value);
+  //do nothing
 }
 
 template<class T>
