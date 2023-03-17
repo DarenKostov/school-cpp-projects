@@ -188,12 +188,12 @@ void constructBinaryTree(Stack<BinNode<char>*>& output, Queue<char>& input){
 
 
 void printInfix(BinNode<char>* tree){
-  if (tree==nullptr)
+  if(tree==nullptr)
     return;
 
   
   if(!std::isdigit(tree->getValue())){
-    std::cout << "(" << std::flush; 
+    std::cout << "("; 
   }
 
   printInfix(tree->getRight());
@@ -201,13 +201,13 @@ void printInfix(BinNode<char>* tree){
   printInfix(tree->getLeft());
 
   if(!std::isdigit(tree->getValue())){
-    std::cout << ")" << std::flush; 
+    std::cout << ")"; 
   }
 
 }
 
 void printPostfix(BinNode<char>* tree){
-  if (tree==nullptr)
+  if(tree==nullptr)
     return;
   
   printPostfix(tree->getRight());
@@ -217,7 +217,7 @@ void printPostfix(BinNode<char>* tree){
 }
 
 void printPrefix(BinNode<char>* tree){
-  if (tree==nullptr)
+  if(tree==nullptr)
     return;
   
   std::cout << tree->getValue(); 
