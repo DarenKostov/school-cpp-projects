@@ -64,19 +64,21 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
   //initial size of the queue
   int initSize=ioQueue.getSize();
 
+    std::cout << initSize <<"\n";
   for(int i=0; i<initSize; i++){
+    std::cout << i <<"\n";
     char currentElement=ioQueue.dequeue();
 
     //if a number, add it to the output
     if(std::isdigit(currentElement)){
       ioQueue.enqueue(currentElement);
-      break;
+      continue;
     }
 
     //if a left parenthesis, push it to the stack
     if(currentElement=='('){
       operatorStack.push(currentElement);
-      break;
+      continue;
     }
 
     
@@ -93,7 +95,7 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
         ioQueue.enqueue(toBeAdded);
       }
 
-      break;
+      continue;
     }
 
     //===if an operator===
@@ -101,13 +103,13 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
     //if stack is empty or end with '(', add to the stack
     if(operatorStack.getSize()==0 || operatorStack.peek()=='('){
       operatorStack.push(currentElement);
-      break;
+      continue;
     }
 
     //if it has higher or equal precedence to the stack's top and is right associative, add to the stack
     if(precedence(currentElement)>=precedence(operatorStack.peek()) && rightAssociative(currentElement)){
       operatorStack.push(currentElement);
-      break;
+      continue;
     }
   
 
@@ -117,8 +119,8 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
     }
     //finally add the opertaro to the stack
     operatorStack.push(currentElement);
-    break;
-      
+    continue;
+    
     std::cout << "what happened here?\n";
   }
 
