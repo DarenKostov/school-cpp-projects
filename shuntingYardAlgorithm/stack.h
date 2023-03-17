@@ -30,10 +30,13 @@ class Stack{
     //return the top T and removes it
     T pop();
 
+    //gives you the size of the stack
+    int getSize();
 
   private:
 
-    Node<T>* head;  
+    Node<T>* head;
+    int size;
 
 };
 

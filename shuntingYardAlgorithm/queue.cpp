@@ -25,7 +25,9 @@ Queue<T>::~Queue(){
 template<class T>
 void Queue<T>::enqueue(T in){
 
-
+  //increasing the size
+  size++;
+  
   //empty queue?
   if(head==nullptr){
     head=new Node<T>(in);
@@ -53,6 +55,8 @@ T Queue<T>::dequeue(){
   if(head==nullptr)
     return T('X');
 
+  //decreasing the size
+  size--;
 
 
   T output=head->getValue();
@@ -62,10 +66,13 @@ T Queue<T>::dequeue(){
   delete oldHead;
 
   return output;
-
-  
 }
 
+
+template<class T>
+int Queue<T>::getSize(){
+  return size;
+}
 
 template class Queue<char>;
 

@@ -14,8 +14,10 @@ class MainClass{
 
   private:
     //variables:
-    Stack<char>* myStack;
-    Queue<char>* myQueue;
+    // Stack<char>* myStack;
+    // Queue<char>* myQueue;
+    Stack<char> myStack;
+    Queue<char> myQueue;
   
   public:
 

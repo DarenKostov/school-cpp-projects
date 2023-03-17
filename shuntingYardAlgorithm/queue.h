@@ -31,10 +31,15 @@ class Queue{
     //return the head T and removes it
     T dequeue();
 
+    //returns you the size of the queue
+    int getSize();
+
+
   private:
 
     Node<T>* head;  
     Node<T>* tail;  
+    int size;
 
 };
 

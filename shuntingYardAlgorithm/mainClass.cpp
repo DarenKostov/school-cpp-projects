@@ -1,7 +1,11 @@
 /*
   Daren Kostov
 
-  the MainClass logic
+  the MainClass logici
+
+  sources:
+  https://stackoverflow.com/questions/9673708/tell-cin-to-stop-reading-at-newline
+
 
 */
 
@@ -10,36 +14,35 @@
 
 
 MainClass::MainClass(){
-  myStack=new Stack<char>();
-  myQueue=new Queue<char>();
 }
-  
 MainClass::~MainClass(){
-  delete myStack;
-  delete myQueue;
 }
 
 void MainClass::startProgram(){
+  
+  //make the cin stream not ignore newlines or spaces
+  std::cin >> std::noskipws;
 
-
-  std::cout << "input:\n";
-  for(char i='0'; i<='9'; i++){
-    std::cout << i << " ";
-    myQueue->enqueue(i);
-    myStack->push(i);
-  }
-  std::cout << "\n";
+  char whiteList[]="1234567890-+*/^()";
 
   
-  std::cout << "Stack output:\n";
-  for(int i=0; i<10; i++){
-    std::cout << myStack->pop() << " ";
+  char element;
+  while(std::cin >> element && element != '\n'){
+
+    //add the char only if it's on the white list
+    for(int i=0; i<sizeof(whiteList)/sizeof(char); i++){
+      if(whiteList[i]==element){
+        myQueue.enqueue(element);
+        break;
+      }
+    }
   }
-  std::cout << "\n";
+
+
 
   std::cout << "Queue output:\n";
-  for(int i=0; i<10; i++){
-    std::cout << myQueue->dequeue() << " ";
+  while(myQueue.getSize()!=0){
+    std::cout << myQueue.dequeue() << " ";
   }
   std::cout << "\n";
   

@@ -20,6 +20,8 @@ Stack<T>::~Stack(){
 template<class T>
 void Stack<T>::push(T in){
 
+  size++;
+
   //empty stack?
   if(head==nullptr){
     head=new Node<T>(in);
@@ -52,6 +54,7 @@ T Stack<T>::pop(){
   if(head==nullptr)
     return T('X');
 
+  size--;
 
   T output=head->getValue();
   auto oldHead=head;
@@ -61,7 +64,12 @@ T Stack<T>::pop(){
 
   return output;
   
+}
 
+
+template<class T>
+int Stack<T>::getSize(){
+  return size;
 }
 
 template class Stack<char>;
