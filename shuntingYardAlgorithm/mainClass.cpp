@@ -107,8 +107,14 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
         char toBeAdded=operatorStack.pop();
 
         if(toBeAdded=='(')
-          //TODO add mismatches parenthesis error message
           break;
+
+        if(operatorStack.getSize()==0){
+          std::cout<< "\e[91mmismatches parenthesis\n\e[0m";
+          exit(0);
+        }
+          
+        
         
         ioQueue.enqueue(toBeAdded);
       }
@@ -145,6 +151,12 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
 
   //and at the end, add the stack to the output
   while(operatorStack.getSize()!=0){
+    
+    if(operatorStack.peek()=='('){
+      std::cout<< "\e[91mmismatches parenthesis\n\e[0m";
+      exit(0);
+    }
+    
     ioQueue.enqueue(operatorStack.pop());
   }
 
@@ -197,6 +209,7 @@ void printInfix(BinNode<char>* tree){
   }
 
 }
+
 void printPostfix(BinNode<char>* tree){
   if (tree==nullptr)
     return;
@@ -206,6 +219,7 @@ void printPostfix(BinNode<char>* tree){
   std::cout << tree->getValue(); 
 
 }
+
 void printPrefix(BinNode<char>* tree){
   if (tree==nullptr)
     return;
