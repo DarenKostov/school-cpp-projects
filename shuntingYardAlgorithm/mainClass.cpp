@@ -32,7 +32,7 @@ bool rightAssociative(char);
 //give it a stack and itll make you a binary tree from a queue
 void constructBinaryTree(Stack<BinNode<char>*>&, Queue<char>&);
 
-
+//functions are self explanatory
 void printInfix(BinNode<char>*);
 void printPostfix(BinNode<char>*);
 void printPrefix(BinNode<char>*);
@@ -62,7 +62,6 @@ void MainClass::startProgram(){
   shuntingYardAlgorithm(ioQueue, operatorStack);
 
   constructBinaryTree(binaryTree, ioQueue);
-
 
   printInfix(binaryTree.peek());
   std::cout<< "\n";
@@ -174,25 +173,39 @@ void constructBinaryTree(Stack<BinNode<char>*>& output, Queue<char>& input){
 
 
 void printInfix(BinNode<char>* tree){
-  if (tree!=nullptr){
-      if(!std::isdigit(tree->getValue())){
-        std::cout << "("; 
-      }
+  if (tree==nullptr)
+    return;
+  // std::cout << "q" << std::flush;
   
-      printInfix(tree->getRight());
-      std::cout << tree->getValue(); 
-      printInfix(tree->getLeft());
-    
-      if(!std::isdigit(tree->getValue())){
-        std::cout << ")"; 
-      }
+  if(!std::isdigit(tree->getValue())){
+    std::cout << "("; 
   }
-}
-void printPostfix(BinNode<char>*){
+
+  printInfix(tree->getRight());
+  std::cout << tree->getValue() << "\0"; 
+  printInfix(tree->getLeft());
+
+  if(!std::isdigit(tree->getValue())){
+    std::cout << ")"; 
+  }
 
 }
-void printPrefix(BinNode<char>*){
+void printPostfix(BinNode<char>* tree){
+  if (tree==nullptr)
+    return;
+  
+  printInfix(tree->getRight());
+  printInfix(tree->getLeft());
+  std::cout << tree->getValue(); 
 
+}
+void printPrefix(BinNode<char>* tree){
+  if (tree==nullptr)
+    return;
+  
+  std::cout << tree->getValue(); 
+  printInfix(tree->getRight());
+  printInfix(tree->getLeft());
 
 }
 
