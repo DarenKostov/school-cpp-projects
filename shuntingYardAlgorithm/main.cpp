@@ -7,71 +7,35 @@
 
 */
 
-#include "queue.h"
-#include "stack.h"
-typedef Stack<char> StackC;
-typedef Queue<char> QueueC;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#include "mainClass.h"
 
 #include <iostream>
 #include <csignal>
-// #include "text.h"
 
 
-//at exit free the varible "in" 
-void atExitFree(void*);
+//at exit free the MainClass object 
+void atExitFree(MainClass*);
 
-static void freeVariable(void){
+static void freeVariable(){
 
-    std::cout << "freeing the variable!";
-    
+    std::cout << "About to Free Main\n";
     atExitFree(NULL);
 }
 
-void atExitFree(void* in){
+void atExitFree(MainClass* in){
 
-    //store a static pointer to our variable
-    static void* eternalPtr;
+    //store a static pointer to our Main
+    static MainClass* eternalPtr;
 
 
     //if we give it a valid pointer, store it; if not, delete it
     if(in){
+        std::cout << "Storing Main\n";
         eternalPtr=in;
         atexit(freeVariable);
     }else{
-
+        std::cout << "Freeing Main\n";
         delete eternalPtr;
-    
-        // if(std::is_array<eternalPtr>::value==true)
-        //   delete[] eternalPtr;
-        // else
-        //   delete eternalPtr;
     }
 }
 
@@ -81,19 +45,10 @@ void atExitFree(void* in){
 void signal_handler(int signal_num){
 
   std::cout << "Signal Handler!\n";
-  
+  std::cout << "Signal: " << signal_num << "\n";
   exit(signal_num);
 }
 
-struct someClass{
-  someClass(){
-    variable=new int[10];
-  }
-  ~someClass(){
-    delete[] variable;
-  }
-  int* variable;
-};
 
 int main(){
 
@@ -102,17 +57,14 @@ int main(){
   signal(SIGINT, signal_handler);
 
 
-  // someClass* var=new someClass();
-  // // delete var;
-  // atExitFree(var);
+  MainClass* var=new MainClass();
 
   
-  int* var2=new int;
-  // delete var;
-  atExitFree(var2);
+  
+    // delete var;
+  atExitFree(var);
 
-    while(true)
-      1;
+  
 
   
 
