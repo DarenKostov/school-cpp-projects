@@ -44,7 +44,7 @@ void atExitFree(MainClass* in){
 
 void signal_handler(int signal_num){
 
-  std::cout << "\e[93mSignal Handler!\n";
+  std::cout << "\n\e[93mSignal Handler!\n";
   std::cout << "Signal: " << signal_num << "\n\e[0m";
   exit(signal_num);
 }

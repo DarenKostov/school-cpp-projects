@@ -72,15 +72,26 @@ void MainClass::startProgram(){
   char element;
   while(std::cin >> element && element != '\n'){
 
+    std::cout << "\e[91m";
     //add the char only if it's on the white list
     for(int i=0; i<sizeof(whiteList)/sizeof(char); i++){
       if(whiteList[i]==element){
         ioQueue.enqueue(element);
+        std::cout << "\e[0m";
         break;
       }
     }
-  }
 
+
+    if(element==' ')
+      std::cout << "█";
+    else
+      std::cout << element;
+  
+  
+  }
+  std::cout << "\e[0m\n";
+  
   shuntingYardAlgorithm(ioQueue, operatorStack);
 
   constructBinaryTree(binaryTree, ioQueue);
