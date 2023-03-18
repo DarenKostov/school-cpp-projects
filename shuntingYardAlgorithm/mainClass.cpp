@@ -47,6 +47,21 @@ void printPrefix(BinNode<char>*);
 
 
 void MainClass::startProgram(){
+
+  std::cout << "This is infix to infix, postfix and prefix program!\n\n"; 
+  std::cout << "The operand/operators can be separted by spaces,\n"; 
+  std::cout << "by nothing, or even the sequance \"separator\"!\n"; 
+  std::cout << "The program will ignore anything that is not a number or an operator!\n"; 
+  std::cout << "Mismatched parenthesis detection included.\n";
+  
+  
+  std::cout << "\nhere are some examples:\n\e[92m";
+  std::cout << "1 / ( 2 - 4 ) / 4 ^ ( 5 - 0 / 2 )\n";
+  std::cout << "2*(7^3)-9/5+1^2/(6-7)^((1-3)*4/2)\n";
+  std::cout << "(separator3separator+separator4separator)separator*separator5\n";
+  std::cout << "q~(w0r-gf9f)h^j(k2&r*te(@h5o-p.i4hg)fv,/fd5:e)\n";
+  
+  std::cout << "\n\e[0minput: ";
   
   //make the cin stream not ignore newlines or spaces
   std::cin >> std::noskipws;
@@ -71,13 +86,13 @@ void MainClass::startProgram(){
   constructBinaryTree(binaryTree, ioQueue);
 
 
-  std::cout<< "Infix:\n";
+  std::cout<< "\nInfix:\n";
   printInfix(binaryTree.peek());
   std::cout<< "\n\nPostfix:\n";
   printPostfix(binaryTree.peek());
   std::cout<< "\n\nPrefix\n";
   printPrefix(binaryTree.peek());
-  std::cout<< "\n";
+  std::cout<< "\n\n";
 
 
 }
@@ -89,7 +104,7 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
 
   for(int i=0; i<initSize; i++){
     char currentElement=ioQueue.dequeue();
-
+    
     //if a number, add it to the output
     if(std::isdigit(currentElement)){
       ioQueue.enqueue(currentElement);
@@ -108,15 +123,14 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
 
       while(operatorStack.getSize()!=0){
         char toBeAdded=operatorStack.pop();
-
+        
         if(toBeAdded=='(')
           break;
 
         if(operatorStack.getSize()==0){
-          std::cout<< "\e[91mmismatches parenthesis\n\e[0m";
+          std::cout<< "\e[91mmismatched parenthesis ( \n\e[0m";
           exit(0);
         }
-          
         
         
         ioQueue.enqueue(toBeAdded);
@@ -156,7 +170,7 @@ void shuntingYardAlgorithm(Queue<char>& ioQueue, Stack<char>& operatorStack){
   while(operatorStack.getSize()!=0){
     
     if(operatorStack.peek()=='('){
-      std::cout<< "\e[91mmismatches parenthesis\n\e[0m";
+      std::cout<< "\e[91mmismatched parenthesis\n\e[0m";
       exit(0);
     }
     
@@ -255,9 +269,6 @@ int precedence(char in){
       return 2;
     case '^':
       return 3;
-    case '(':
-    case ')':
-      return 4;
   }
 
   return 0;

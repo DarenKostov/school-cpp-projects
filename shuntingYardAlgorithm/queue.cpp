@@ -41,12 +41,12 @@ void Queue<T>::enqueue(T in){
 }
 
 template<class T>
-T Queue<T>::peak(){
+T Queue<T>::peek(){
   
   if(head==nullptr)
     return T('X');
   
-  return head->getNext()->getValue();
+  return head->getValue();
 }
 
 template<class T>

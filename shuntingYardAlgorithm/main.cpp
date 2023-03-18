@@ -18,7 +18,7 @@ void atExitFree(MainClass*);
 
 static void freeVariable(){
 
-    std::cout << "About to Free Main\n";
+    std::cout << "\e[93mAbout to Free Main\n\e[0m";
     atExitFree(NULL);
 }
 
@@ -30,11 +30,11 @@ void atExitFree(MainClass* in){
 
     //if we give it a valid pointer, store it; if not, delete it
     if(in){
-        std::cout << "Storing Main\n";
+        std::cout << "\e[93mStoring Main\n\e[0m";
         eternalPtr=in;
         atexit(freeVariable);
     }else{
-        std::cout << "Freeing Main\n";
+        std::cout << "\e[93mFreeing Main\n\e[0m";
         delete eternalPtr;
     }
 }
@@ -44,15 +44,15 @@ void atExitFree(MainClass* in){
 
 void signal_handler(int signal_num){
 
-  std::cout << "Signal Handler!\n";
-  std::cout << "Signal: " << signal_num << "\n";
+  std::cout << "\e[93mSignal Handler!\n";
+  std::cout << "Signal: " << signal_num << "\n\e[0m";
   exit(signal_num);
 }
 
 
 int main(){
 
-  std::cout << "start of program\n";
+  std::cout << "\e[93mstart of program\n\e[0m";
 
   signal(SIGINT, signal_handler);
 

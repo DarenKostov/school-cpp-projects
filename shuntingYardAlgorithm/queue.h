@@ -26,7 +26,7 @@ class Queue{
     void enqueue(T);
 
     //return the head T
-    T peak();
+    T peek();
 
     //return the head T and removes it
     T dequeue();
