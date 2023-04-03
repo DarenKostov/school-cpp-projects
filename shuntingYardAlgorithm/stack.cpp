@@ -9,6 +9,7 @@
 
 template<class T>
 Stack<T>::Stack(){
+  size=0;
   head=nullptr;
 }
 

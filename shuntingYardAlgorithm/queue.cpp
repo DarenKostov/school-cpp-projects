@@ -9,6 +9,7 @@
 
 template<class T>
 Queue<T>::Queue(){
+  size=0;
   head=nullptr;
   tail=nullptr;
 }
