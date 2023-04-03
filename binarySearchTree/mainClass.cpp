@@ -28,14 +28,15 @@ void MainClass::startProgram(){
 
   for(std::vector<Text> commands=readLine(); commands[0]!="quit"; commands=readLine()){
 
-    // if(commands[0]=="add"){
-      
-    //   try{
+    if(commands[0]=="add"){
+      int numToAdd=0;
+
+      try{
         
-    //   }catch(const std::invalid_argument& ia){
+      }catch(const std::invalid_argument& ia){
       
-    //   }
-    // }
+      }
+    }
     
     std::cout << "your arguments:\n";
     for(Text command : commands)
