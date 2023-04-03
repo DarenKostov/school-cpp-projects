@@ -170,9 +170,9 @@ Text Text::operator+(char input){
   //dont forget about the \0 char
   outputCharArr[outputLength]='\0';
   
-  //create the output  
+  //create the output and free the memory
   Text output(outputCharArr);
-  
+  delete[] outputCharArr;
   
   return output;
   
@@ -195,8 +195,9 @@ Text Text::operator+(const char* input){
   //dont forget about the \0 char
   outputCharArr[outputLength]='\0';
   
-  //create the output  
+  //create the output and free the memory
   Text output(outputCharArr);
+  delete[] outputCharArr;
   
   
   return output;
