@@ -50,7 +50,7 @@ void MainClass::startProgram(){
 
   std::cout << "This is infix to infix, postfix and prefix program!\n\n"; 
   std::cout << "The operand/operators can be separted by spaces,\n"; 
-  std::cout << "by nothing, or even the sequance \"separator\"!\n"; 
+  std::cout << "by nothing, or even the sequence \"separator\"!\n"; 
   std::cout << "The program will ignore anything that is not a number or an operator!\n"; 
   std::cout << "Mismatched parenthesis detection included.\n";
   
