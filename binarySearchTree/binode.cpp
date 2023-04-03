@@ -55,7 +55,7 @@ void BinNode<T>::setValue(T in){
 }
 
 
-template class BinNode<char>;
+template class BinNode<int>;
 
 
 
