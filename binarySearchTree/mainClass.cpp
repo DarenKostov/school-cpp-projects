@@ -4,6 +4,8 @@
   the MainClass logic
 
 
+  I didnt use all of the functions i created here
+  
   sources
   https://www.geeksforgeeks.org/deletion-in-binary-search-tree/
 
@@ -42,8 +44,8 @@ void doesItContain(BinNode<int>*, std::vector<Text>);
 int doesItContain(BinNode<int>*, int);
 
 //remove a num from the bin tree
-void remove(BinNode<int>*, std::vector<Text>);
-int removeAndReturnNewRoot(BinNode<int>*, int);
+void remove(BinNode<int>*&, std::vector<Text>);
+BinNode<int>* removeAndReturnNewRoot(BinNode<int>*, int, bool&);
 
 //returns you the bin node whoose value it is int, nullptr if the node doesnt exist
 BinNode<int>* returnNodeWithValueOf(BinNode<int>*, int);
@@ -55,8 +57,13 @@ BinNode<int>* returnMinNode(BinNode<int>*);
 bool isANum(Text);
 
 
+//print help
+void printHelp();
+
 void MainClass::startProgram(){
   
+
+  printHelp();
 
   // char command[20]="";
   
@@ -76,6 +83,8 @@ void MainClass::startProgram(){
       doesItContain(root, commands);
     }else if(commands[0]=="r" || commands[0]=="remove"){
       remove(root, commands);
+    }else if(commands[0]=="h" || commands[0]=="help"){
+      printHelp();
     }else{
       std::cout << "\e[91m????\e[0m\n";
     }
@@ -227,7 +236,7 @@ void displayRight(BinNode<int>* current, Text inheritance){
 void displayLeft(BinNode<int>* current, BinNode<int>* previous, Text inheritance){
 
 
-  //we arent in the heap? dont display us
+  //we arent in the bin tree? dont display us
   if(current==nullptr)
     return;
 
@@ -317,7 +326,7 @@ int doesItContain(BinNode<int>* current, int num){
 }
 
 
-void remove(BinNode<int>* root, std::vector<Text> commands){
+void remove(BinNode<int>*& root, std::vector<Text> commands){
   
   //not enough arguments
   if(commands.size()<2)
@@ -330,19 +339,18 @@ void remove(BinNode<int>* root, std::vector<Text> commands){
     num=std::stoi(commands[1].val());
   }catch(const std::invalid_argument& ia){
     //invalid?
-    std::cout << "\e[91mIt would be dificult to add \""+commands[1]+"\" to an integer-only Binary Tree in the first place.\n\e[0m";
+    std::cout << "\e[91m\""+commands[1]+"\" could not be found in this integer-only Binary Tree in the first place :/\n\e[0m";
     return;
   }
   //valid?
-  
-  int occurances=0;
-  
-  for(BinNode<int>* i=returnNodeWithValueOf(root, num); i!=nullptr; i=returnNodeWithValueOf(root, num), occurances++){
-  
-  }
-    
-    // remove(root, num);
 
+  //-2 dont ask way
+  int occurances=-2;
+
+  //why use for loops their intended way?
+  for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, root=removeAndReturnNewRoot(root, num, didItHappen)){}
+    
+  
   if(occurances==1)
     std::cout << "Removed "+commands[1]+'\n';
   else
@@ -353,14 +361,65 @@ void remove(BinNode<int>* root, std::vector<Text> commands){
 
 
 
-int remove(BinNode<int>* current, int num){
+BinNode<int>* removeAndReturnNewRoot(BinNode<int>* current, int num, bool& didItHappen){
+  // std::cout << current << '\n';
+
   if(current==nullptr)
-    return 0;
+    return nullptr;
+
+  //it is in/is the right child
+  if(current->getValue()<num){
+    current->setRight(removeAndReturnNewRoot(current->getRight(), num, didItHappen));
+    
+  //it is in/is the left child
+  }else if(current->getValue()>num){
+    current->setLeft(removeAndReturnNewRoot(current->getLeft(), num, didItHappen));
+    
+  //it's us 
+  }else{
+
+    //yes it happened, we found the node and are about to delete it
+    didItHappen=true;
+    
+    /*
+    if there are no children return nullptr
+    if there is only 1 child, return it
+    if there are 2 children return the successor
+    */
+
+    
+    //we have a left child
+    if(current->getLeft()!=nullptr){
+
+      //And we have a right child
+      if(current->getRight()!=nullptr){
+        auto successor=returnMinNode(current->getRight());
+        current->setValue(successor->getValue());
+        current->setRight(removeAndReturnNewRoot(current, successor->getValue(), didItHappen));
+        return current;
+      }
+
+      
+      //left child, only child
+      auto left=current->getLeft();
+      delete current;
+      return left;
+    }
+
+    //we have a right child
+    if(current->getRight()!=nullptr){
+      auto right=current->getRight();
+      delete current;
+      return right;
+    }
+
+    //we dont have any children
+    return nullptr;
   
-  if(current->getValue()==num){
-    return doesItContain(current->getLeft(), num)+doesItContain(current->getRight(), num)+1;
   }
-  return doesItContain(current->getLeft(), num)+doesItContain(current->getRight(), num);
+  
+  return current;
+  
 }
 
 
@@ -388,3 +447,22 @@ BinNode<int>* returnMinNode(BinNode<int>* current){
     current=current->getLeft();
   return current;
 }
+
+
+void printHelp(){
+
+  std::cout << "\e[92m\n";
+  std::cout << "(h)elp: this help\n";
+  std::cout << "(a)dd <file>: adds integers to the Bin Tree from a file.\n";
+  std::cout << "(a)dd <num1> [num2] [num3]...: adds num1, num2, num3... to the Bin Tree.\n";
+  std::cout << "(d)isplay: print the Bin Tree in a similar fasion as the command `tree`\n";
+  std::cout << "(p)rint: prints every number in a PARENT LEFT_CHILD RIGHT_CHILD format\n";
+  std::cout << "(r)emove <num1> [num2] [num3]...: deletes num1, num2, num3... from the Bin Tree\n";
+  std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
+  // std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
+  std::cout << "(q)uit: closes the program\n";
+  // std::cout << "(h)elp: this help\n";
+  std::cout << "\e[0m";
+
+}
+
