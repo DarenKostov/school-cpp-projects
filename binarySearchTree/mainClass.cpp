@@ -40,7 +40,7 @@ void displayRight(BinNode<int>*, Text);
 void print(BinNode<int>*);
 
 //tells you whether or not a number is in the bin tree 
-void doesItContain(BinNode<int>*, std::vector<Text>);
+void printDoesItContain(BinNode<int>*, std::vector<Text>);
 int doesItContain(BinNode<int>*, int);
 
 //remove a num from the bin tree
@@ -59,6 +59,7 @@ bool isANum(Text);
 
 //print help
 void printHelp();
+void printHelp(std::vector<Text>);
 
 void MainClass::startProgram(){
   
@@ -69,7 +70,7 @@ void MainClass::startProgram(){
   
 
   // std::cout << "press \"a\" and then Enter, this is not a bug, just press \"a\" and then Enter";
-  std::cout << "[BinTree]: ";
+  std::cout << "\n[BinTree]: ";
   for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); commands=readLine()){
   
 
@@ -80,11 +81,11 @@ void MainClass::startProgram(){
     }else if(commands[0]=="p" || commands[0]=="print"){
       print(root);
     }else if(commands[0]=="c" || commands[0]=="contains?"){
-      doesItContain(root, commands);
+      printDoesItContain(root, commands);
     }else if(commands[0]=="r" || commands[0]=="remove"){
       remove(root, commands);
     }else if(commands[0]=="h" || commands[0]=="help"){
-      printHelp();
+      printHelp(commands);
     }else{
       std::cout << "\e[91m????\e[0m\n";
     }
@@ -108,39 +109,55 @@ void MainClass::startProgram(){
 
 void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
 
-  //not enough arguments
-  if(commands.size()<2)
-    return;
 
-  int numToAdd=0;
-
-  //do we give a number or a file?
-  try{
-    numToAdd=std::stoi(commands[1].val());
-  }catch(const std::invalid_argument& ia){
-    //file?
-
-    std::ifstream file(commands[1].val());
-
-    //something wrong with the file?
-    if(!file.good()){
-      std::cout << "\e[91mFile where?\n\e[0m";
+  if(commands.size()==1){
+      std::cout << "\e[91mAdded nothing to the Bin Tree!\n\e[0m";
       return;
-    }
-
-
-    //add the numbers in the file to the bin tree
-    Text number;
-    while (getline(file, number, ' ')){
-      add(root, std::stoi(number.val()));
-    }
-    file.close();
-
-    return;
   }
 
-  //number?
-  add(root, numToAdd);
+  int count=0;
+  for(int i=1; i<commands.size(); i++){
+
+    int numToAdd=0;
+
+    //do we give a number or a file?
+    try{
+      numToAdd=std::stoi(commands[i].val());
+    }catch(const std::invalid_argument& ia){
+      //file?
+
+      std::ifstream file(commands[i].val());
+
+      //something wrong with the file?
+      if(!file.good()){
+        std::cout << "\e[91mFile where?\n";
+        std::cout << "If \"" << commands[i] << "\" was supposed to be a number, this program failed to recognize that.\n\e[0m";
+        return;
+      }
+
+
+      //add the numbers in the file to the bin tree
+      Text number;
+      while (getline(file, number, ' ')){
+        add(root, std::stoi(number.val()));
+        count++;
+      }
+      file.close();
+
+      continue;
+    }
+
+    //number?  
+    add(root, numToAdd);
+    count++;
+  }
+
+  
+    if(count==1)
+      std::cout << "Added 1 number to the Bin Tree\n";
+    else
+      std::cout << "Added " << count << " numbers to the Bin Tree\n";
+  
 }
 
 void add(BinNode<int>*& root, int numToAdd){
@@ -285,30 +302,35 @@ void print(BinNode<int>* current){
 
 
 
-void doesItContain(BinNode<int>* root, std::vector<Text> commands){
+void printDoesItContain(BinNode<int>* root, std::vector<Text> commands){
   
-  //not enough arguments
-  if(commands.size()<2)
-    return;
-
-  int num=0;
-
-  //is this a valid number
-  try{
-    num=std::stoi(commands[1].val());
-  }catch(const std::invalid_argument& ia){
-    //invalid?
-    std::cout << "\e[91mNo, the Binary Tree defenetly does not contain \""+commands[1]+"\"\n\e[0m";
-    return;
+  if(commands.size()==1){
+      std::cout << "\e[91mThere are 0 occurances of nothing!\n\e[0m";
+      return;
   }
+  
+  for(int i=1; i<commands.size(); i++){
 
-  //valid?
-  int occurances=doesItContain(root, num);
+    int num=0;
 
-  if(occurances==1)
-    std::cout << "There is 1 occurance of "+commands[1]+'\n';
-  else
-    std::cout << "There are " << occurances << " occurances of "+commands[1]+'\n';
+    //is this a valid number
+    try{
+      num=std::stoi(commands[i].val());
+    }catch(const std::invalid_argument& ia){
+      //invalid?
+      std::cout << "\e[91mNo, the Binary Tree defenetly does not contain \""+commands[i]+"\"\n\e[0m";
+      return;
+    }
+
+    //valid?
+    int occurances=doesItContain(root, num);
+
+    if(occurances==1)
+      std::cout << "There is 1 occurance of "+commands[i]+'\n';
+    else
+      std::cout << "There are " << occurances << " occurances of "+commands[i]+'\n';
+  
+  }
 
 }
 
@@ -328,33 +350,38 @@ int doesItContain(BinNode<int>* current, int num){
 
 void remove(BinNode<int>*& root, std::vector<Text> commands){
   
-  //not enough arguments
-  if(commands.size()<2)
-    return;
-
-  int num=0;
-
-  //is this a valid number
-  try{
-    num=std::stoi(commands[1].val());
-  }catch(const std::invalid_argument& ia){
-    //invalid?
-    std::cout << "\e[91m\""+commands[1]+"\" could not be found in this integer-only Binary Tree in the first place :/\n\e[0m";
-    return;
+  if(commands.size()==1){
+      std::cout << "\e[91mRemoved 0 occurances of nothing!\n\e[0m";
+      return;
   }
-  //valid?
+  
+  for(int i=1; i<commands.size(); i++){
 
-  //-2 dont ask way
-  int occurances=-2;
+    int num=0;
 
-  //why use for loops their intended way?
-  for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, root=removeAndReturnNewRoot(root, num, didItHappen)){}
+    //is this a valid number
+    try{
+      num=std::stoi(commands[i].val());
+    }catch(const std::invalid_argument& ia){
+      //invalid?
+      std::cout << "\e[91m\""+commands[i]+"\" could not be found in this integer-only Binary Tree in the first place :/\n\e[0m";
+      return;
+    }
+    //valid?
+
+    //-2 dont ask way
+    int occurances=-1;
+
+    //why use for loops their intended way?
+    for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, root=removeAndReturnNewRoot(root, num, didItHappen)){}
     
   
-  if(occurances==1)
-    std::cout << "Removed "+commands[1]+'\n';
-  else
-    std::cout << "Removed " << occurances << " occurances of "+commands[1]+'\n';
+    if(occurances==1)
+      std::cout << "Removed "+commands[i]+'\n';
+    else
+      std::cout << "Removed " << occurances << " occurances of "+commands[i]+'\n';
+
+  }
 
 }
 
@@ -363,7 +390,7 @@ void remove(BinNode<int>*& root, std::vector<Text> commands){
 
 BinNode<int>* removeAndReturnNewRoot(BinNode<int>* current, int num, bool& didItHappen){
   // std::cout << current << '\n';
-
+  
   if(current==nullptr)
     return nullptr;
 
@@ -395,7 +422,9 @@ BinNode<int>* removeAndReturnNewRoot(BinNode<int>* current, int num, bool& didIt
       if(current->getRight()!=nullptr){
         auto successor=returnMinNode(current->getRight());
         current->setValue(successor->getValue());
-        current->setRight(removeAndReturnNewRoot(current, successor->getValue(), didItHappen));
+
+        //remove the one we just swapped with
+        current->setRight(removeAndReturnNewRoot(current->getRight(), successor->getValue(), didItHappen));
         return current;
       }
 
@@ -451,17 +480,78 @@ BinNode<int>* returnMinNode(BinNode<int>* current){
 
 void printHelp(){
 
+    std::cout << "\e[92m\n";
+    std::cout << "(h)elp [command1] [command2]...: this help or help about a specific command\n";
+    std::cout << "(a)dd <file1/num1> [file2/num2]...: adds integers from files OR console to the Bin Tree from a file.\n\t(you can add multiple numbers and/or files with one command.)\n";
+    // std::cout << "(a)dd <num1> [num2] [num3]...: adds num1, num2, num3... to the Bin Tree.\n";
+    std::cout << "(d)isplay: print the Bin Tree in a similar fasion as the command `tree`\n";
+    std::cout << "(p)rint: prints every number in a PARENT LEFT_CHILD RIGHT_CHILD format\n";
+    std::cout << "(r)emove <num1> [num2] [num3]...: deletes num1, num2, num3... from the Bin Tree\n";
+    std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
+    // std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
+    std::cout << "(q)uit: closes the program\n";
+    // std::cout << "(h)elp: this help\n";
+    std::cout << "\e[0m";
+    return;
+}
+void printHelp(std::vector<Text> commands){
+
+  if(commands.size()==1){
+    std::cout << "\e[92m\n";
+    std::cout << "(h)elp [command1] [command2]...: this help or help about a specific command\n";
+    std::cout << "(a)dd <file1/num1> [file2/num2]...: adds integers from files OR console to the Bin Tree from a file.\n\t(you can add multiple numbers and/or files with one command.)\n";
+    // std::cout << "(a)dd <num1> [num2] [num3]...: adds num1, num2, num3... to the Bin Tree.\n";
+    std::cout << "(d)isplay: print the Bin Tree in a similar fasion as the command `tree`\n";
+    std::cout << "(p)rint: prints every number in a PARENT LEFT_CHILD RIGHT_CHILD format\n";
+    std::cout << "(r)emove <num1> [num2] [num3]...: deletes num1, num2, num3... from the Bin Tree\n";
+    std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
+    // std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
+    std::cout << "(q)uit: closes the program\n";
+    // std::cout << "(h)elp: this help\n";
+    std::cout << "\e[0m";
+    return;
+  }
+
+
+
   std::cout << "\e[92m\n";
-  std::cout << "(h)elp: this help\n";
-  std::cout << "(a)dd <file>: adds integers to the Bin Tree from a file.\n";
-  std::cout << "(a)dd <num1> [num2] [num3]...: adds num1, num2, num3... to the Bin Tree.\n";
-  std::cout << "(d)isplay: print the Bin Tree in a similar fasion as the command `tree`\n";
-  std::cout << "(p)rint: prints every number in a PARENT LEFT_CHILD RIGHT_CHILD format\n";
-  std::cout << "(r)emove <num1> [num2] [num3]...: deletes num1, num2, num3... from the Bin Tree\n";
-  std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
-  // std::cout << "(c)ontains? <num1> [num2] [num3]...: tells you how many occurances there are of num1, num2, num3... in the Bin Tree\n";
-  std::cout << "(q)uit: closes the program\n";
-  // std::cout << "(h)elp: this help\n";
+  for(int i=1; i<commands.size(); i++){
+
+    if(commands[i]=="a" || commands[i]=="add"){
+      std::cout << "(a)dd <file1/num1> [file2/num2] [file3/num3]...\n";
+      std::cout << "This command adds numbers to the Bin Tree, here are some examples\n";
+      std::cout << "add nums1.txt 42 otherNUms.txt\n";
+      std::cout << "a 46 12 32 76 98 123 87 231\n";
+      std::cout << "add 100nums.txt muNums.txt nums.txt randomFile.xyz\n";
+    }else if(commands[i]=="d" || commands[i]=="display"){
+      std::cout << "(d)isplay\n";
+      std::cout << "This command prints the elements in the Bin Tree in a simial fasion to `tree` does to directories/files\n";
+      std::cout << "there are only 2 variants to this command \"display\" and \"d\"\n";
+    }else if(commands[i]=="p" || commands[i]=="print"){
+      std::cout << "(p)rint\n";
+      std::cout << "This command prints the elements in the Bin Tree in a simpler way than (d)isplay\n";
+      std::cout << "The way the elemtns are printed is: PARENT LEFT_CHILD RIGHT_CHILD\n";
+      std::cout << "there are only 2 variants to this command \"print\" and \"p\"\n";
+    }else if(commands[i]=="c" || commands[i]=="contains?"){
+      std::cout << "(c)ontains? <num1> [num2] [num3]...\n";
+      std::cout << "This command tells you how many time the Bin Tree contains a number, here are some examples\n";
+      std::cout << "c 32 43 54 65\n";
+      std::cout << "contains? 3628 12\n";
+    }else if(commands[i]=="r" || commands[i]=="remove"){
+      std::cout << "(r)emove <num1> [num2] [num3]...\n";
+      std::cout << "This command removes numbers from the Bin Tree, all occurances of a number will be deleted.\nHere are some examples\n";
+      std::cout << "remove 345 123\n";
+      std::cout << "r 1 2 3 4 5 6 7 8 9 10\n";
+    }else if(commands[i]=="h" || commands[i]=="help"){
+      
+      std::cout << "(h)elp [command1] [command2]\n";
+      std::cout << "This command shows info about commands, omit the command argument to show general info about all commands\n";
+    }else{
+      std::cout << commands[i]+" is not a command!\e[0m\n";
+    }
+    std::cout << "\n";
+
+  }
   std::cout << "\e[0m";
 
 }
