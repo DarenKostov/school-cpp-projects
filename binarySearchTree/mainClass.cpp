@@ -4,6 +4,9 @@
   the MainClass logic
 
 
+  sources
+  https://www.geeksforgeeks.org/deletion-in-binary-search-tree/
+
 */
 
 #include <iostream>
@@ -38,6 +41,20 @@ void print(BinNode<int>*);
 void doesItContain(BinNode<int>*, std::vector<Text>);
 int doesItContain(BinNode<int>*, int);
 
+//remove a num from the bin tree
+void remove(BinNode<int>*, std::vector<Text>);
+int removeAndReturnNewRoot(BinNode<int>*, int);
+
+//returns you the bin node whoose value it is int, nullptr if the node doesnt exist
+BinNode<int>* returnNodeWithValueOf(BinNode<int>*, int);
+
+//returns you the bin node with the lowest value, if it doesnt exist, it returns nullptr
+BinNode<int>* returnMinNode(BinNode<int>*);
+
+//determines whether a Text is a number
+bool isANum(Text);
+
+
 void MainClass::startProgram(){
   
 
@@ -57,6 +74,8 @@ void MainClass::startProgram(){
       print(root);
     }else if(commands[0]=="c" || commands[0]=="contains?"){
       doesItContain(root, commands);
+    }else if(commands[0]=="r" || commands[0]=="remove"){
+      remove(root, commands);
     }else{
       std::cout << "\e[91m????\e[0m\n";
     }
@@ -297,3 +316,75 @@ int doesItContain(BinNode<int>* current, int num){
   return doesItContain(current->getLeft(), num)+doesItContain(current->getRight(), num);
 }
 
+
+void remove(BinNode<int>* root, std::vector<Text> commands){
+  
+  //not enough arguments
+  if(commands.size()<2)
+    return;
+
+  int num=0;
+
+  //is this a valid number
+  try{
+    num=std::stoi(commands[1].val());
+  }catch(const std::invalid_argument& ia){
+    //invalid?
+    std::cout << "\e[91mIt would be dificult to add \""+commands[1]+"\" to an integer-only Binary Tree in the first place.\n\e[0m";
+    return;
+  }
+  //valid?
+  
+  int occurances=0;
+  
+  for(BinNode<int>* i=returnNodeWithValueOf(root, num); i!=nullptr; i=returnNodeWithValueOf(root, num), occurances++){
+  
+  }
+    
+    // remove(root, num);
+
+  if(occurances==1)
+    std::cout << "Removed "+commands[1]+'\n';
+  else
+    std::cout << "Removed " << occurances << " occurances of "+commands[1]+'\n';
+
+}
+
+
+
+
+int remove(BinNode<int>* current, int num){
+  if(current==nullptr)
+    return 0;
+  
+  if(current->getValue()==num){
+    return doesItContain(current->getLeft(), num)+doesItContain(current->getRight(), num)+1;
+  }
+  return doesItContain(current->getLeft(), num)+doesItContain(current->getRight(), num);
+}
+
+
+BinNode<int>* returnNodeWithValueOf(BinNode<int>* current, int num){
+
+  if(current==nullptr)
+    return nullptr;
+  
+  if(current->getValue()==num)
+    return current;
+  
+
+  BinNode<int>* left=returnMinNode(current->getLeft());
+
+  //which child has the number?
+  if(left==nullptr)  
+    return returnMinNode(current->getRight());
+  return left;
+
+
+}
+
+BinNode<int>* returnMinNode(BinNode<int>* current){
+  while(current->getLeft()!=nullptr)
+    current=current->getLeft();
+  return current;
+}
