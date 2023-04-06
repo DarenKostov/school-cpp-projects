@@ -369,7 +369,7 @@ void remove(BinNode<int>*& root, std::vector<Text> commands){
     }
     //valid?
 
-    //-2 dont ask way
+    //should sytart at -1, dont ask way (this is because the for loop bellow assumes that the number we input is already there twice)
     int occurances=-1;
 
     //why use for loops their intended way?
