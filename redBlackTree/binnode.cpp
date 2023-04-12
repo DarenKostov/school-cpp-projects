@@ -8,6 +8,7 @@ template<class T>
 BinNode<T>::BinNode(){
   left=nullptr;
   right=nullptr;
+  parent=nullptr;
 }
 
 
@@ -15,6 +16,7 @@ template<class T>
 BinNode<T>::BinNode(T in, char col, char relation){
   left=nullptr;
   right=nullptr;
+  parent=nullptr;
   value=in;
   color=col;
   relationship=relation;
@@ -54,6 +56,22 @@ BinNode<T>* BinNode<T>::getLeft(){
 template<class T>
 BinNode<T>*& BinNode<T>::Left(){
   return left;
+}
+
+
+template<class T>
+void BinNode<T>::setParent(BinNode* in){
+  parent=in;
+}
+
+template<class T>
+BinNode<T>* BinNode<T>::getParent(){
+  return parent;
+}
+
+template<class T>
+BinNode<T>*& BinNode<T>::Parent(){
+  return parent;
 }
 
 
