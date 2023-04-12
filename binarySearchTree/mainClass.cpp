@@ -20,12 +20,6 @@
 #include "scmdprs.h"
 // #include "binode.h"
 
-MainClass::MainClass(){
-  root=nullptr;
-}
-MainClass::~MainClass(){
-  delete root;
-}
 
 
 //adds an int to the bin tree
@@ -47,6 +41,9 @@ int doesItContain(BinNode<int>*, int);
 void remove(BinNode<int>*&, std::vector<Text>);
 BinNode<int>* removeAndReturnNewRoot(BinNode<int>*, int, bool&);
 
+//deletes all children of this node, including the node itself
+void deleteAll(BinNode<int>*);
+
 //returns you the bin node whoose value it is int, nullptr if the node doesnt exist
 BinNode<int>* returnNodeWithValueOf(BinNode<int>*, int);
 
@@ -60,6 +57,18 @@ bool isANum(Text);
 //print help
 void printHelp();
 void printHelp(std::vector<Text>);
+
+
+
+MainClass::MainClass(){
+  root=nullptr;
+}
+MainClass::~MainClass(){
+  deleteAll(root);
+  
+  root=nullptr;//not needed since we are deleteing this class
+}
+
 
 void MainClass::startProgram(){
   
@@ -553,6 +562,21 @@ void printHelp(std::vector<Text> commands){
 
   }
   std::cout << "\e[0m";
+
+}
+
+
+void deleteAll(BinNode<int>* current){
+
+  if(current==nullptr)
+    return;
+
+  //first delete the children
+  deleteAll(current->getLeft());
+  deleteAll(current->getRight());
+
+  //then delete ourselves
+  delete current;
 
 }
 
