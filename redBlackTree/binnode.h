@@ -35,6 +35,11 @@ class BinNode{
     //sets the internal value
     void setValue(T);
 
+    //sets the right/left variable
+    void setRelation(char);
+  
+    //sets the color
+    void setColor(char);
 
 
     //gives you a pointer to the right node
@@ -49,7 +54,14 @@ class BinNode{
     //gives you the value stored
     T getValue();
 
+    //gives the right/left variable
+    char getRelation();
+  
+    //gives the color
+    char getColor();
 
+  
+  
     //these could be useful
     
     //gives you The pointer to the right node
@@ -64,13 +76,20 @@ class BinNode{
     //gives you The value stored
     T& Value();
 
-
-
+    //gives The right/left variable
+    char& Relation();
   
+    //gives The color
+    char& Color();
+
+
   private:
 
-    //is it a right or left child?
+    //is it a right or left child? not the best name for a varible
     char relationship;
+  
+    //is it red or black
+    char color;
 
     //the right and left children
     BinNode* right;

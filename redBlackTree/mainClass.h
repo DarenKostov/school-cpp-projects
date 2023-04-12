@@ -13,7 +13,7 @@ class MainClass{
 
   private:
     //variables:
-
+    BinNode<int>* root;
     
     
   public:

@@ -12,6 +12,8 @@
 
 
 MainClass::MainClass(){
+  root=nullptr;
+  
 }
 MainClass::~MainClass(){
 }
@@ -20,7 +22,7 @@ MainClass::~MainClass(){
 
 void MainClass::startProgram(){
   
-  //do mainn stuff here
+  //do main stuff here
 
 
 }

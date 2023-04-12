@@ -71,6 +71,38 @@ void BinNode<T>::setValue(T in){
 }
 
 
+template<class T>
+char BinNode<T>::getRelation(){
+  return relationship;
+}
+
+template<class T>
+char& BinNode<T>::Relation(){
+  return relationship;
+}
+
+template<class T>
+void BinNode<T>::setRelation(char in){
+  relationship=in;
+}
+
+
+template<class T>
+char BinNode<T>::getColor(){
+  return color;
+}
+
+template<class T>
+char& BinNode<T>::Color(){
+  return color;
+}
+
+template<class T>
+void BinNode<T>::setColor(char in){
+  color=in;
+}
+
+
 template class BinNode<int>;
 
 
