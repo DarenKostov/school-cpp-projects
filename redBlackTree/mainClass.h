@@ -8,13 +8,15 @@
 */
 
 #include "binnode.h"
+#include <utility>
+
 
 class MainClass{
 
   private:
     //variables:
     BinNode<int>* root;
-    
+    std::pair<int, int> redVsBlack;
     
   public:
 

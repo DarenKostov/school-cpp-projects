@@ -19,8 +19,8 @@ class BinNode{
     //deconstrictor
     ~BinNode();
    
-    //initialize with a value
-    BinNode(T);
+    //initialize with a value, color, and relation
+    BinNode(T, char, char);
 
   
     //sets the right node

@@ -12,10 +12,12 @@ BinNode<T>::BinNode(){
 
 
 template<class T>
-BinNode<T>::BinNode(T in){
+BinNode<T>::BinNode(T in, char col, char relation){
   left=nullptr;
   right=nullptr;
   value=in;
+  color=col;
+  relationship=relation;
 }
 
 template<class T>
