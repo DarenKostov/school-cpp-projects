@@ -19,6 +19,8 @@
 Text BLACK="\e[41;30m";
 Text RED="\e[40;31m";
 Text NORMAL="\e[0m";
+Text GREEN="\e[92m";
+Text BLUE="\e[94m";
 
 //deletes all children of this node, including the node itself
 void deleteAll(BinNode<int>*);
@@ -65,11 +67,15 @@ MainClass::~MainClass(){
 
 void MainClass::startProgram(){
   
-  std::cout << "Welcome to this replresentation of Red-Black Tree!\n";
 
   printHelp();
 
-  std::cout << "Welcome to this replresentation of Red-Black Tree!\n";
+  std::cout << "Welcome to this replresentation of Red-Black Tree!\n\n";
+
+  std::cout << "\e[96mTry: add 43 65 123 65 13 65 12 54 76 12 54 76 272 4712 334\n";
+  std::cout << "I have varified this works exactly as expect with:  https://www.cs.usfca.edu/~galles/visualization/RedBlack.html\n";
+  std::cout << "\e[0m";
+
   
   std::cout << "\n[" << RED << "0" << NORMAL << "/" << BLACK << "0" << NORMAL << "~0]: ";
   for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << "\n[" << RED << redVsBlack.first << NORMAL << "/" << BLACK << redVsBlack.second << NORMAL << "~" << redVsBlack.first+redVsBlack.second << "]: ", commands=readLine()){
@@ -81,6 +87,7 @@ void MainClass::startProgram(){
       display(root);
     }else if(commands[0]=="h" || commands[0]=="help"){
       printHelp();
+      std::cout << '\n';
     }else if(commands[0]=="r" || commands[0]=="remove"){
       std::cout << "not yet implemented :/\n";
     }else if(commands[0]=="rev" || commands[0]=="reverse"){
@@ -536,12 +543,12 @@ int countBlack(BinNode<int>* in){
 }
 void printHelp(){
 
-    std::cout << "(h)elp: this help\n";
-    std::cout << "(a)dd <file1/num1> [file2/num2]...: adds integers from files OR console to the Bin Tree from a file.\n\t(you can add multiple numbers and/or files with one command.)\n";
-    std::cout << "(d)isplay: print the Bin Tree in a similar fasion as the command `tree`\n";
-    std::cout << "(r)emove <num1> [num2] [num3]...: deletes num1, num2, num3... from the Bin Tree\n";
-    std::cout << "(rev)erse: reverses the colors for Red and Black\n\t(these should really be global consts but if someone REALLY needs/wants to switch them they can)\n";
-    std::cout << "(q)uit: closes the program\n";
+    std::cout << GREEN << "(h)elp" << NORMAL << ": this help\n";
+    std::cout << GREEN << "(a)dd" << BLUE << " <file1/num1> [file2/num2]..." << NORMAL << ": adds integers from files OR console to the Bin Tree from a file.\n\t(you can add multiple numbers and/or files with one command.)\n";
+    std::cout << GREEN << "(d)isplay" << NORMAL << ": print the Bin Tree in a similar fasion as the command `tree`\n";
+    std::cout << GREEN << "(r)emove" << BLUE << " <num1> [num2] [num3]..." << NORMAL << ": deletes num1, num2, num3... from the Bin Tree\n";
+    std::cout << GREEN << "(rev)erse" << NORMAL << ": reverses the colors for Red and Black\n\t(these should really be global consts but if someone REALLY needs/wants to switch them they can)\n";
+    std::cout << GREEN << "(q)uit" << NORMAL << ": closes the program\n";
 
-  std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black (real)" << NORMAL << "~total]: ";
+    std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black (real)" << NORMAL << "~total]: ";
 }
