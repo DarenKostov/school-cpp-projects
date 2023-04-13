@@ -3,7 +3,8 @@
 
   the MainClass logic
 
-
+  sources:
+  https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
 
 */
 
@@ -45,6 +46,8 @@ BinNode<int>* getSibling(BinNode<int>*);
 //rotates the tree given a child, will account for root
 void rotateTree(BinNode<int>*&, BinNode<int>*);
 
+void printHelp();
+
 MainClass::MainClass(){
   root=nullptr;
   redVsBlack=std::make_pair(0, 0);
@@ -56,14 +59,19 @@ MainClass::~MainClass(){
 
 void MainClass::startProgram(){
   
+  std::cout << "Welcome to this replresentation of Red-Black Tree!\n";
 
+  printHelp();
 
+  
   std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black" << NORMAL << "]: ";
   for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black" << NORMAL << "]: ", commands=readLine()){
     if(commands[0]=="add" || commands[0]=="a"){
       addToBinTree(root, commands);
     }else if(commands[0]=="d" || commands[0]=="display"){
       display(root);
+    }else if(commands[0]=="r" || commands[0]=="remove"){
+      std::cout << "not yet implemented :/\n";
     }else if(commands[0]=="rev" || commands[0]=="reverse"){
       Text tmp=BLACK; BLACK=RED; RED=tmp;
     }else{
@@ -110,7 +118,10 @@ void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
 
       //add the numbers in the file to the bin tree
       Text number;
-      while (getline(file, number, ' ')){
+      while(getline(file, number, ' ')){
+        if(number.len()==0) 
+          continue;
+        
         add(root, std::stoi(number.val()));
         count++;
       }
@@ -145,13 +156,17 @@ void add(BinNode<int>*& root, int numToAdd){
   }else{
     add(root, root->getRight(), root, 'r', numToAdd);  
   }
+  std::cout << "oooooo" << "\n" << std::flush;
 }
 
 
 void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, char whichChild, int numToAdd){
+    std::cout << "current " << current << "\n" << std::flush;
   //root doesnt exists yet?
   if(current==nullptr){
 
+    std::cout << "adding " << numToAdd << "\n" << std::flush;
+    
     //init the child
     auto newNode=new BinNode<int>(numToAdd, 'r', 'x');
 
@@ -169,11 +184,15 @@ void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, cha
     fixAroundThis(root, newNode);
     return;
   }
-
+    
+  std::cout << "ffffffff" << numToAdd << "\n" << std::flush;
+  
   //give the number to the appropriate child
   if(numToAdd<current->getValue()){
+  std::cout << "qqqqqq " << current->getLeft() << "\n" << std::flush;
     add(root, current->getLeft(), current, 'l', numToAdd);  
   }else{
+  std::cout << "wwwwww " << current->getLeft() << "\n" << std::flush;
     add(root, current->getRight(), current, 'r', numToAdd);  
   }
 }
@@ -185,6 +204,8 @@ void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, cha
 void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
 
 
+  // display(root);
+  
   //I use getColor because the uncle might be null (who knows the parent could also be null for some reason)  
 
   if(current==nullptr){
@@ -192,8 +213,17 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
     return;
   }
 
+
+  std::cout << "=======" << "\n" << std::flush;
+
+  std::cout << current->getValue() << "\n" << std::flush;
+
+  if(current->getParent()!=nullptr)
+    std::cout << current->getParent()->getValue() << "\n" << std::flush;
+  
   //case 1
   if(root==current){
+    std::cout << "case 1" << "\n" << std::flush;
     root->setColor('b');
     return;
   }
@@ -202,6 +232,7 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
   
   //case 2 
   if(getColor(parent)=='b'){
+    std::cout << "case 2" << "\n" << std::flush;
     //do nothing
     return;
   }
@@ -212,13 +243,19 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
     auto grandparent=parent->getParent();
     //case 3
     if(getColor(parent)+getColor(uncle)=='r'*2){//yeah multiplying chars
+    std::cout << "case 3" << "\n" << std::flush;
       //reverse color of all uncles/grandparents
-      uncle->setColor('b');
-      parent->setColor('b');
-      grandparent->setColor('r');
 
-      //fix the grand parent
-      fixAroundThis(root, grandparent);    
+      parent->setColor('b');
+      if(uncle!=nullptr)
+        uncle->setColor('b');
+
+      if(grandparent!=nullptr){
+        grandparent->setColor('r');
+        //fix the grand parent
+        fixAroundThis(root, grandparent);
+        }    
+
       return;
     }
   }
@@ -229,39 +266,32 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
   
   //we are right and parent is left OR we are left and parent is right
   if(current->getRelation()+parent->getRelation()=='r'+'l'){//cool char math
-    std::cout << "call case 4\n"<< std::flush;
+
+    std::cout << "case 4" << "\n" << std::flush;
     //do magic
     rotateTree(root, current);
-    rotateTree(root, parent);
 
-    current=parent->getParent();
+    current=parent;
     parent=parent->getParent();
-
-    //invserse colors
-    parent->setColor('b');
-    current->setColor('r');
     
     // return;
   }
 
   //case 5
   //we are right and parent is right OR we are left and parent is left
-  if(current->getRelation()==current->getParent()->getRelation()){
-    std::cout << "call case 5\n"<< std::flush;
+  if(current->getRelation()==parent->getRelation()){
+    
+    std::cout << "case 5" << "\n" << std::flush;
     //do magic
-    // rotateTree(root, current);
-
     rotateTree(root, parent);
     
-    // current=parent->getParent();
-    // parent=parent->getParent();
-
     //invserse colors
     current->getParent()->setColor('b');
     getSibling(current)->setColor('r');
 
     return;
   }
+
 
   std::cout << "\e[91mHow did we get here??????????????\?/\e[0m\n";
   
@@ -401,17 +431,16 @@ BinNode<int>* getSibling(BinNode<int>* in){
 void rotateTree(BinNode<int>*& root, BinNode<int>* current){
 
     auto parent=current->getParent();
-    BinNode<int>* subTree[3];
+    BinNode<int>* subTree;
     char parentSide=parent->getRelation();
 
     {
       auto grandparent=parent->getParent();
-        // std::cout << grandparent->getValue() << "\n"<< std::flush;
+
       //move the child to the parents position (is the parent root?, make the child root)
-      if(grandparent==nullptr){
+      if(grandparent==nullptr)
         root=current;
-        std::cout << "parent is root\n"<< std::flush;
-      }else
+      else
         if(parentSide=='l')
           grandparent->setLeft(current);
         else
@@ -421,50 +450,56 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
     }
 
     
-    std::cout << "child setup done\n"<< std::flush;
   
     //left rotation
     if(current->getRelation()=='r'){
       
-      subTree[0]=parent->getLeft();//we know its the left child, no need to use get siblings
-      subTree[1]=current->getLeft();
-      subTree[2]=current->getRight();
+      subTree=current->getLeft();
       
-      std::cout << "subtree\n"<< std::flush;
       //move the parent to the childs position (left this time)
       current->setLeft(parent);
-      std::cout << parent->Value() << '\n' <<std::flush;
       parent->setRelation('l');
 
       //fix subTrees
-      parent->setRight(subTree[1]);
-      if(subTree[1]!=nullptr)
-        subTree[1]->setRelation('r');
+      parent->setRight(subTree);
+      if(subTree!=nullptr)
+        subTree->setRelation('r');
       
-      std::cout << "parent setup done\n"<< std::flush;
     //right rotation
     }else{
 
   
-      subTree[0]=current->getLeft();//we know its the left child, no need to use get siblings
-      subTree[1]=current->getRight();
-      subTree[2]=parent->getRight();
+      subTree=current->getRight();
       
       //move the parent to the childs position (right this time)
       current->setRight(parent);
       parent->setRelation('r');
 
       //fix subTrees
-      current->setLeft(subTree[0]);
-      parent->setLeft(subTree[1]);
-      parent->setRight(subTree[2]);
-      if(subTree[1]!=nullptr)
-        subTree[1]->setRelation('l');
+      // current->setLeft(subTree[0]);
+      parent->setLeft(subTree);
+      // parent->setRight(subTree[2]);
+      if(subTree!=nullptr)
+        subTree->setRelation('l');
   
     }
+
   
-    std::cout << "parent setup done\n"<< std::flush;
-  //fix the childs side
+  
+  //misc fixes
+  parent->setParent(current);
   current->setRelation(parentSide);
   
+}
+
+
+void printHelp(){
+
+    std::cout << "(h)elp: this help\n";
+    std::cout << "(a)dd <file1/num1> [file2/num2]...: adds integers from files OR console to the Bin Tree from a file.\n\t(you can add multiple numbers and/or files with one command.)\n";
+    std::cout << "(d)isplay: print the Bin Tree in a similar fasion as the command `tree`\n";
+    std::cout << "(r)emove <num1> [num2] [num3]...: deletes num1, num2, num3... from the Bin Tree\n";
+    std::cout << "(rev)erse: reverses the colors for Red and Black\n\t(these should really be global consts but if someone REALLY needs/wants to switch them they can)\n";
+    std::cout << "(q)uit: closes the program\n";
+
 }
