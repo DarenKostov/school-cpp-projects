@@ -232,14 +232,35 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
     std::cout << "call case 4\n"<< std::flush;
     //do magic
     rotateTree(root, current);
+    rotateTree(root, parent);
+
+    current=parent->getParent();
+    parent=parent->getParent();
+
+    //invserse colors
+    parent->setColor('b');
+    current->setColor('r');
     
+    // return;
   }
 
   //case 5
   //we are right and parent is right OR we are left and parent is left
   if(current->getRelation()==current->getParent()->getRelation()){
+    std::cout << "call case 5\n"<< std::flush;
     //do magic
+    // rotateTree(root, current);
+
     rotateTree(root, parent);
+    
+    // current=parent->getParent();
+    // parent=parent->getParent();
+
+    //invserse colors
+    current->getParent()->setColor('b');
+    getSibling(current)->setColor('r');
+
+    return;
   }
 
   std::cout << "\e[91mHow did we get here??????????????\?/\e[0m\n";
@@ -385,10 +406,12 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
 
     {
       auto grandparent=parent->getParent();
+        // std::cout << grandparent->getValue() << "\n"<< std::flush;
       //move the child to the parents position (is the parent root?, make the child root)
-      if(grandparent==nullptr)
+      if(grandparent==nullptr){
         root=current;
-      else
+        std::cout << "parent is root\n"<< std::flush;
+      }else
         if(parentSide=='l')
           grandparent->setLeft(current);
         else
@@ -396,7 +419,9 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
 
       current->setParent(grandparent);
     }
+
     
+    std::cout << "child setup done\n"<< std::flush;
   
     //left rotation
     if(current->getRelation()=='r'){
@@ -405,16 +430,18 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
       subTree[1]=current->getLeft();
       subTree[2]=current->getRight();
       
+      std::cout << "subtree\n"<< std::flush;
       //move the parent to the childs position (left this time)
       current->setLeft(parent);
+      std::cout << parent->Value() << '\n' <<std::flush;
       parent->setRelation('l');
 
       //fix subTrees
-      parent->setLeft(subTree[0]);
       parent->setRight(subTree[1]);
-      current->setRight(subTree[2]);
-      subTree[1]->setRelation('r');
+      if(subTree[1]!=nullptr)
+        subTree[1]->setRelation('r');
       
+      std::cout << "parent setup done\n"<< std::flush;
     //right rotation
     }else{
 
@@ -431,10 +458,12 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
       current->setLeft(subTree[0]);
       parent->setLeft(subTree[1]);
       parent->setRight(subTree[2]);
-      subTree[1]->setRelation('l');
+      if(subTree[1]!=nullptr)
+        subTree[1]->setRelation('l');
   
     }
   
+    std::cout << "parent setup done\n"<< std::flush;
   //fix the childs side
   current->setRelation(parentSide);
   
