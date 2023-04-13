@@ -78,9 +78,9 @@ void MainClass::startProgram(){
       redVsBlack.first=countRed(root);
       redVsBlack.second=countBlack(root);
     }else if(commands[0]=="d" || commands[0]=="display"){
-      printHelp();
-    }else if(commands[0]=="h" || commands[0]=="help"){
       display(root);
+    }else if(commands[0]=="h" || commands[0]=="help"){
+      printHelp();
     }else if(commands[0]=="r" || commands[0]=="remove"){
       std::cout << "not yet implemented :/\n";
     }else if(commands[0]=="rev" || commands[0]=="reverse"){
