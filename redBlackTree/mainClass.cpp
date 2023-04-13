@@ -28,7 +28,7 @@ void display(BinNode<int>*);
 void displayLeft(BinNode<int>*, BinNode<int>*, Text);
 void displayRight(BinNode<int>*, Text);
 
-//adds an int to the bin tree
+//adds an int to the bin tree (some return what type of node it added)
 void add(BinNode<int>*& , int);
 void add(BinNode<int>*&, BinNode<int>*, BinNode<int>*, char, int);
 void addToBinTree(BinNode<int>*&, std::vector<Text>);
@@ -46,7 +46,11 @@ BinNode<int>* getSibling(BinNode<int>*);
 //rotates the tree given a child, will account for root
 void rotateTree(BinNode<int>*&, BinNode<int>*);
 
+
+//gives you how many nodes there are of particular color or all
 int count(BinNode<int>*);
+int countRed(BinNode<int>*);
+int countBlack(BinNode<int>*);
 
 void printHelp();
 
@@ -67,10 +71,12 @@ void MainClass::startProgram(){
 
   std::cout << "Welcome to this replresentation of Red-Black Tree!\n";
   
-  std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black" << NORMAL << "]: ";
-  for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << "\n[" << RED << count(root) << "red" << NORMAL << "/" << BLACK << "black" << NORMAL << "]: ", commands=readLine()){
+  std::cout << "\n[" << RED << "0" << NORMAL << "/" << BLACK << "0" << NORMAL << "~0]: ";
+  for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << "\n[" << RED << redVsBlack.first << NORMAL << "/" << BLACK << redVsBlack.second << NORMAL << "~" << redVsBlack.first+redVsBlack.second << "]: ", commands=readLine()){
     if(commands[0]=="add" || commands[0]=="a"){
       addToBinTree(root, commands);
+      redVsBlack.first=countRed(root);
+      redVsBlack.second=countBlack(root);
     }else if(commands[0]=="d" || commands[0]=="display"){
       display(root);
     }else if(commands[0]=="r" || commands[0]=="remove"){
@@ -124,7 +130,7 @@ void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
       while(getline(file, number, ' ')){
         if(number.len()==0) 
           continue;
-        
+
         add(root, std::stoi(number.val()));
         count++;
       }
@@ -159,16 +165,13 @@ void add(BinNode<int>*& root, int numToAdd){
   }else{
     add(root, root->getRight(), root, 'r', numToAdd);  
   }
-  std::cout << "oooooo" << "\n" << std::flush;
 }
 
 
 void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, char whichChild, int numToAdd){
-    std::cout << "current " << current << "\n" << std::flush;
   //root doesnt exists yet?
   if(current==nullptr){
 
-    std::cout << "adding " << numToAdd << "\n" << std::flush;
     
     //init the child
     auto newNode=new BinNode<int>(numToAdd, 'r', 'x');
@@ -185,19 +188,19 @@ void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, cha
     //fix the childs color/position
     newNode->setParent(previous);
     fixAroundThis(root, newNode);
+
     return;
   }
     
-  std::cout << "ffffffff" << numToAdd << "\n" << std::flush;
   
   //give the number to the appropriate child
   if(numToAdd<current->getValue()){
-  std::cout << "qqqqqq " << current->getLeft() << "\n" << std::flush;
     add(root, current->getLeft(), current, 'l', numToAdd);  
   }else{
-  std::cout << "wwwwww " << current->getLeft() << "\n" << std::flush;
     add(root, current->getRight(), current, 'r', numToAdd);  
   }
+
+  
 }
 
 
@@ -217,16 +220,10 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
   }
 
 
-  std::cout << "=======" << "\n" << std::flush;
 
-  std::cout << current->getValue() << "\n" << std::flush;
 
-  if(current->getParent()!=nullptr)
-    std::cout << current->getParent()->getValue() << "\n" << std::flush;
-  
   //case 1
   if(root==current){
-    std::cout << "case 1" << "\n" << std::flush;
     root->setColor('b');
     return;
   }
@@ -235,7 +232,6 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
   
   //case 2 
   if(getColor(parent)=='b'){
-    std::cout << "case 2" << "\n" << std::flush;
     //do nothing
     return;
   }
@@ -246,7 +242,6 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
     auto grandparent=parent->getParent();
     //case 3
     if(getColor(parent)+getColor(uncle)=='r'*2){//yeah multiplying chars
-    std::cout << "case 3" << "\n" << std::flush;
       //reverse color of all uncles/grandparents
 
       parent->setColor('b');
@@ -270,7 +265,6 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
   //we are right and parent is left OR we are left and parent is right
   if(current->getRelation()+parent->getRelation()=='r'+'l'){//cool char math
 
-    std::cout << "case 4" << "\n" << std::flush;
     //do magic
     rotateTree(root, current);
 
@@ -284,7 +278,6 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
   //we are right and parent is right OR we are left and parent is left
   if(current->getRelation()==parent->getRelation()){
     
-    std::cout << "case 5" << "\n" << std::flush;
     //do magic
     rotateTree(root, parent);
     
@@ -526,6 +519,19 @@ int count(BinNode<int>* in){
   return count(in->getLeft())+count(in->getRight())+1;
 }
 
+int countRed(BinNode<int>* in){
+  if(in==nullptr)
+    return 0;
+  // return count(in);
+  return countRed(in->getLeft())+countRed(in->getRight())+(in->getColor()=='r');
+}
+
+int countBlack(BinNode<int>* in){
+  if(in==nullptr)
+    return 0;
+  
+  return countBlack(in->getLeft())+countBlack(in->getRight())+(in->getColor()=='b');
+}
 void printHelp(){
 
     std::cout << "(h)elp: this help\n";
@@ -535,4 +541,5 @@ void printHelp(){
     std::cout << "(rev)erse: reverses the colors for Red and Black\n\t(these should really be global consts but if someone REALLY needs/wants to switch them they can)\n";
     std::cout << "(q)uit: closes the program\n";
 
+  std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black (real)" << NORMAL << "~total]: ";
 }

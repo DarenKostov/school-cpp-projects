@@ -418,9 +418,7 @@ bool getline (std::istream& is, Text& txt, char separator){
   
   //go past the separator
   is.get();
-  
-  std::cout << txt << '\n' << std::flush;
-  
+ 
   return true;
 }
 
