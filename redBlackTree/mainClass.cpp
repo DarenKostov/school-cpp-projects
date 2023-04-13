@@ -39,6 +39,12 @@ void fixAroundThis(BinNode<int>*&, BinNode<int>*);
 char getColor(BinNode<int>*);
 
 
+//gives you the sibling, be it right or left
+BinNode<int>* getSibling(BinNode<int>*);
+
+//rotates the tree given a child, will account for root
+void rotateTree(BinNode<int>*&, BinNode<int>*);
+
 MainClass::MainClass(){
   root=nullptr;
   redVsBlack=std::make_pair(0, 0);
@@ -178,9 +184,11 @@ void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, cha
 
 void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
 
-  
-  if(current->getParent()==nullptr){
-    std::cout << "\e[91mNo parent!\e[0m\n";
+
+  //I use getColor because the uncle might be null (who knows the parent could also be null for some reason)  
+
+  if(current==nullptr){
+    std::cout << "\e[91mNo current!\nI dont know how that happened...\e[0m\n";
     return;
   }
 
@@ -190,35 +198,40 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
     return;
   }
 
+  auto parent=current->getParent();  
+  
   //case 2 
-  if(current->getParent()->getColor()=='b'){
+  if(getColor(parent)=='b'){
     //do nothing
     return;
   }
 
+  //extra {} because we dont need uncle/grandparent outside of this
+  {
+    auto uncle=getSibling(parent);
+    auto grandparent=parent->getParent();
+    //case 3
+    if(getColor(parent)+getColor(uncle)=='r'*2){//yeah multiplying chars
+      //reverse color of all uncles/grandparents
+      uncle->setColor('b');
+      parent->setColor('b');
+      grandparent->setColor('r');
 
-
-  //case 3
-  //get both "uncles"
-  auto uncle1=current->getParent()->getParent()->getLeft();
-  auto uncle2=current->getParent()->getParent()->getRight();
-  if(getColor(uncle1)+getColor(uncle2)=='r'*2){//yeah multiplying chars
-    //reverse color of all uncles/grandparents
-    uncle1->setColor('b');
-    uncle2->setColor('b');
-    uncle2->getParent()->setColor('r');
-
-    //fix the grand parent
-    fixAroundThis(root, uncle1->getParent());    
-    return;
+      //fix the grand parent
+      fixAroundThis(root, grandparent);    
+      return;
+    }
   }
 
-  //case 4
   //if the parent is red but uncle black (the parent must be red beacause of case 2) (the uncle must be black beacause of case 3)
+
+  //case 4
   
   //we are right and parent is left OR we are left and parent is right
-  if(current->getRelation()+current->getParent()->getRelation()=='r'+'l'){//cool char math
+  if(current->getRelation()+parent->getRelation()=='r'+'l'){//cool char math
+    std::cout << "call case 4\n"<< std::flush;
     //do magic
+    rotateTree(root, current);
     
   }
 
@@ -226,9 +239,10 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
   //we are right and parent is right OR we are left and parent is left
   if(current->getRelation()==current->getParent()->getRelation()){
     //do magic
-
+    rotateTree(root, parent);
   }
 
+  std::cout << "\e[91mHow did we get here??????????????\?/\e[0m\n";
   
 }
 
@@ -353,3 +367,75 @@ char getColor(BinNode<int>* in){
   return in->getColor();
 }
 
+BinNode<int>* getSibling(BinNode<int>* in){
+  char mySide=in->getRelation();
+  
+  if(mySide=='r')
+    return in->getParent()->getLeft();
+  return in->getParent()->getRight();
+
+}
+
+
+void rotateTree(BinNode<int>*& root, BinNode<int>* current){
+
+    auto parent=current->getParent();
+    BinNode<int>* subTree[3];
+    char parentSide=parent->getRelation();
+
+    {
+      auto grandparent=parent->getParent();
+      //move the child to the parents position (is the parent root?, make the child root)
+      if(grandparent==nullptr)
+        root=current;
+      else
+        if(parentSide=='l')
+          grandparent->setLeft(current);
+        else
+          grandparent->setRight(current);
+
+      current->setParent(grandparent);
+    }
+    
+  
+    //left rotation
+    if(current->getRelation()=='r'){
+      
+      subTree[0]=parent->getLeft();//we know its the left child, no need to use get siblings
+      subTree[1]=current->getLeft();
+      subTree[2]=current->getRight();
+      
+      //move the parent to the childs position (left this time)
+      current->setLeft(parent);
+      parent->setRelation('l');
+
+      //fix subTrees
+      parent->setLeft(subTree[0]);
+      parent->setRight(subTree[1]);
+      current->setRight(subTree[2]);
+      subTree[1]->setRelation('r');
+      
+    //right rotation
+    }else{
+
+  
+      subTree[0]=current->getLeft();//we know its the left child, no need to use get siblings
+      subTree[1]=current->getRight();
+      subTree[2]=parent->getRight();
+      
+      //move the parent to the childs position (right this time)
+      current->setRight(parent);
+      parent->setRelation('r');
+
+      //fix subTrees
+      current->setLeft(subTree[0]);
+      parent->setLeft(subTree[1]);
+      parent->setRight(subTree[2]);
+      subTree[1]->setRelation('l');
+  
+    }
+  
+  //fix the childs side
+  current->setRelation(parentSide);
+  
+}
