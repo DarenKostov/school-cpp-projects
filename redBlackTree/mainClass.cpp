@@ -46,6 +46,8 @@ BinNode<int>* getSibling(BinNode<int>*);
 //rotates the tree given a child, will account for root
 void rotateTree(BinNode<int>*&, BinNode<int>*);
 
+int count(BinNode<int>*);
+
 void printHelp();
 
 MainClass::MainClass(){
@@ -63,9 +65,10 @@ void MainClass::startProgram(){
 
   printHelp();
 
+  std::cout << "Welcome to this replresentation of Red-Black Tree!\n";
   
   std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black" << NORMAL << "]: ";
-  for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black" << NORMAL << "]: ", commands=readLine()){
+  for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << "\n[" << RED << count(root) << "red" << NORMAL << "/" << BLACK << "black" << NORMAL << "]: ", commands=readLine()){
     if(commands[0]=="add" || commands[0]=="a"){
       addToBinTree(root, commands);
     }else if(commands[0]=="d" || commands[0]=="display"){
@@ -286,8 +289,8 @@ void fixAroundThis(BinNode<int>*& root, BinNode<int>* current){
     rotateTree(root, parent);
     
     //invserse colors
-    current->getParent()->setColor('b');
-    getSibling(current)->setColor('r');
+    current->getParent()->setColor('b');//grandparent
+    getSibling(current)->setColor('r');//parent
 
     return;
   }
@@ -430,6 +433,30 @@ BinNode<int>* getSibling(BinNode<int>* in){
 
 void rotateTree(BinNode<int>*& root, BinNode<int>* current){
 
+  /*
+  things to set up:
+    
+    rl=grandparent child
+
+    rl=current, parent
+    l=current, right child
+    r=current, left child
+    rl=current, relation
+    
+    rl=parent, parent
+    l=parent, left child
+    r=parent, right child
+    rl=parent, relation
+    
+
+    current left child, parent
+    current right child, parent
+    current left child, relation
+    current right child, relation
+    
+
+  */
+  
     auto parent=current->getParent();
     BinNode<int>* subTree;
     char parentSide=parent->getRelation();
@@ -462,9 +489,10 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
 
       //fix subTrees
       parent->setRight(subTree);
-      if(subTree!=nullptr)
+      if(subTree!=nullptr){
         subTree->setRelation('r');
-      
+        subTree->setParent(parent);
+      }
     //right rotation
     }else{
 
@@ -476,12 +504,12 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
       parent->setRelation('r');
 
       //fix subTrees
-      // current->setLeft(subTree[0]);
       parent->setLeft(subTree);
-      // parent->setRight(subTree[2]);
-      if(subTree!=nullptr)
+      if(subTree!=nullptr){
         subTree->setRelation('l');
-  
+        subTree->setParent(parent);
+      }
+    
     }
 
   
@@ -492,6 +520,11 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
   
 }
 
+int count(BinNode<int>* in){
+  if(in==nullptr)
+    return 0;
+  return count(in->getLeft())+count(in->getRight())+1;
+}
 
 void printHelp(){
 
