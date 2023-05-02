@@ -378,7 +378,7 @@ void remove(BinNode<int>*& root, std::vector<Text> commands){
     }
     //valid?
 
-    //should sytart at -1, dont ask way (this is because the for loop bellow assumes that the number we input is already there twice)
+    //should start at -1, dont ask way (this is because the for loop bellow assumes that the number we input is already there twice)
     int occurances=-1;
 
     //why use for loops their intended way?
@@ -452,6 +452,7 @@ BinNode<int>* removeAndReturnNewRoot(BinNode<int>* current, int num, bool& didIt
     }
 
     //we dont have any children
+    delete current;
     return nullptr;
   
   }
