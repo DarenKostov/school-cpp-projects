@@ -330,7 +330,7 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
       return;
   }
 
-  for(int i=1; i<commands.size(); i++){
+  for(int i=1; i<(int)commands.size(); i++){
 
     int num=0;
 
@@ -350,8 +350,20 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
 
 
     //why use for loops their intended way?
-    BinNode<int>* lastAffecterNode=nullptr;
-    for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, root=removeAndReturnNewRoot(root, num, didItHappen, lastAffecterNode)){}
+    BinNode<int>* lastAffectedNode=nullptr;
+    for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, root=removeAndReturnNewRoot(root, num, didItHappen, lastAffectedNode)){
+      if(lastAffectedNode==nullptr) continue;
+
+
+      //either one of the nodes were red
+      if(lastAffectedNode->getColor()+0<'b'*2){
+        lastAffectedNode->setColor('b');
+        continue;
+      }
+
+      //both nodes were black, apply fix
+      fixAroundThisAfterDeleting(root, lastAffectedNode);
+    }
   
 
     if(occurances==1)
@@ -436,6 +448,43 @@ BinNode<int>* removeAndReturnNewRoot(BinNode<int>* current, int num, bool& didIt
 
 void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
+  //fix what?
+  if(current==nullptr)
+    return;
+
+  //case 1;
+  //root is already fixed
+
+  //case 2  
+  //if sibling is red
+  if(getColor(getSibling(current))=='r'){
+    rotateTree(root, getSibling(current));
+  }
+
+  auto sibling=getSibling(current);
+  
+  //case 3
+  //if the sibling is black
+  if(getColor(sibling)=='b'){
+    
+    sibling->setColor('r');//this operation will go horribly wrong if the sibling is nullptr
+    
+    fixAroundThisAfterAdding(root, current->getParent());
+    return;
+  }
+
+  //note: the sibling must exist at this point because nullptr's cant be red
+  
+
+  //case 4
+  //if the parent is red
+  if(getColor(current->getParent())=='r') return;
+  //if the sibling is black
+  if(getColor(sibling)=='r') return;
+  //if the sibling's children are black
+  if(getColor(sibling->getRight())+getColor(sibling->getLeft())>'b'*2) return;
+  
+  
 }
 
 
