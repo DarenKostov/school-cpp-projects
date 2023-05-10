@@ -20,7 +20,7 @@ class BinNode{
     ~BinNode();
    
     //initialize with a value, color, and relation
-    BinNode(T, char, char);
+    BinNode(T, char);
 
   
     //sets the right node
@@ -35,9 +35,6 @@ class BinNode{
     //sets the internal value
     void setValue(T);
 
-    //sets the right/left variable
-    void setRelation(char);
-  
     //sets the color
     void setColor(char);
 
@@ -76,18 +73,12 @@ class BinNode{
     //gives you The value stored
     T& Value();
 
-    //gives The right/left variable
-    char& Relation();
-  
     //gives The color
     char& Color();
 
 
   private:
 
-    //is it a right or left child? not the best name for a varible
-    char relationship;
-  
     //is it red or black
     char color;
 

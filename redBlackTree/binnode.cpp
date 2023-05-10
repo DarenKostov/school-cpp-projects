@@ -13,13 +13,12 @@ BinNode<T>::BinNode(){
 
 
 template<class T>
-BinNode<T>::BinNode(T in, char col, char relation){
+BinNode<T>::BinNode(T in, char col){
   left=nullptr;
   right=nullptr;
   parent=nullptr;
   value=in;
   color=col;
-  relationship=relation;
 }
 
 template<class T>
@@ -93,19 +92,11 @@ void BinNode<T>::setValue(T in){
 
 template<class T>
 char BinNode<T>::getRelation(){
-  return relationship;
-}
 
-template<class T>
-char& BinNode<T>::Relation(){
-  return relationship;
+  //are we a child?             are we right child? are we left child?
+  return parent==nullptr? 'x' : parent->getRight()==this? 'r' : 'l';
+  
 }
-
-template<class T>
-void BinNode<T>::setRelation(char in){
-  relationship=in;
-}
-
 
 template<class T>
 char BinNode<T>::getColor(){
