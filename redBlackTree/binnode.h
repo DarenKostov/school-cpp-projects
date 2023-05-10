@@ -19,7 +19,7 @@ class BinNode{
     //deconstrictor
     ~BinNode();
    
-    //initialize with a value, color, and relation
+    //initialize with a value, color
     BinNode(T, char);
 
   

@@ -5,6 +5,9 @@
 
   sources:
   https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
+  https://www.youtube.com/watch?v=lU99loSvD8s
+  https://www.youtube.com/watch?v=iw8N1_keEWA
+  https://www.techiedelight.com/deletion-from-bst/
 
 */
 
@@ -23,6 +26,7 @@ Text NORMAL="\e[0m";
 Text GREEN="\e[92m";
 Text BLUE="\e[94m";
 
+
 //deletes all children of this node, including the node itself
 void deleteAll(BinNode<int>*);
 
@@ -31,7 +35,7 @@ void display(BinNode<int>*);
 void displayLeft(BinNode<int>*, BinNode<int>*, Text);
 void displayRight(BinNode<int>*, Text);
 
-//adds an int to the bin tree (some return what type of node it added)
+//adds an int to the bin tree
 void add(BinNode<int>*& , int);
 void add(BinNode<int>*&, BinNode<int>*, BinNode<int>*, char, int);
 void addToBinTree(BinNode<int>*&, std::vector<Text>);
@@ -43,8 +47,12 @@ void fixAroundThisAfterAdding(BinNode<int>*&, BinNode<int>*);
 
 //remove a num from the bin tree
 void removeFromBinTree(BinNode<int>*&, std::vector<Text>);
-BinNode<int>* removeAndReturnNewRoot(BinNode<int>*, int, bool&, BinNode<int>*&);
+void remove(BinNode<int>*&, int);
+void remove(BinNode<int>*&, BinNode<int>*);
+void remove(BinNode<int>*&, BinNode<int>*, BinNode<int>*, int);
 
+//moves Node B into the place of Node A (be careful, A will be lost if you don't have a pointer to it)
+void transplant(BinNode<int>*&, BinNode<int>*, BinNode<int>*);
 
 //fixes the node structure around this node after deleting
 void fixAroundThisAfterDeleting(BinNode<int>*&, BinNode<int>*);
@@ -60,13 +68,12 @@ BinNode<int>* getSibling(BinNode<int>*);
 //rotates the tree given a child, will account for root
 void rotateTree(BinNode<int>*&, BinNode<int>*);
 
-
 //gives you how many nodes there are of particular color or all
 int count(BinNode<int>*);
 int countRed(BinNode<int>*);
 int countBlack(BinNode<int>*);
 
-//returns you the bin node whoose value it is int, nullptr if the node doesnt exist
+//returns you the bin node whoose value is the int, nullptr if the node doesnt exist
 BinNode<int>* returnNodeWithValueOf(BinNode<int>*, int);
 
 //returns you the bin node with the lowest value, if it doesnt exist, it returns nullptr
@@ -122,6 +129,28 @@ void MainClass::startProgram(){
 
 }
 
+
+void transplant(BinNode<int>*& root, BinNode<int>* toBeReplaced, BinNode<int>* replacement){
+
+  //set up parent  
+  switch(toBeReplaced->getRelation()){
+    case 'x':
+      root=replacement;
+      break;
+    case 'r':
+      toBeReplaced->getParent()->setRight(replacement);
+      break;
+    case 'l':
+      toBeReplaced->getParent()->setLeft(replacement);
+      break;
+  }
+
+  //set up child
+  replacement->setParent(toBeReplaced->getParent());
+}
+
+
+
 //==ADDING
 
 void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
@@ -133,7 +162,7 @@ void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
   }
 
   int count=0;
-  for(int i=1; i<commands.size(); i++){
+  for(int i=1; i<(int)commands.size(); i++){
 
     int numToAdd=0;
 
@@ -183,7 +212,7 @@ void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
 void add(BinNode<int>*& root, int numToAdd){
   //root doesnt exists yet?
   if(root==nullptr){
-    root=new BinNode<int>(numToAdd, 'b', 'x');
+    root=new BinNode<int>(numToAdd, 'b');
     return;
   }
 
@@ -202,15 +231,13 @@ void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, cha
 
     
     //init the child
-    auto newNode=new BinNode<int>(numToAdd, 'r', 'x');
+    auto newNode=new BinNode<int>(numToAdd, 'r');
 
     //immidiatly add the child
     if(whichChild=='l'){
       previous->setLeft(newNode);
-      newNode->setRelation('l');
     }else{
       previous->setRight(newNode);
-      newNode->setRelation('r');
     }
 
     //fix the childs color/position
@@ -350,20 +377,7 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
 
 
     //why use for loops their intended way?
-    BinNode<int>* lastAffectedNode=nullptr;
-    for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, root=removeAndReturnNewRoot(root, num, didItHappen, lastAffectedNode)){
-      if(lastAffectedNode==nullptr) continue;
-
-
-      //either one of the nodes were red
-      if(lastAffectedNode->getColor()+0<'b'*2){
-        lastAffectedNode->setColor('b');
-        continue;
-      }
-
-      //both nodes were black, apply fix
-      fixAroundThisAfterDeleting(root, lastAffectedNode);
-    }
+    for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, remove(root, num)){}
   
 
     if(occurances==1)
@@ -375,72 +389,36 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
 
 }
 
-BinNode<int>* removeAndReturnNewRoot(BinNode<int>* current, int num, bool& didItHappen, BinNode<int>*& lastAffectedNode){
+void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
+
   
-  if(current==nullptr)
-    return nullptr;
+  if(toBeDeleted==nullptr)
+    return;
 
-  //it is in/is the right child
-  if(current->getValue()<num){
-    current->setRight(removeAndReturnNewRoot(current->getRight(), num, didItHappen, lastAffectedNode));
-    
-  //it is in/is the left child
-  }else if(current->getValue()>num){
-    current->setLeft(removeAndReturnNewRoot(current->getLeft(), num, didItHappen, lastAffectedNode));
-    
-  //it's us 
-  }else{
+  //=we have 2 children    
+  if(toBeDeleted->getLeft()!=nullptr && toBeDeleted->getRight()!=nullptr){
 
-    //yes it happened, we found the node and are about to delete it
-    didItHappen=true;
-    
-    /*
-    if there are no children return nullptr
-    if there is only 1 child, return it
-    if there are 2 children return the successor
-    */
+    auto successor=returnMinNode(toBeDeleted->getRight());
+    toBeDeleted->setValue(successor->getValue());
 
-    
-    //we have a left child
-    if(current->getLeft()!=nullptr){
-
-      //And we have a right child
-      if(current->getRight()!=nullptr){
-        auto successor=returnMinNode(current->getRight());
-        current->setValue(successor->getValue());
-
-        //remove the one we just swapped with
-        current->setRight(removeAndReturnNewRoot(current->getRight(), successor->getValue(), didItHappen, lastAffectedNode));
-        return current;
-      }
-
-      
-      //left child, only child
-      auto left=current->getLeft();
-      left->setColor(current->getColor()+left->getColor());//save information about both parent & child on the child
-      delete current;
-      lastAffectedNode=left;
-      return left;
-    }
-
-    //we have only right child
-    if(current->getRight()!=nullptr){
-      auto right=current->getRight();
-      right->setColor(current->getColor()+right->getColor());//save information about both parent & child on the child
-      delete current;
-      lastAffectedNode=right;
-      return right;
-    }
-
-    
-    //we dont have any children
-    delete current;
-    lastAffectedNode=nullptr;
-    return nullptr;
-  
+    //remove the one we just swapped with
+    remove(root, successor);
+    return;
   }
+
+  //we have 1 child or none
+
+  //give us the only child, if none, make a new child
+  auto child=toBeDeleted->getLeft()==nullptr? toBeDeleted->getRight() : toBeDeleted->getLeft()==nullptr? new BinNode<int>(0, 'B') : toBeDeleted->getLeft();
+
+  transplant(root, toBeDeleted, child);
+
+  if(toBeDeleted)
   
-  return current;
+  // fixAroundThisAfterDeleting(root, )
+
+  
+  
   
 }
 
@@ -451,6 +429,9 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
   //fix what?
   if(current==nullptr)
     return;
+
+
+
 
   //case 1;
   //root is already fixed
@@ -605,6 +586,10 @@ void deleteAll(BinNode<int>* current){
 char getColor(BinNode<int>* in){
   if(in==nullptr)
     return 'b';
+  
+  if(in->getColor()=='B')
+    return 'b';
+  
   return in->getColor();
 }
 
@@ -672,12 +657,12 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
       
       //move the parent to the childs position (left this time)
       current->setLeft(parent);
-      parent->setRelation('l');
+      // parent->setRelation('l');
 
       //fix subTrees
       parent->setRight(subTree);
       if(subTree!=nullptr){
-        subTree->setRelation('r');
+        // subTree->setRelation('r');
         subTree->setParent(parent);
       }
     //right rotation
@@ -688,12 +673,12 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
       
       //move the parent to the childs position (right this time)
       current->setRight(parent);
-      parent->setRelation('r');
+      // parent->setRelation('r');
 
       //fix subTrees
       parent->setLeft(subTree);
       if(subTree!=nullptr){
-        subTree->setRelation('l');
+        // subTree->setRelation('l');
         subTree->setParent(parent);
       }
     
@@ -703,7 +688,7 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
   
   //misc fixes
   parent->setParent(current);
-  current->setRelation(parentSide);
+  // current->setRelation(parentSide);
   
 }
 
@@ -728,20 +713,18 @@ int countBlack(BinNode<int>* in){
 }
 
 BinNode<int>* returnNodeWithValueOf(BinNode<int>* current, int num){
-  if(current==nullptr)
+  
+  if(current==nullptr) //do we exist
     return nullptr;
-  
-  if(current->getValue()==num)
+  if(current->getValue()==num) //we found the node
     return current;
+  if(current->getValue()<num) //it should be somewhere on the left branch 
+    return returnNodeWithValueOf(current->getLeft(), num);
+  if(current->getValue()>num) //it should be somehwere on the right branch
+    return returnNodeWithValueOf(current->getLeft(), num);
   
-
-  BinNode<int>* left=returnMinNode(current->getLeft());
-
-  //which child has the number?
-  if(left==nullptr)  
-    return returnMinNode(current->getRight());
-  return left;
-
+  std::cout << "how did we get here?\n";
+  return nullptr;
 }
 
 BinNode<int>* returnMinNode(BinNode<int>* current){
