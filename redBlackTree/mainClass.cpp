@@ -47,9 +47,7 @@ void fixAroundThisAfterAdding(BinNode<int>*&, BinNode<int>*);
 
 //remove a num from the bin tree
 void removeFromBinTree(BinNode<int>*&, std::vector<Text>);
-void remove(BinNode<int>*&, int);
 void remove(BinNode<int>*&, BinNode<int>*);
-void remove(BinNode<int>*&, BinNode<int>*, BinNode<int>*, int);
 
 //moves Node B into the place of Node A (be careful, A will be lost if you don't have a pointer to it)
 void transplant(BinNode<int>*&, BinNode<int>*, BinNode<int>*);
@@ -375,9 +373,8 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
     int occurances=-1;
 
 
-
-    //why use for loops their intended way?
-    for(bool didItHappen=true; didItHappen; occurances++, didItHappen=false, remove(root, num)){}
+    //delete all occurances of the number
+    for(auto toBeDeleted=returnNodeWithValueOf(root, num); toBeDeleted!=nullptr; occurances++, remove(root, toBeDeleted), toBeDeleted=returnNodeWithValueOf(root, num)){}
   
 
     if(occurances==1)
@@ -404,7 +401,7 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
     //remove the one we just swapped with
     remove(root, successor);
     return;
-  }
+ }
 
   //we have 1 child or none
 
@@ -413,7 +410,7 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
 
   transplant(root, toBeDeleted, child);
 
-  if(toBeDeleted)
+  // if(toBeDeleted)
   
   // fixAroundThisAfterDeleting(root, )
 
@@ -631,7 +628,7 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
   
     auto parent=current->getParent();
     BinNode<int>* subTree;
-    char parentSide=parent->getRelation();
+    char currentNodeRelation=current->getRelation();
 
     {
       auto grandparent=parent->getParent();
@@ -640,7 +637,7 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
       if(grandparent==nullptr)
         root=current;
       else
-        if(parentSide=='l')
+        if(parent->getRelation()=='l')
           grandparent->setLeft(current);
         else
           grandparent->setRight(current);
@@ -651,7 +648,7 @@ void rotateTree(BinNode<int>*& root, BinNode<int>* current){
     
   
     //left rotation
-    if(current->getRelation()=='r'){
+    if(currentNodeRelation=='r'){
       
       subTree=current->getLeft();
       
