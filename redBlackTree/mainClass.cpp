@@ -89,6 +89,10 @@ int countBlack(BinNode<int>*);
 //returns you the bin node whoose value is the int, nullptr if the node doesnt exist
 BinNode<int>* returnNodeWithValueOf(BinNode<int>*, int);
 
+//tells you weather a node with value i exists
+void search(BinNode<int>*, std::vector<Text>);
+
+
 //returns you the bin node with the lowest value, if it doesnt exist, it returns nullptr
 BinNode<int>* returnMinNode(BinNode<int>*);
 
@@ -124,6 +128,8 @@ void MainClass::startProgram(){
       redVsBlack.second=countBlack(root);
     }else if(commands[0]=="d" || commands[0]=="display"){
       display(root);
+    }else if(commands[0]=="s" || commands[0]=="search"){
+      search(root, commands);
     }else if(commands[0]=="h" || commands[0]=="help"){
       printHelp();
       std::cout << '\n';
@@ -162,7 +168,38 @@ void transplant(BinNode<int>*& root, BinNode<int>* toBeReplaced, BinNode<int>* r
   std::cout << replacement<< "\n" <<std::flush;
   //set up child
   replacement->setParent(toBeReplaced->getParent());
-  std::cout << "55555\n" <<std::flush;
+}
+
+
+//==SEARCHING
+void search(BinNode<int>* root, std::vector<Text> commands){
+
+
+  if(commands.size()==1){
+      std::cout << "\e[91mSearched nothing in the Bin Tree!\n\e[0m";
+      return;
+  }
+
+  int count=0;
+  for(int i=1; i<(int)commands.size(); i++){
+
+    int num=0;
+
+    //do we give a number or a file?
+    try{
+      num=std::stoi(commands[i].val());
+    }catch(const std::invalid_argument& ia){
+      std::cout << "\e[91m" << commands[i] << " is not a number?\n\e[0m";
+      continue;
+    }
+
+
+    if(returnNodeWithValueOf(root, num)!=nullptr){
+      std::cout<< commands[i] << " was located.\n"; 
+    }else
+      std::cout<< commands[i] << " was not located.\n"; 
+  }
+  
 }
 
 
@@ -390,7 +427,8 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
     //should start at -1, dont ask way (this is because the for loop bellow assumes that the number we input is already there twice)
     int occurances=0;
 
-
+    std::cout << returnNodeWithValueOf(root, num) << "\n";
+    
     //delete all occurances of the number
     for(auto toBeDeleted=returnNodeWithValueOf(root, num); toBeDeleted!=nullptr; occurances++, remove(root, toBeDeleted), toBeDeleted=returnNodeWithValueOf(root, num)){}
   
@@ -424,22 +462,25 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   //we have 1 child or none
 
   //give us the only child, if none, make a new child
-  auto child=toBeDeleted->getLeft()==nullptr? toBeDeleted->getRight() : toBeDeleted->getLeft()==nullptr? new BinNode<int>(0, 'B') : toBeDeleted->getLeft();
+  BinNode<int>* child;//=toBeDeleted->getLeft()==nullptr? toBeDeleted->getRight() : toBeDeleted->getLeft()==nullptr? new BinNode<int>(0, 'B') : toBeDeleted->getLeft();
 
+  if(toBeDeleted->getLeft()==nullptr && toBeDeleted->getRight()!=nullptr){
+    child=toBeDeleted->getRight();
+  }else if(toBeDeleted->getLeft()!=nullptr && toBeDeleted->getRight()==nullptr){
+    child=toBeDeleted->getLeft();
+  }else if(toBeDeleted->getLeft()==nullptr && toBeDeleted->getRight()==nullptr){
+    child=new BinNode<int>(0, 'B');
+  }
   
   transplant(root, toBeDeleted, child);
   
-  std::cout << "aaaaa\n" << std::flush;
   //double black
   if(getColor(child)+getColor(toBeDeleted)=='b'*2){
 
-  std::cout << "bbbbb\n" << std::flush;
     char childColor=child->getColor();
     
     fixAroundThisAfterDeleting(root, child);
 
-
-  std::cout << "cccccc\n" << std::flush;
     //delete the child if it was suposed to be nullptr
     if(childColor=='B')
       erase(root, child);
@@ -470,8 +511,8 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
     std::cout << sibling << '\n' << std::flush; 
       
     //dont access uncharted territory (children of nullptr and a nullptr itself)
-    if(sibling==nullptr)
-      return;
+    // if(sibling==nullptr)
+    //   return;
 
 
     // case 1
@@ -498,8 +539,8 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
     
     //dont access uncharted territory (nullptr children)
-    if(sibling->getLeft()==nullptr || sibling->getRight()==nullptr)
-      return;
+    // if(sibling->getLeft()==nullptr || sibling->getRight()==nullptr)
+    //   return;
     
 
     //are we right or left child
@@ -831,7 +872,7 @@ BinNode<int>* returnNodeWithValueOf(BinNode<int>* current, int num){
   if(current->getValue()<num) //it should be somewhere on the left branch 
     return returnNodeWithValueOf(current->getLeft(), num);
   if(current->getValue()>num) //it should be somehwere on the right branch
-    return returnNodeWithValueOf(current->getLeft(), num);
+    return returnNodeWithValueOf(current->getRight(), num);
   
   std::cout << "how did we get here?\n";
   return nullptr;
@@ -851,6 +892,7 @@ void printHelp(){
 
     std::cout << GREEN << "(h)elp" << NORMAL << ": this help\n";
     std::cout << GREEN << "(a)dd" << BLUE << " <file1/num1> [file2/num2]..." << NORMAL << ": adds integers from files OR console to the Bin Tree from a file.\n\t(you can add multiple numbers and/or files with one command.)\n";
+    std::cout << GREEN << "(s)earch" << BLUE << " <num1> [num2] [num3]..." << NORMAL << ": tells you whether num1, num2, num3... exist in the Bin Tree\n";
     std::cout << GREEN << "(d)isplay" << NORMAL << ": print the Bin Tree in a similar fasion as the command `tree`\n";
     std::cout << GREEN << "(r)emove" << BLUE << " <num1> [num2] [num3]..." << NORMAL << ": deletes num1, num2, num3... from the Bin Tree\n";
     std::cout << GREEN << "(rev)erse" << NORMAL << ": reverses the colors for Red and Black\n\t(these should really be global consts but if someone REALLY needs/wants to switch them they can)\n";
