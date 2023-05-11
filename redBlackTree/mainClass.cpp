@@ -49,6 +49,10 @@ void fixAroundThisAfterAdding(BinNode<int>*&, BinNode<int>*);
 void removeFromBinTree(BinNode<int>*&, std::vector<Text>);
 void remove(BinNode<int>*&, BinNode<int>*);
 
+//erases a node, all connections to it will point to nullptr, and also deletes the node
+void erase(BinNode<int>*&, BinNode<int>*);
+
+
 //moves Node B into the place of Node A (be careful, A will be lost if you don't have a pointer to it)
 void transplant(BinNode<int>*&, BinNode<int>*, BinNode<int>*);
 
@@ -64,6 +68,17 @@ char getColor(BinNode<int>*);
 BinNode<int>* getSibling(BinNode<int>*);
 
 //rotates the tree given a child, will account for root
+/*
+  You give the function node X
+
+      O
+     / \
+    O   X
+       / \
+      O   O
+  
+*/
+
 void rotateTree(BinNode<int>*&, BinNode<int>*);
 
 //gives you how many nodes there are of particular color or all
@@ -143,8 +158,11 @@ void transplant(BinNode<int>*& root, BinNode<int>* toBeReplaced, BinNode<int>* r
       break;
   }
 
+  std::cout << toBeReplaced->getParent()<< "\n" <<std::flush;
+  std::cout << replacement<< "\n" <<std::flush;
   //set up child
   replacement->setParent(toBeReplaced->getParent());
+  std::cout << "55555\n" <<std::flush;
 }
 
 
@@ -370,7 +388,7 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
     //valid?
 
     //should start at -1, dont ask way (this is because the for loop bellow assumes that the number we input is already there twice)
-    int occurances=-1;
+    int occurances=0;
 
 
     //delete all occurances of the number
@@ -408,13 +426,32 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   //give us the only child, if none, make a new child
   auto child=toBeDeleted->getLeft()==nullptr? toBeDeleted->getRight() : toBeDeleted->getLeft()==nullptr? new BinNode<int>(0, 'B') : toBeDeleted->getLeft();
 
+  
   transplant(root, toBeDeleted, child);
-
-  // if(toBeDeleted)
   
-  // fixAroundThisAfterDeleting(root, )
+  std::cout << "aaaaa\n" << std::flush;
+  //double black
+  if(getColor(child)+getColor(toBeDeleted)=='b'*2){
+
+  std::cout << "bbbbb\n" << std::flush;
+    char childColor=child->getColor();
+    
+    fixAroundThisAfterDeleting(root, child);
+
+
+  std::cout << "cccccc\n" << std::flush;
+    //delete the child if it was suposed to be nullptr
+    if(childColor=='B')
+      erase(root, child);
+
+  //child is red
+  }else{
+    child->setColor('b');
+  }
+  
 
   
+  delete toBeDeleted;
   
   
 }
@@ -423,46 +460,98 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
 
 void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
-  //fix what?
-  if(current==nullptr)
-    return;
+
+  
+  while(current!=root && getColor(current)=='b'){
+
+    
+    BinNode<int>* sibling=getSibling(current);
+
+    std::cout << sibling << '\n' << std::flush; 
+      
+    //dont access uncharted territory (children of nullptr and a nullptr itself)
+    if(sibling==nullptr)
+      return;
 
 
+    // case 1
+    //sibling is red
+    if(getColor(sibling)=='r'){
+      sibling->setColor('b');
+      current->getParent()->setColor('r');
+      rotateTree(root, current);
+      sibling=getSibling(current);
+    }
 
+    
+    //=sibling is black from now on
+    
+    // case 2
+    //the siblings children are black
+    if(getColor(sibling->getLeft())+getColor(sibling->getRight())=='b'*2){
+      sibling->setColor('r');
+      current=current->getParent();
+      continue;
+    }
 
-  //case 1;
-  //root is already fixed
+    //=children of sibling are either rr rb br from now on
 
-  //case 2  
-  //if sibling is red
-  if(getColor(getSibling(current))=='r'){
-    rotateTree(root, getSibling(current));
+    
+    //dont access uncharted territory (nullptr children)
+    if(sibling->getLeft()==nullptr || sibling->getRight()==nullptr)
+      return;
+    
+
+    //are we right or left child
+    if(current->getRelation()=='l'){
+    
+      // case 3
+      //the left child of the sibling is red, the right child of the sibling is black
+      if(getColor(sibling->getRight())=='b'){
+        sibling->getLeft()->setColor('b');
+        sibling->setColor('r');
+        rotateTree(root, sibling->getLeft());
+        sibling=getSibling(current);
+      }
+
+      //=children of sibling are either rr br from now on
+
+      //case 4
+      //the right child of the sibling is red
+
+      sibling->setColor(getColor(sibling->getParent()));
+      sibling->setColor('b');
+      sibling->getRight()->setColor('b');
+      rotateTree(root, current);
+      current=root;
+
+    }else{
+    
+      // case 3
+      //the left child of the sibling is red, the right child of the sibling is black
+      if(getColor(sibling->getLeft())=='b'){
+        sibling->getRight()->setColor('b');
+        sibling->setColor('r');
+        rotateTree(root, sibling->getRight());
+        sibling=getSibling(current);
+      }
+
+      //=children of sibling are either rr br from now on
+
+      //case 4
+      //the right child of the sibling is red
+
+      sibling->setColor(getColor(sibling->getParent()));
+      sibling->setColor('b');
+      sibling->getLeft()->setColor('b');
+      rotateTree(root, current);
+      current=root;
+    
+    }
+        
+
   }
 
-  auto sibling=getSibling(current);
-  
-  //case 3
-  //if the sibling is black
-  if(getColor(sibling)=='b'){
-    
-    sibling->setColor('r');//this operation will go horribly wrong if the sibling is nullptr
-    
-    fixAroundThisAfterAdding(root, current->getParent());
-    return;
-  }
-
-  //note: the sibling must exist at this point because nullptr's cant be red
-  
-
-  //case 4
-  //if the parent is red
-  if(getColor(current->getParent())=='r') return;
-  //if the sibling is black
-  if(getColor(sibling)=='r') return;
-  //if the sibling's children are black
-  if(getColor(sibling->getRight())+getColor(sibling->getLeft())>'b'*2) return;
-  
-  
 }
 
 
@@ -579,12 +668,36 @@ void deleteAll(BinNode<int>* current){
 
 }
 
+void erase(BinNode<int>*& root, BinNode<int>* toBeErased){
+
+  //fix children
+  if(toBeErased->getRight()!=nullptr)
+    toBeErased->getRight()->setParent(nullptr);
+  if(toBeErased->getLeft()!=nullptr)
+    toBeErased->getLeft()->setParent(nullptr);
+
+  //fix parent
+  auto parent=toBeErased->getParent();
+  if(parent!=nullptr){
+      if(toBeErased->getRelation()=='r')
+        parent->setRight(nullptr);
+      else
+        parent->setLeft(nullptr);
+   
+  }else{
+    root=nullptr;
+  }
+
+  
+  delete toBeErased;
+
+}
 
 char getColor(BinNode<int>* in){
   if(in==nullptr)
     return 'b';
-  
-  if(in->getColor()=='B')
+
+ if(in->getColor()=='B')
     return 'b';
   
   return in->getColor();
