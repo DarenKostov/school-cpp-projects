@@ -164,8 +164,6 @@ void transplant(BinNode<int>*& root, BinNode<int>* toBeReplaced, BinNode<int>* r
       break;
   }
 
-  std::cout << toBeReplaced->getParent()<< "\n" <<std::flush;
-  std::cout << replacement<< "\n" <<std::flush;
   //set up child
   replacement->setParent(toBeReplaced->getParent());
 }
@@ -427,8 +425,6 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
     //should start at -1, dont ask way (this is because the for loop bellow assumes that the number we input is already there twice)
     int occurances=0;
 
-    std::cout << returnNodeWithValueOf(root, num) << "\n";
-    
     //delete all occurances of the number
     for(auto toBeDeleted=returnNodeWithValueOf(root, num); toBeDeleted!=nullptr; occurances++, remove(root, toBeDeleted), toBeDeleted=returnNodeWithValueOf(root, num)){}
   
@@ -473,24 +469,22 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   }
   
   transplant(root, toBeDeleted, child);
+  char childColor=child->getColor();
+
   
   //double black
   if(getColor(child)+getColor(toBeDeleted)=='b'*2){
 
-    char childColor=child->getColor();
     
     fixAroundThisAfterDeleting(root, child);
-
-    //delete the child if it was suposed to be nullptr
-    if(childColor=='B')
-      erase(root, child);
-
-  //child is red
-  }else{
-    child->setColor('b');
   }
   
 
+  //delete the child if it was suposed to be nullptr
+  if(childColor=='B'){
+    erase(root, child);
+    std::cout << "erased a child\n";
+  }
   
   delete toBeDeleted;
   
@@ -869,9 +863,9 @@ BinNode<int>* returnNodeWithValueOf(BinNode<int>* current, int num){
     return nullptr;
   if(current->getValue()==num) //we found the node
     return current;
-  if(current->getValue()<num) //it should be somewhere on the left branch 
+  if(current->getValue()>num) //it should be somewhere on the left branch 
     return returnNodeWithValueOf(current->getLeft(), num);
-  if(current->getValue()>num) //it should be somehwere on the right branch
+  if(current->getValue()<num) //it should be somehwere on the right branch
     return returnNodeWithValueOf(current->getRight(), num);
   
   std::cout << "how did we get here?\n";
