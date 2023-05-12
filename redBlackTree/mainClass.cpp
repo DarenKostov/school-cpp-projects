@@ -25,6 +25,7 @@ Text RED="\e[40;31m";
 Text NORMAL="\e[0m";
 Text GREEN="\e[92m";
 Text BLUE="\e[94m";
+Text CYAN="\e[96m";
 
 
 //deletes all children of this node, including the node itself
@@ -35,10 +36,10 @@ void display(BinNode<int>*);
 void displayLeft(BinNode<int>*, BinNode<int>*, Text);
 void displayRight(BinNode<int>*, Text);
 
-//adds an int to the bin tree
-void add(BinNode<int>*& , int);
-void add(BinNode<int>*&, BinNode<int>*, BinNode<int>*, char, int);
-void addToBinTree(BinNode<int>*&, std::vector<Text>);
+//adds an int to the bin tree, returns true if the task was successfull
+bool add(BinNode<int>*& , int);
+bool add(BinNode<int>*&, BinNode<int>*, BinNode<int>*, char, int);
+void addCommand(BinNode<int>*&, std::vector<Text>);
 
 //fixes the node structure around this node after adding
 void fixAroundThisAfterAdding(BinNode<int>*&, BinNode<int>*);
@@ -46,7 +47,7 @@ void fixAroundThisAfterAdding(BinNode<int>*&, BinNode<int>*);
 
 
 //remove a num from the bin tree
-void removeFromBinTree(BinNode<int>*&, std::vector<Text>);
+void removeCommand(BinNode<int>*&, std::vector<Text>);
 void remove(BinNode<int>*&, BinNode<int>*);
 
 //erases a node, all connections to it will point to nullptr, and also deletes the node
@@ -88,9 +89,10 @@ int countBlack(BinNode<int>*);
 
 //returns you the bin node whoose value is the int, nullptr if the node doesnt exist
 BinNode<int>* returnNodeWithValueOf(BinNode<int>*, int);
+BinNode<int>* fullSearch(BinNode<int>*, int);
 
 //tells you weather a node with value i exists
-void search(BinNode<int>*, std::vector<Text>);
+void searchCommand(BinNode<int>*, std::vector<Text>);
 
 
 //returns you the bin node with the lowest value, if it doesnt exist, it returns nullptr
@@ -114,27 +116,26 @@ void MainClass::startProgram(){
   printHelp();
 
   std::cout << "Welcome to this replresentation of Red-Black Tree!\n\n";
-
-  std::cout << "\e[96mTry: add 43 65 123 65 13 65 12 54 76 12 54 76 272 4712 334\n";
-  std::cout << "I have varified this works exactly as expect with:  https://www.cs.usfca.edu/~galles/visualization/RedBlack.html\n";
-  std::cout << "\e[0m";
+  std::cout << "Try (file should be included with the project): " << CYAN << "add nums.txt\n" << NORMAL;
+  std::cout << "Then try " << CYAN << "remove 577 344 764 123 888\n" << NORMAL;
+  // std::cout << "I have varified this works exactly as expect with:  https://www.cs.usfca.edu/~galles/visualization/RedBlack.html\n";
 
   
   std::cout << "\n[" << RED << "0" << NORMAL << "/" << BLACK << "0" << NORMAL << "~0]: ";
   for(std::vector<Text> commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << "\n[" << RED << redVsBlack.first << NORMAL << "/" << BLACK << redVsBlack.second << NORMAL << "~" << redVsBlack.first+redVsBlack.second << "]: ", commands=readLine()){
     if(commands[0]=="add" || commands[0]=="a"){
-      addToBinTree(root, commands);
+      addCommand(root, commands);
       redVsBlack.first=countRed(root);
       redVsBlack.second=countBlack(root);
     }else if(commands[0]=="d" || commands[0]=="display"){
       display(root);
     }else if(commands[0]=="s" || commands[0]=="search"){
-      search(root, commands);
+      searchCommand(root, commands);
     }else if(commands[0]=="h" || commands[0]=="help"){
       printHelp();
       std::cout << '\n';
     }else if(commands[0]=="r" || commands[0]=="remove" || commands[0]=="rm"){
-      removeFromBinTree(root, commands);
+      removeCommand(root, commands);
     }else if(commands[0]=="rev" || commands[0]=="reverse"){
       Text tmp=BLACK; BLACK=RED; RED=tmp;
     }else{
@@ -170,7 +171,7 @@ void transplant(BinNode<int>*& root, BinNode<int>* toBeReplaced, BinNode<int>* r
 
 
 //==SEARCHING
-void search(BinNode<int>* root, std::vector<Text> commands){
+void searchCommand(BinNode<int>* root, std::vector<Text> commands){
 
 
   if(commands.size()==1){
@@ -204,7 +205,7 @@ void search(BinNode<int>* root, std::vector<Text> commands){
 
 //==ADDING
 
-void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
+void addCommand(BinNode<int>*& root, std::vector<Text> commands){
 
 
   if(commands.size()==1){
@@ -239,8 +240,19 @@ void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
         if(number.len()==0) 
           continue;
 
-        add(root, std::stoi(number.val()));
-        count++;
+
+        int num=0;
+        //is this a valid number
+        try{
+          num=std::stoi(number.val());
+        }catch(const std::invalid_argument& ia){
+          //invalid?
+          std::cout << "\e[91m\""+commands[i]+"\" is not an integer :/ fix the file\n\e[0m";
+          continue;
+        }
+
+        if(add(root, num))
+          count++;
       }
       file.close();
 
@@ -248,8 +260,8 @@ void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
     }
 
     //number?  
-    add(root, numToAdd);
-    count++;
+    if(add(root, numToAdd))
+      count++;
   }
 
   
@@ -260,24 +272,30 @@ void addToBinTree(BinNode<int>*& root, std::vector<Text> commands){
   
 }
 
-void add(BinNode<int>*& root, int numToAdd){
+bool add(BinNode<int>*& root, int numToAdd){
   //root doesnt exists yet?
   if(root==nullptr){
     root=new BinNode<int>(numToAdd, 'b');
-    return;
+    return true;
+  }
+
+
+  //no duplicates!
+  if(root->getValue()==numToAdd){
+    return false;
   }
 
   //give the number to the appropriate child
   if(numToAdd<root->getValue()){
-    add(root, root->getLeft(), root, 'l', numToAdd);  
+    return add(root, root->getLeft(), root, 'l', numToAdd);  
   }else{
-    add(root, root->getRight(), root, 'r', numToAdd);  
+    return add(root, root->getRight(), root, 'r', numToAdd);  
   }
 }
 
 
-void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, char whichChild, int numToAdd){
-  //root doesnt exists yet?
+bool add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, char whichChild, int numToAdd){
+  //"root" doesnt exists yet?
   if(current==nullptr){
 
     
@@ -295,15 +313,20 @@ void add(BinNode<int>*& root, BinNode<int>* current, BinNode<int>* previous, cha
     newNode->setParent(previous);
     fixAroundThisAfterAdding(root, newNode);
 
-    return;
+    return true;
+  }
+
+  //no duplicates!
+  if(current->getValue()==numToAdd){
+    return false;
   }
     
   
   //give the number to the appropriate child
   if(numToAdd<current->getValue()){
-    add(root, current->getLeft(), current, 'l', numToAdd);  
+    return add(root, current->getLeft(), current, 'l', numToAdd);  
   }else{
-    add(root, current->getRight(), current, 'r', numToAdd);  
+    return add(root, current->getRight(), current, 'r', numToAdd);  
   }
 
   
@@ -401,7 +424,7 @@ void fixAroundThisAfterAdding(BinNode<int>*& root, BinNode<int>* current){
 
 //==REMOVING
 
-void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
+void removeCommand(BinNode<int>*& root, std::vector<Text> commands){
 
   if(commands.size()==1){
       std::cout << "\e[91mRemoved 0 occurances of nothing!\n\e[0m";
@@ -417,22 +440,20 @@ void removeFromBinTree(BinNode<int>*& root, std::vector<Text> commands){
       num=std::stoi(commands[i].val());
     }catch(const std::invalid_argument& ia){
       //invalid?
-      std::cout << "\e[91m\""+commands[i]+"\" could not be found in this integer-only Binary Tree in the first place :/\n\e[0m";
+      std::cout << "\e[91m\""+commands[i]+"\" is not an integer :/\n\e[0m";
       return;
     }
     //valid?
 
-    //should start at -1, dont ask way (this is because the for loop bellow assumes that the number we input is already there twice)
-    int occurances=0;
 
-    //delete all occurances of the number
-    for(auto toBeDeleted=returnNodeWithValueOf(root, num); toBeDeleted!=nullptr; occurances++, remove(root, toBeDeleted), toBeDeleted=returnNodeWithValueOf(root, num)){}
-  
 
-    if(occurances==1)
+    auto toBeDeleted=returnNodeWithValueOf(root, num);
+    if(toBeDeleted){
+      remove(root, toBeDeleted);
       std::cout << "Removed "+commands[i]+'\n';
-    else
-      std::cout << "Removed " << occurances << " occurances of "+commands[i]+'\n';
+    }else
+      std::cout << "No occurances of "+commands[i]+'\n';
+  
 
   }
 
@@ -456,7 +477,6 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
         toBeDeleted->getRight() : //there is only the right child
         new BinNode<int>(0, 'B');//there are no children
 
-  char childRelation=child->getRelation();
   
   //=we have 2 children    
   if(child==nullptr){
@@ -471,13 +491,10 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
 
   //we have 1 child or none
   
-  // std::cout << toBeDeleted->getValue() << "\n";
-  // std::cout << toBeDeleted->getRight()->getValue() << "\n";
-  // std::cout << toBeDeleted->getLeft() << "\n";
-  // std::cout << "=====\n";
-  // std::cout << child->getValue() << "\n";
-  // std::cout << child->getRight() << "\n";
-  // std::cout << child->getLeft() << "\n";
+
+  char childRelation=child->getRelation();
+  char childColor=child->getColor();
+
 
   transplant(root, toBeDeleted, child);
 
@@ -492,26 +509,10 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
       child->getRight()->setParent(child);
   }
 
-  // std::cout << "==========\n";
-  // std::cout << toBeDeleted->getValue() << "\n";
-  // std::cout << toBeDeleted->getRight()->getValue() << "\n";
-  // std::cout << toBeDeleted->getLeft() << "\n";
-  // std::cout << "=====\n";
-  // std::cout << child->getValue() << "\n";
-  // std::cout << child->getRight()->getValue() << "\n";
-  // std::cout << child->getLeft() << "\n";
-  // std::cout << root->getValue() << "\n";
-  // std::cout << toBeDeleted->getValue() << "\n";
-
-  // display(root);
   
-  char childColor=child->getColor();
 
-  
-  //double black
+    //double black
   if(getColor(child)+getColor(toBeDeleted)=='b'*2){
-
-    
     fixAroundThisAfterDeleting(root, child);
   }
   
@@ -519,12 +520,10 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   //delete the child if it was suposed to be nullptr
   if(childColor=='B'){
     erase(root, child);
-    std::cout << "erased a child\n";
   }
   
   delete toBeDeleted;
-  
-  
+    
 }
 
 //==FIX AFTER REMOVING
@@ -538,10 +537,6 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
     
     BinNode<int>* sibling=getSibling(current);
       
-    //dont access uncharted territory (children of nullptr and a nullptr itself)
-    // if(sibling==nullptr)
-    //   return;
-
 
     // case 1
     //sibling is red
@@ -564,16 +559,10 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
     //=children of sibling are either rr rb br from now on
 
-    
-    //dont access uncharted territory (nullptr children)
-    // if(sibling->getLeft()==nullptr || sibling->getRight()==nullptr)
-    //   return;
-    
 
     //are we right or left child
     if(current->getRelation()=='l'){
       
-      display(root);
       // case 3
       //the left child of the sibling is red, the right child of the sibling is black
       if(getColor(sibling->getRight())=='b'){
@@ -895,6 +884,15 @@ int countBlack(BinNode<int>* in){
 }
 
 BinNode<int>* returnNodeWithValueOf(BinNode<int>* current, int num){
+
+  while(current!=nullptr && current->getValue()!=num){
+    if(current->getValue()<num)
+      current=current->getRight();
+    else
+      current=current->getLeft();
+  }
+
+  return current;
   
   if(current==nullptr) //do we exist
     return nullptr;
@@ -908,6 +906,23 @@ BinNode<int>* returnNodeWithValueOf(BinNode<int>* current, int num){
   std::cout << "how did we get here?\n";
   return nullptr;
 }
+
+
+BinNode<int>* fullSearch(BinNode<int>* current, int num){
+  
+  if(current==nullptr) //do we exist
+    return nullptr;
+  if(current->getValue()==num) //we found the node
+    return current;
+
+  auto left=returnNodeWithValueOf(current->getLeft(), num);
+  if(left==nullptr)
+    return returnNodeWithValueOf(current->getRight(), num);
+  return left;
+  
+}
+
+
 
 BinNode<int>* returnMinNode(BinNode<int>* current){
   while(current->getLeft()!=nullptr)
