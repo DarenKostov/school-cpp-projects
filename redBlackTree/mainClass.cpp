@@ -133,7 +133,7 @@ void MainClass::startProgram(){
     }else if(commands[0]=="h" || commands[0]=="help"){
       printHelp();
       std::cout << '\n';
-    }else if(commands[0]=="r" || commands[0]=="remove"){
+    }else if(commands[0]=="r" || commands[0]=="remove" || commands[0]=="rm"){
       removeFromBinTree(root, commands);
     }else if(commands[0]=="rev" || commands[0]=="reverse"){
       Text tmp=BLACK; BLACK=RED; RED=tmp;
@@ -444,10 +444,23 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   if(toBeDeleted==nullptr)
     return;
 
-  //=we have 2 children    
-  if(toBeDeleted->getLeft()!=nullptr && toBeDeleted->getRight()!=nullptr){
 
-    auto successor=returnMinNode(toBeDeleted->getRight());
+
+  //give us the only child; if none, make a new child; if two give us none
+  BinNode<int>* child=
+    toBeDeleted->getLeft()?
+      toBeDeleted->getRight()?
+        nullptr : //there are 2 children
+        toBeDeleted->getLeft() ://there is only the left child
+      toBeDeleted->getRight()?
+        toBeDeleted->getRight() : //there is only the right child
+        new BinNode<int>(0, 'B');//there are no children
+
+
+  //=we have 2 children    
+  if(child==nullptr){
+
+    auto successor=returnMinNode(toBeDeleted->getLeft());
     toBeDeleted->setValue(successor->getValue());
 
     //remove the one we just swapped with
@@ -456,17 +469,6 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
  }
 
   //we have 1 child or none
-
-  //give us the only child, if none, make a new child
-  BinNode<int>* child;//=toBeDeleted->getLeft()==nullptr? toBeDeleted->getRight() : toBeDeleted->getLeft()==nullptr? new BinNode<int>(0, 'B') : toBeDeleted->getLeft();
-
-  if(toBeDeleted->getLeft()==nullptr && toBeDeleted->getRight()!=nullptr){
-    child=toBeDeleted->getRight();
-  }else if(toBeDeleted->getLeft()!=nullptr && toBeDeleted->getRight()==nullptr){
-    child=toBeDeleted->getLeft();
-  }else if(toBeDeleted->getLeft()==nullptr && toBeDeleted->getRight()==nullptr){
-    child=new BinNode<int>(0, 'B');
-  }
   
   transplant(root, toBeDeleted, child);
 
@@ -478,9 +480,6 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   if(child->getLeft()!=nullptr)
     child->getLeft()->setParent(child);
 
-  std::cout << child->getRight() << "\n";
-  std::cout << child->getLeft() << "\n";
-  std::cout << child->getParent() << "\n";
   
   char childColor=child->getColor();
 
@@ -514,8 +513,6 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
     
     BinNode<int>* sibling=getSibling(current);
-
-    std::cout << sibling << '\n' << std::flush; 
       
     //dont access uncharted territory (children of nullptr and a nullptr itself)
     // if(sibling==nullptr)
@@ -531,7 +528,6 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       sibling=getSibling(current);
     }
 
-    
     //=sibling is black from now on
     
     // case 2
@@ -552,14 +548,19 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
     //are we right or left child
     if(current->getRelation()=='l'){
-    
+      
+      display(root);
       // case 3
       //the left child of the sibling is red, the right child of the sibling is black
       if(getColor(sibling->getRight())=='b'){
         sibling->getLeft()->setColor('b');
+      display(root);
         sibling->setColor('r');
-        rotateTree(root, sibling->getLeft());
+      display(root);
+        rotateTree(root, sibling->getRight());
+      display(root);
         sibling=getSibling(current);
+      display(root);
       }
 
       //=children of sibling are either rr br from now on
@@ -568,10 +569,15 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       //the right child of the sibling is red
 
       sibling->setColor(getColor(sibling->getParent()));
+      display(root);
       sibling->setColor('b');
+      display(root);
       sibling->getRight()->setColor('b');
+      display(root);
       rotateTree(root, current);
+      display(root);
       current=root;
+      display(root);
 
     }else{
     
