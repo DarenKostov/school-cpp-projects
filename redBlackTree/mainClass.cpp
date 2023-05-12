@@ -456,7 +456,8 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
         toBeDeleted->getRight() : //there is only the right child
         new BinNode<int>(0, 'B');//there are no children
 
-
+  char childRelation=child->getRelation();
+  
   //=we have 2 children    
   if(child==nullptr){
 
@@ -470,16 +471,39 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
 
   //we have 1 child or none
   
+  // std::cout << toBeDeleted->getValue() << "\n";
+  // std::cout << toBeDeleted->getRight()->getValue() << "\n";
+  // std::cout << toBeDeleted->getLeft() << "\n";
+  // std::cout << "=====\n";
+  // std::cout << child->getValue() << "\n";
+  // std::cout << child->getRight() << "\n";
+  // std::cout << child->getLeft() << "\n";
+
   transplant(root, toBeDeleted, child);
 
   //fix children
-  child->setRight(toBeDeleted->getRight());
-  child->setLeft(toBeDeleted->getLeft());
-  if(child->getRight()!=nullptr)
-    child->getRight()->setParent(child);
-  if(child->getLeft()!=nullptr)
-    child->getLeft()->setParent(child);
+  if(childRelation=='r'){
+    child->setLeft(toBeDeleted->getLeft());
+    if(child->getLeft()!=nullptr)
+      child->getLeft()->setParent(child);
+  }else{
+    child->setRight(toBeDeleted->getRight());
+    if(child->getRight()!=nullptr)
+      child->getRight()->setParent(child);
+  }
 
+  // std::cout << "==========\n";
+  // std::cout << toBeDeleted->getValue() << "\n";
+  // std::cout << toBeDeleted->getRight()->getValue() << "\n";
+  // std::cout << toBeDeleted->getLeft() << "\n";
+  // std::cout << "=====\n";
+  // std::cout << child->getValue() << "\n";
+  // std::cout << child->getRight()->getValue() << "\n";
+  // std::cout << child->getLeft() << "\n";
+  // std::cout << root->getValue() << "\n";
+  // std::cout << toBeDeleted->getValue() << "\n";
+
+  // display(root);
   
   char childColor=child->getColor();
 
@@ -554,13 +578,9 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       //the left child of the sibling is red, the right child of the sibling is black
       if(getColor(sibling->getRight())=='b'){
         sibling->getLeft()->setColor('b');
-      display(root);
         sibling->setColor('r');
-      display(root);
         rotateTree(root, sibling->getRight());
-      display(root);
         sibling=getSibling(current);
-      display(root);
       }
 
       //=children of sibling are either rr br from now on
@@ -569,15 +589,10 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       //the right child of the sibling is red
 
       sibling->setColor(getColor(sibling->getParent()));
-      display(root);
       sibling->setColor('b');
-      display(root);
       sibling->getRight()->setColor('b');
-      display(root);
       rotateTree(root, current);
-      display(root);
       current=root;
-      display(root);
 
     }else{
     
