@@ -95,8 +95,11 @@ BinNode<int>* fullSearch(BinNode<int>*, int);
 void searchCommand(BinNode<int>*, std::vector<Text>);
 
 
-//returns you the bin node with the lowest value, if it doesnt exist, it returns nullptr
+//returns you the bin node with the lowest value, if it doesnt exist
 BinNode<int>* returnMinNode(BinNode<int>*);
+
+//returns you the bin node with the highest value, if it doesnt exist
+BinNode<int>* returnMaxNode(BinNode<int>*);
 
 
 void printHelp();
@@ -117,7 +120,7 @@ void MainClass::startProgram(){
 
   std::cout << "Welcome to this replresentation of Red-Black Tree!\n\n";
   std::cout << "Try (file should be included with the project): " << CYAN << "add 554 nums.txt 37 482 329\n" << NORMAL;
-  std::cout << "Then try " << CYAN << "remove 577 344 764 123 888\n" << NORMAL;
+  std::cout << "Then try " << CYAN << "remove 577 334 764 123 888\n" << NORMAL;
   std::cout << "(I also made it impossible to have duplicates)\n";
   // std::cout << "I have varified this works exactly as expect with:  https://www.cs.usfca.edu/~galles/visualization/RedBlack.html\n";
 
@@ -137,6 +140,15 @@ void MainClass::startProgram(){
       std::cout << '\n';
     }else if(commands[0]=="r" || commands[0]=="remove" || commands[0]=="rm"){
       removeCommand(root, commands);
+      redVsBlack.first=countRed(root);
+      redVsBlack.second=countBlack(root);
+    }else if(commands[0]=="rmall"){
+      while(root!=nullptr){
+        std::cout << root->getValue() << "\n" << std::flush;
+        remove(root, root);
+      }
+      redVsBlack.first=0;
+      redVsBlack.second=0;
     }else if(commands[0]=="rev" || commands[0]=="reverse"){
       Text tmp=BLACK; BLACK=RED; RED=tmp;
     }else{
@@ -482,7 +494,8 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   //=we have 2 children    
   if(child==nullptr){
 
-    auto successor=returnMinNode(toBeDeleted->getLeft());
+    auto successor=returnMinNode(toBeDeleted->getRight());
+    // auto successor=returnMaxNode(toBeDeleted->getLeft());
     toBeDeleted->setValue(successor->getValue());
 
     //remove the one we just swapped with
@@ -496,25 +509,11 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   char childRelation=child->getRelation();
   char childColor=child->getColor();
 
-
   transplant(root, toBeDeleted, child);
 
-  //fix children
-  // if(childRelation=='r'){
-  //   child->setLeft(toBeDeleted->getLeft());
-  //   child->setRight(toBeDeleted->getRight());
-  //   if(child->getLeft()!=nullptr)
-  //     child->getLeft()->setParent(child);
-  // }else{
-  //   child->setRight(toBeDeleted->getRight());
-  //   child->setLeft(nullptr);
-  //   if(child->getRight()!=nullptr)
-  //     child->getRight()->setParent(child);
-  // }
 
   
-
-    //double black
+  //double black
   if(getColor(child)+getColor(toBeDeleted)=='b'*2){
     fixAroundThisAfterDeleting(root, child);
   }
@@ -539,20 +538,25 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
     
     BinNode<int>* sibling=getSibling(current);
-      
+    char currentRelation=current->getRelation();
 
     // case 1
     //sibling is red
     if(getColor(sibling)=='r'){
       sibling->setColor('b');
       current->getParent()->setColor('r');
-      rotateTree(root, current);
+      rotateTree(root, sibling);
       sibling=getSibling(current);
     }
 
     //=sibling is black from now on
     
     // case 2
+
+    //sibling doesnt exist? we have balanced the tree!
+    if(sibling==nullptr)
+      break;
+    
     //the siblings children are black
     if(getColor(sibling->getLeft())+getColor(sibling->getRight())=='b'*2){
       sibling->setColor('r');
@@ -564,14 +568,14 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
 
     //are we right or left child
-    if(current->getRelation()=='l'){
+    if(currentRelation=='l'){
       
       // case 3
       //the left child of the sibling is red, the right child of the sibling is black
       if(getColor(sibling->getRight())=='b'){
         sibling->getLeft()->setColor('b');
         sibling->setColor('r');
-        rotateTree(root, sibling->getRight());
+        rotateTree(root, sibling->getLeft());
         sibling=getSibling(current);
       }
 
@@ -583,7 +587,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       sibling->setColor(getColor(sibling->getParent()));
       sibling->setColor('b');
       sibling->getRight()->setColor('b');
-      rotateTree(root, current);
+      rotateTree(root, sibling);
       current=root;
 
     }else{
@@ -605,7 +609,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       sibling->setColor(getColor(sibling->getParent()));
       sibling->setColor('b');
       sibling->getLeft()->setColor('b');
-      rotateTree(root, current);
+      rotateTree(root, sibling);
       current=root;
     
     }
@@ -930,6 +934,11 @@ BinNode<int>* fullSearch(BinNode<int>* current, int num){
 BinNode<int>* returnMinNode(BinNode<int>* current){
   while(current->getLeft()!=nullptr)
     current=current->getLeft();
+  return current;
+}
+BinNode<int>* returnMaxNode(BinNode<int>* current){
+  while(current->getRight()!=nullptr)
+    current=current->getRight();
   return current;
 }
 
