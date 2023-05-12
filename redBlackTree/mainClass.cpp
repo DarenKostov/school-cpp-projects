@@ -116,8 +116,9 @@ void MainClass::startProgram(){
   printHelp();
 
   std::cout << "Welcome to this replresentation of Red-Black Tree!\n\n";
-  std::cout << "Try (file should be included with the project): " << CYAN << "add nums.txt\n" << NORMAL;
+  std::cout << "Try (file should be included with the project): " << CYAN << "add 554 nums.txt 37 482 329\n" << NORMAL;
   std::cout << "Then try " << CYAN << "remove 577 344 764 123 888\n" << NORMAL;
+  std::cout << "(I also made it impossible to have duplicates)\n";
   // std::cout << "I have varified this works exactly as expect with:  https://www.cs.usfca.edu/~galles/visualization/RedBlack.html\n";
 
   
@@ -240,8 +241,8 @@ void addCommand(BinNode<int>*& root, std::vector<Text> commands){
         if(number.len()==0) 
           continue;
 
-
         int num=0;
+
         //is this a valid number
         try{
           num=std::stoi(number.val());
@@ -499,15 +500,17 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   transplant(root, toBeDeleted, child);
 
   //fix children
-  if(childRelation=='r'){
-    child->setLeft(toBeDeleted->getLeft());
-    if(child->getLeft()!=nullptr)
-      child->getLeft()->setParent(child);
-  }else{
-    child->setRight(toBeDeleted->getRight());
-    if(child->getRight()!=nullptr)
-      child->getRight()->setParent(child);
-  }
+  // if(childRelation=='r'){
+  //   child->setLeft(toBeDeleted->getLeft());
+  //   child->setRight(toBeDeleted->getRight());
+  //   if(child->getLeft()!=nullptr)
+  //     child->getLeft()->setParent(child);
+  // }else{
+  //   child->setRight(toBeDeleted->getRight());
+  //   child->setLeft(nullptr);
+  //   if(child->getRight()!=nullptr)
+  //     child->getRight()->setParent(child);
+  // }
 
   
 
