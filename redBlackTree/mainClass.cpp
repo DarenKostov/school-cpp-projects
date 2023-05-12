@@ -36,6 +36,9 @@ void display(BinNode<int>*);
 void displayLeft(BinNode<int>*, BinNode<int>*, Text);
 void displayRight(BinNode<int>*, Text);
 
+//like display but on a local level
+void displayLocal(BinNode<int>*);
+
 //adds an int to the bin tree, returns true if the task was successfull
 bool add(BinNode<int>*& , int);
 bool add(BinNode<int>*&, BinNode<int>*, BinNode<int>*, char, int);
@@ -118,7 +121,7 @@ void MainClass::startProgram(){
 
   printHelp();
 
-  std::cout << "Welcome to this replresentation of Red-Black Tree!\n\n";
+  std::cout << "Welcome to this representation of Red-Black Tree!\n\n";
   std::cout << "Try (file should be included with the project): " << CYAN << "add 554 nums.txt 37 482 329\n" << NORMAL;
   std::cout << "Then try " << CYAN << "remove 577 334 764 123 888\n" << NORMAL;
   std::cout << "(I also made it impossible to have duplicates)\n";
@@ -144,7 +147,7 @@ void MainClass::startProgram(){
       redVsBlack.second=countBlack(root);
     }else if(commands[0]=="rmall"){
       while(root!=nullptr){
-        std::cout << root->getValue() << "\n" << std::flush;
+        std::cout << "Removing " << root->getValue() << "\n" << std::flush;
         remove(root, root);
       }
       redVsBlack.first=0;
@@ -205,9 +208,10 @@ void searchCommand(BinNode<int>* root, std::vector<Text> commands){
       continue;
     }
 
-
-    if(returnNodeWithValueOf(root, num)!=nullptr){
-      std::cout<< commands[i] << " was located.\n"; 
+    auto node=returnNodeWithValueOf(root, num);
+    if(node!=nullptr){
+      std::cout<< commands[i] << " was located.\n\n"; 
+      displayLocal(node);
     }else
       std::cout<< commands[i] << " was not located.\n"; 
   }
@@ -944,6 +948,18 @@ BinNode<int>* returnMaxNode(BinNode<int>* current){
 
 
 
+// void displayLocal(BinNode<int>* in){
+
+//   if(in->getParent()!=nullptr)  
+//     std::cout << "\t";
+  
+//      <<   std::cout << BLACK << std::flush;
+//   std::cout << "l\e[0m" << std::flush;
+//   std::cout << current->getValue() 
+
+
+// }
+
 
 
 void printHelp(){
@@ -954,6 +970,7 @@ void printHelp(){
     std::cout << GREEN << "(d)isplay" << NORMAL << ": print the Bin Tree in a similar fasion as the command `tree`\n";
     std::cout << GREEN << "(r)emove" << BLUE << " <num1> [num2] [num3]..." << NORMAL << ": deletes num1, num2, num3... from the Bin Tree\n";
     std::cout << GREEN << "(rev)erse" << NORMAL << ": reverses the colors for Red and Black\n\t(these should really be global consts but if someone REALLY needs/wants to switch them they can)\n";
+    std::cout << GREEN << "rmall" << NORMAL << ": deletes every number from the Bin Tree\n";
     std::cout << GREEN << "(q)uit" << NORMAL << ": closes the program\n";
 
     std::cout << "\n[" << RED << "red" << NORMAL << "/" << BLACK << "black (real)" << NORMAL << "~total]: ";
