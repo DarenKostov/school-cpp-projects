@@ -17,6 +17,7 @@
 #include "scmdprs.h"
 #include <fstream>
 #include <charconv>
+#include <string>
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -947,18 +948,59 @@ BinNode<int>* returnMaxNode(BinNode<int>* current){
 }
 
 
+Text getNodeWithColorAndRelation(BinNode<int>* in){
 
-// void displayLocal(BinNode<int>* in){
+  Text output="";
 
-//   if(in->getParent()!=nullptr)  
-//     std::cout << "\t";
+  if(in->getColor()=='r')
+    output+=RED;
+  else
+    output+=BLACK;
+  output+=in->getRelation();
+  output+="\e[0m";
+  output+=in->getValue();
+
+  return output;
+
+}
+
+void displayLocal(BinNode<int>* in){
+
+  if(in->getLeft()!=nullptr){
+
+    //account for parent number length
+    if(in->getParent())
+      for(int i=0; i<(int)std::to_string(in->getParent()->getValue()).length()+2; i++)
+        std::cout << " ";
+    
+    std::cout << "┌─";
+    std::cout << getNodeWithColorAndRelation(in->getLeft());
   
-//      <<   std::cout << BLACK << std::flush;
-//   std::cout << "l\e[0m" << std::flush;
-//   std::cout << current->getValue() 
+    std::cout << "\n";
+  }
+
+  
+  if(in->getParent()!=nullptr){
+    std::cout << getNodeWithColorAndRelation(in->getParent()) << "─";
+  }
+  std::cout <<  getNodeWithColorAndRelation(in) << "\n";
 
 
-// }
+  if(in->getRight()!=nullptr){
+
+    //account for parent number length
+    if(in->getParent())
+      for(int i=0; i<(int)std::to_string(in->getParent()->getValue()).length()+2; i++)
+        std::cout << " ";
+
+    std::cout << "└─";
+    std::cout << getNodeWithColorAndRelation(in->getRight());
+  
+    std::cout << "\n";
+  }
+  
+
+}
 
 
 
