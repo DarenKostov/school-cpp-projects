@@ -557,11 +557,12 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
     //=sibling is black from now on
     
     // case 2
-
     //sibling doesnt exist? we have balanced the tree!
     if(sibling==nullptr)
       break;
+
     
+    // case 3
     //the siblings children are black
     if(getColor(sibling->getLeft())+getColor(sibling->getRight())=='b'*2){
       sibling->setColor('r');
@@ -575,7 +576,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
     //are we right or left child
     if(currentRelation=='l'){
       
-      // case 3
+      // case 4
       //the left child of the sibling is red, the right child of the sibling is black
       if(getColor(sibling->getRight())=='b'){
         sibling->getLeft()->setColor('b');
@@ -586,7 +587,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
       //=children of sibling are either rr br from now on
 
-      //case 4
+      //case 5
       //the right child of the sibling is red
 
       sibling->setColor(getColor(sibling->getParent()));
@@ -597,7 +598,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
     }else{
     
-      // case 3
+      // case 4
       //the left child of the sibling is red, the right child of the sibling is black
       if(getColor(sibling->getLeft())=='b'){
         sibling->getRight()->setColor('b');
@@ -608,7 +609,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
 
       //=children of sibling are either rr rb from now on
 
-      //case 4
+      //case 5
       //the right child of the sibling is red
 
       sibling->setColor(getColor(sibling->getParent()));
