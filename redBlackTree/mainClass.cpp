@@ -469,6 +469,19 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   }
   
   transplant(root, toBeDeleted, child);
+
+  //fix children
+  child->setRight(toBeDeleted->getRight());
+  child->setLeft(toBeDeleted->getLeft());
+  if(child->getRight()!=nullptr)
+    child->getRight()->setParent(child);
+  if(child->getLeft()!=nullptr)
+    child->getLeft()->setParent(child);
+
+  std::cout << child->getRight() << "\n";
+  std::cout << child->getLeft() << "\n";
+  std::cout << child->getParent() << "\n";
+  
   char childColor=child->getColor();
 
   
@@ -571,7 +584,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
         sibling=getSibling(current);
       }
 
-      //=children of sibling are either rr br from now on
+      //=children of sibling are either rr rb from now on
 
       //case 4
       //the right child of the sibling is red
@@ -586,6 +599,9 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
         
 
   }
+
+  //we are root, we must be black
+  current->setColor('b');
 
 }
 
