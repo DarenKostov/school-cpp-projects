@@ -499,7 +499,7 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   //=we have 2 children    
   if(child==nullptr){
 
-    auto successor=returnMinNode(toBeDeleted->getRight());
+    auto successor=returnMaxNode(toBeDeleted->getLeft());
     // auto successor=returnMaxNode(toBeDeleted->getLeft());
     toBeDeleted->setValue(successor->getValue());
 
