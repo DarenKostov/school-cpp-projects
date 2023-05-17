@@ -76,7 +76,7 @@ class MainClass{
     void removeLink(Text*, Text*);
 
     //print's stuff about a node
-    void probe(Text*);
+    void probe(Text);
     
     std::stack<Text*> getShortestPath(Text*, Text*);
 };

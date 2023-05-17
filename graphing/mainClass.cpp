@@ -15,6 +15,12 @@
 Text const ERROR="\e[93m"; 
 Text const NORMAL="\e[0m"; 
 
+template<class T>
+bool areArgumentsEnought(std::vector<T>, int);
+
+//gives you a number from Text
+int getNumber(Text);
+
 MainClass::MainClass(){
 }
 MainClass::~MainClass(){
@@ -34,15 +40,17 @@ void MainClass::startProgram(){
   std::cout << ": ";
   for(auto commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << ": ", commands=readLine()){
 
-    if(commands[0]=="add" || commands[0]=="create" || commands[0]=="make"){      
-      addSomethingCommand(commands);
-    }else if(commands[0]=="remove" || commands[0]=="delete" || commands[0]=="erase"){
-      removeSomethingCommand(commands);
-    }else if(commands[0]=="connect"){
+    if(commands[0]=="add" || commands[0]=="create" || commands[0]=="make" || commands[0]=="a"){      
+      addNodeCommand(commands);
+    }else if(commands[0]=="remove" || commands[0]=="delete" || commands[0]=="erase" || commands[0]=="r"){
+      removeNodeCommand(commands);
+    }else if(commands[0]=="connect" || commands[0]=="c"){
       addLinkCommand(commands);    
-    }else if(commands[0]=="disconnect"){
+    }else if(commands[0]=="disconnect" || commands[0]=="d"){
       removeLinkCommand(commands);    
-    }else if(commands[0]=="shortestPath"){
+    }else if(commands[0]=="shortestPath" || commands[0]=="s"){
+      
+    }else if(commands[0]=="probe" || commands[0]=="p"){
 
     }
     
@@ -50,7 +58,93 @@ void MainClass::startProgram(){
 
 }
 
+void MainClass::addNodeCommand(std::vector<Text> commands){
+  //example: add "this node is cool"
 
+  if(!areArgumentsEnought(commands, 2))
+    return;
+
+  if(getNodeWithName(commands[1])!=nullptr){
+    std::cout << ERROR << "Node \"" << commands[1] << "\" already exist.\n" << NORMAL;
+  }
+
+  addNode(new Text(commands[1]));
+  
+}
+void MainClass::removeNodeCommand(std::vector<Text> commands){
+  //example: erase NodeC
+
+  if(!areArgumentsEnought(commands, 2))
+    return;
+
+  auto node=getNodeWithName(commands[1]);
+  
+  if(node==nullptr){
+    std::cout << ERROR << "Node \"" << commands[1] << "\" doesn't exist.\n" << NORMAL;
+  }
+
+  removeNode(node);
+
+}
+void MainClass::addLinkCommand(std::vector<Text> commands){
+  //example: connect pointA pointB 34
+  
+    //validate the number of arguments
+    if(!areArgumentsEnought(commands, 4)){
+      return;
+    }
+    
+  
+    Text* from=getNodeWithName(commands[1]);
+    Text* to=getNodeWithName(commands[2]);
+    int value=getNumber(commands[3]);
+
+    if(from==nullptr){
+      std::cout << ERROR << "\"" << commands[1] << "\" doesn't exist.\n" << NORMAL;
+      return;
+    }else if(to==nullptr){
+      std::cout << ERROR << "\"" << commands[2] << "\" doesn't exist.\n" << NORMAL;
+      return;
+    }else if(value==0){
+      std::cout << ERROR << commands[3] << " is not a valid integer.\n" << NORMAL;
+      return;
+    }
+  
+    //create the link
+    addLink(from, to, value);
+
+}
+void MainClass::removeLinkCommand(std::vector<Text> commands){
+  //example: disconnect pointA pointB
+  
+    //validate the number of arguments
+    if(!areArgumentsEnought(commands, 3)){
+      return;
+    }
+    
+  
+    Text* from=getNodeWithName(commands[1]);
+    Text* to=getNodeWithName(commands[2]);
+
+    if(from==nullptr){
+      std::cout << ERROR << "\"" << commands[1] << "\" doesn't exist.\n" << NORMAL;
+      return;
+    }else if(to==nullptr){
+      std::cout << ERROR << "\"" << commands[2] << "\" doesn't exist.\n" << NORMAL;
+      return;
+    }else if(links[from][to]==0){
+      std::cout << ERROR << "Link doesn't exist.\n" << NORMAL;
+      return;
+    }
+
+
+    //create the link
+    removeLink(from, to);
+
+}
+
+
+//abandoned
 void MainClass::addSomethingCommand(std::vector<Text> command){
 
   //add a single node
@@ -81,13 +175,6 @@ void MainClass::addSomethingCommand(std::vector<Text> command){
     //what is the weight of the link
     int value=0;
 
-    try{
-      value=std::stoi(command[3].val());
-    }catch(const std::invalid_argument& ia){
-      std::cout << ERROR << command[3] << " is not a valid integer?\n" << NORMAL;
-      return;
-    }
-    
     //get the parameters
     for(char i=0; i<3; i++){
 
@@ -204,6 +291,8 @@ void MainClass::addSomethingCommand(std::vector<Text> command){
       }
       
     }
+  }else{
+    std::cout << ERROR << command[0] << " what?\n" << NORMAL;
   }
 }
 
@@ -223,9 +312,25 @@ Text* MainClass::getNodeWithName(Text label){
   return nullptr;
 }
 
-void MainClass::probe(Text* in){
-  //print node stuff
+void MainClass::probe(Text in){
 
+  auto node=getNodeWithName(in);
+  
+  if(node==nullptr){
+    std::cout << ERROR << "\"" << in << "\" doesn't exist.\n" << NORMAL;
+    return;
+  }
+
+  //print to where this node is connected
+  for(auto element : links[node]){
+    if(element.second!=0){
+      std::cout << in << " --(" << element.second << ")-> " << *element.first << "\n"; 
+    }
+  
+  }
+
+  
+  // std::cout << "pointed by:\n";
 }
 
 
@@ -320,7 +425,35 @@ void MainClass::addLink(Text* from, Text* to, int in){
   
 }
 
+  
 
 void MainClass::removeLink(Text* from, Text* to){
   links[from][to]=0;
+}
+
+template<class T>
+bool areArgumentsEnought(std::vector<T> vect, int amount){
+    if((int)vect.size()<amount){
+      std::cout << ERROR << "Not enough arguments.\n" << NORMAL;
+      return false;
+    }else if((int)vect.size()>amount){
+      std::cout << ERROR << "Too many arguments.\n" << NORMAL;
+      return false;
+    }
+
+  return true;
+
+}
+
+int getNumber(Text in){
+  
+  int num=0;
+  
+    try{
+      num=std::stoi(in.val());
+    }catch(const std::invalid_argument& ia){
+      return 0;
+    }
+  return num;
+
 }
