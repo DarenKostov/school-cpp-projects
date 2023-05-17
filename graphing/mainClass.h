@@ -59,6 +59,10 @@ class MainClass{
 
     //internal functions for operations
   private:
+
+    //gives you node with the label given, if it doesnt exist it return nullptr
+    Text* getNodeWithName(Text);
+  
     //adds a node
     void addNode(Text*);
 
