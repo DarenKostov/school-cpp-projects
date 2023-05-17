@@ -34,17 +34,12 @@ class MainClass{
     void startProgram();
 
 
-    //either add a link or a node, depends on the command
-    void addSomethingCommand(std::vector<Text>);
 
     //adds a node
     void addNodeCommand(std::vector<Text>);
 
     //adds a link
     void addLinkCommand(std::vector<Text>);
-
-    //either removes a link or a node, depends on the command
-    void removeSomethingCommand(std::vector<Text>);
 
     //removes a node
     void removeNodeCommand(std::vector<Text>);
