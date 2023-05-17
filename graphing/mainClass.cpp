@@ -10,9 +10,10 @@
 
 #include "mainClass.h"
 #include "scmdprs.h"
+#include <limits.h>
 
-
-Text const ERROR="\e[93m"; 
+Text const ERROR="\e[91m"; 
+Text const ACTION="\e[96m"; 
 Text const NORMAL="\e[0m"; 
 
 template<class T>
@@ -55,15 +56,131 @@ void MainClass::startProgram(){
     }else if(commands[0]=="disconnect" || commands[0]=="d"){
       removeLinkCommand(commands);    
     }else if(commands[0]=="shortestPath" || commands[0]=="s"){
-      
+      getShortestPath(commands);
     }else if(commands[0]=="probe" || commands[0]=="p"){
       probe(commands[1]);
     }else if(commands[0]=="help" || commands[0]=="h"){
       printHelp();
+    }else{
+      std::cout << ERROR << "?????\n" << NORMAL;
     }
   }
 
 }
+
+void MainClass::getShortestPath(std::vector<Text> commands){
+
+        
+        auto node1=getNodeWithName(commands[1]);
+        auto node2=getNodeWithName(commands[2]);
+
+
+
+            
+        if(node1==nullptr){
+          std::cout << ERROR << "Node \"" << commands[2] << "\" doesn't exist.\n" << NORMAL;
+          return;
+        }else if(node2==nullptr){
+          std::cout << ERROR << "Node \"" << commands[1] << "\" doesn't exist.\n" << NORMAL;
+          return;
+        }else if(node1==node2){
+          std::cout << ERROR << "Node cannot be the same\n" << NORMAL;
+          return;
+        }
+
+        std::stack<Text*> shortestPath;
+        
+        
+        int totalCost=findShortestPath(shortestPath, node1, node2);
+
+        if(totalCost==0){
+          std::cout << ERROR << "Nodes are not connected\n" << NORMAL;
+          return;
+        }
+
+
+        std::cout << "Optimal path:\n" << *node1;
+        //make the path
+        shortestPath.pop();
+        while(!shortestPath.empty()){
+          std::cout << "->" << *shortestPath.top();
+          shortestPath.pop();
+        }
+
+        std::cout << "\nWith the cost of " << totalCost << "\n";
+        
+}
+int MainClass::findShortestPath(std::stack<Text*>& path, Text* from, Text* to){
+
+  std::set<Text*> notVisited;
+  std::unordered_map<Text*, int> shortestDistanceFromDestination;
+  std::unordered_map<Text*, Text*> previousNode;
+
+
+
+
+  //set up
+  for(auto node : nodes){
+    notVisited.insert(node);
+    shortestDistanceFromDestination[node]=INT_MAX;
+    previousNode[node]=nullptr;
+  }
+  shortestDistanceFromDestination[from]=0;
+
+
+
+  while(!notVisited.empty()){
+
+    Text* current=nullptr;
+
+    //get the node with smallest distance
+    int val=INT_MAX;
+    for(auto node : notVisited){
+      if(shortestDistanceFromDestination[node]<val){
+        val=shortestDistanceFromDestination[node];
+          current=node;
+      }
+    }
+    //there is no connection
+    if(val==INT_MAX)
+      return 0;
+
+    //get all adjacent nodes
+    for(auto node : nodes){
+        if(links[current][node]==0)
+          continue;
+
+
+        //if the previous path costed more, replace it with this (cheaper) path
+        int linkSum=links[current][node]+shortestDistanceFromDestination[current];
+        if(shortestDistanceFromDestination[node]>linkSum){
+          previousNode[node]=current;
+          shortestDistanceFromDestination[node]=linkSum;
+        }
+    }
+
+    //we just visited this node
+    notVisited.erase(current);
+
+  }
+
+
+  //store the shortest path
+  auto current=to;
+  while(current!=nullptr){
+    path.push(current);
+    current=previousNode[current];
+  }
+
+
+  //return the cost of the shortest path
+  return shortestDistanceFromDestination[to];
+
+
+
+
+}
+
 
 void MainClass::addNodeCommand(std::vector<Text> commands){
   //example: add "this node is cool"
@@ -76,6 +193,7 @@ void MainClass::addNodeCommand(std::vector<Text> commands){
   }
 
   addNode(new Text(commands[1]));
+  std::cout << ACTION << "Created the node\n" << NORMAL;
   
 }
 void MainClass::removeNodeCommand(std::vector<Text> commands){
@@ -91,6 +209,7 @@ void MainClass::removeNodeCommand(std::vector<Text> commands){
   }
 
   removeNode(node);
+  std::cout << ACTION << "Removed the node\n" << NORMAL;
 
 }
 void MainClass::addLinkCommand(std::vector<Text> commands){
@@ -119,6 +238,7 @@ void MainClass::addLinkCommand(std::vector<Text> commands){
   
     //create the link
     addLink(from, to, value);
+    std::cout << ACTION << "Created the link\n" << NORMAL;
 
 }
 void MainClass::removeLinkCommand(std::vector<Text> commands){
@@ -145,8 +265,9 @@ void MainClass::removeLinkCommand(std::vector<Text> commands){
     }
 
 
-    //create the link
+    //remove the link
     removeLink(from, to);
+    std::cout << ACTION << "Removed the link\n" << NORMAL;
 
 }
 

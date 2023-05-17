@@ -4,7 +4,7 @@
   Graphing
 
   code/ideas were taken from https://github.com/DarenKostov/sgdt and made to work without sfml and std::string
-
+  and https://github.com/DarenKostov/school-java-projects
 
 */
 

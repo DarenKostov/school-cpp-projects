@@ -51,7 +51,9 @@ class MainClass{
     //prints the adjacency table
     void printLinks();
     
-
+    //tells you the shortest path between 2 nodes
+    void getShortestPath(std::vector<Text>);
+  
     //internal functions for operations
   private:
 
@@ -73,5 +75,5 @@ class MainClass{
     //print's stuff about a node
     void probe(Text);
     
-    std::stack<Text*> getShortestPath(Text*, Text*);
+    int findShortestPath(std::stack<Text*>&, Text*, Text*);
 };
