@@ -12,9 +12,9 @@
 #include "scmdprs.h"
 #include <limits.h>
 
-Text const ERROR="\e[91m"; 
-Text const ACTION="\e[96m"; 
-Text const NORMAL="\e[0m"; 
+#define ERROR "\e[91m" 
+#define ACTION "\e[96m" 
+#define NORMAL "\e[0m" 
 
 template<class T>
 bool areArgumentsEnought(std::vector<T>, int);
@@ -190,6 +190,7 @@ void MainClass::addNodeCommand(std::vector<Text> commands){
 
   if(getNodeWithName(commands[1])!=nullptr){
     std::cout << ERROR << "Node \"" << commands[1] << "\" already exist.\n" << NORMAL;
+    return;
   }
 
   addNode(new Text(commands[1]));
@@ -206,6 +207,7 @@ void MainClass::removeNodeCommand(std::vector<Text> commands){
   
   if(node==nullptr){
     std::cout << ERROR << "Node \"" << commands[1] << "\" doesn't exist.\n" << NORMAL;
+    return;
   }
 
   removeNode(node);
@@ -235,6 +237,12 @@ void MainClass::addLinkCommand(std::vector<Text> commands){
       std::cout << ERROR << commands[3] << " is not a valid integer.\n" << NORMAL;
       return;
     }
+
+    if(links[from][to]!=0){
+      std::cout << ERROR << "The link already exist, delete it and re-add it if needed.\n" << NORMAL;
+      return;
+    }
+  
   
     //create the link
     addLink(from, to, value);
@@ -393,8 +401,6 @@ void MainClass::addLink(Text* from, Text* to, int in){
   //we are not overwriting a link right?
   if(links[from][to]!=0) return;
 
-  
-  std::cout << "creating link\n";
   
   links[from][to]=in;
   
