@@ -9,11 +9,18 @@
 
 
 #include "mainClass.h"
+#include "scmdprs.h"
 
 
 MainClass::MainClass(){
 }
 MainClass::~MainClass(){
+
+
+  //free the memory
+  for(auto node : nodes)
+    delete node;
+
 }
 
 
@@ -21,11 +28,31 @@ MainClass::~MainClass(){
 void MainClass::startProgram(){  
   //do main stuff here
 
+  std::cout << ": ";
+  for(auto commands=readLine(); (commands[0]!="q") && (commands[0]!="quit"); std::cout << ": ", commands=readLine()){
+
+    if(commands[0]=="add" || commands[0]=="create" || commands[0]=="make"){      
+      addSomethingCommand(commands);
+    }else if(commands[0]=="remove" || commands[0]=="delete" || commands[0]=="erase"){
+      removeSomethingCommand(commands);
+    }else if(commands[0]=="connect"){
+      addLinkCommand(commands);    
+    }else if(commands[0]=="disconnect"){
+      removeLinkCommand(commands);    
+    }else if(commands[0]=="shortestPath"){
+
+    }
+    
+  }
 
 }
 
 
-void MainClass::probe(Text*){
+
+
+
+
+void MainClass::probe(Text* in){
   //print node stuff
 
 }
