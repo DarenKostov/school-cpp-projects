@@ -500,7 +500,7 @@ void remove(BinNode<int>*& root, BinNode<int>* toBeDeleted){
   if(child==nullptr){
 
     auto successor=returnMaxNode(toBeDeleted->getLeft());
-    // auto successor=returnMaxNode(toBeDeleted->getLeft());
+    // auto successor=returnMinNode(toBeDeleted->getRight());
     toBeDeleted->setValue(successor->getValue());
 
     //remove the one we just swapped with
@@ -591,7 +591,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       //the right child of the sibling is red
 
       sibling->setColor(getColor(sibling->getParent()));
-      sibling->setColor('b');
+      sibling->getParent()->setColor('b');
       sibling->getRight()->setColor('b');
       rotateTree(root, sibling);
       current=root;
@@ -613,7 +613,7 @@ void fixAroundThisAfterDeleting(BinNode<int>*& root, BinNode<int>* current){
       //the right child of the sibling is red
 
       sibling->setColor(getColor(sibling->getParent()));
-      sibling->setColor('b');
+      sibling->getParent()->setColor('b');
       sibling->getLeft()->setColor('b');
       rotateTree(root, sibling);
       current=root;
